@@ -1,0 +1,758 @@
+/* 추가 페이지 스타일 */
+
+.btn-makeroom{
+    width: 400px;
+}
+
+.sub-text {
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+/* 프로필 드롭다운 스타일 */
+
+.profile-btn {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.profile-btn:hover, .profile-btn:focus {
+    background-color: rgba(26, 75, 140, 0.1);
+    color: #fff;
+}
+
+.profile-dropdown{
+    background-color: #4B9CD3;
+    border-radius: 8px;
+}
+
+.profile-circle {
+    width: 35px;
+    height: 35px;
+    background-color: #1a4b8c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.profile-name {
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+/* 입장 코드 입력 스타일 */
+.room-code-input {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.room-code-input .form-control {
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #cbd5e0;
+    padding: 12px;
+}
+
+.room-code-input .btn {
+    background-color: #1a4b8c;
+    border-color: #1a4b8c;
+    border-radius: 8px;
+}
+
+.room-code-input .btn:hover {
+    background-color: #0d3b7a;
+    border-color: #0d3b7a;
+}
+
+/* 대기 페이지 스타일 */
+.waiting-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.room-code {
+    background-color: #e6f2ff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+    color: #1a4b8c;
+}
+
+.room-code-label {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-right: 10px;
+}
+
+.room-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 5px;
+}
+
+.copy-btn {
+    background-color: #e2e8f0;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    color: #4a5568;
+    transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+    background-color: #cbd5e0;
+}
+
+/* 채팅 영역 스타일 */
+
+.chat-wrapper {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.chat-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.chat-message {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #e6f2ff;
+}
+
+.notify-message {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #E2E5EF;
+    color: #1a4b8c;
+}
+
+.chat-time {
+    font-size: 0.75rem;
+    font-weight: lighter;
+    color: #718096;
+    text-align: right;
+}
+
+.chat-input-container {
+    display: flex;
+}
+
+.chat-input {
+    flex-grow: 1;
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #cbd5e0;
+    padding: 12px;
+}
+
+.chat-send-btn {
+    background-color: #1a4b8c;
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    padding: 0 15px;
+}
+
+/* 투표 현황 스타일 */
+.vote-status {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.vote-count-label {
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.vote-count {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a4b8c;
+}
+
+.vote-time-label {
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.vote-time {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f59e0b;
+}
+/* 후보자 카드 목록 스타일 */
+.candidate-card-list{
+    display:flex;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #e6f2ff;
+}
+
+
+.candidate-card{
+    background-color: #f2f8fc;
+    border-radius: 20px;
+    padding: 24px;
+    width: 200px;
+    max-height: 250px;
+    margin-right: 10px;
+    flex-grow: 1;
+}
+
+.candidate-info{
+    padding: 0px;
+    margin-bottom: 15px;
+}
+
+.candidate-promise{
+    height: 80px;
+    overflow-y:auto;
+}
+
+.candidate-modify-btn {
+    background-color: #1E5B8D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    width: 30%;
+}
+
+.candidate-delete-btn {
+    background-color: #E6542B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    width: 30%;
+}
+
+
+.add-candidate-btn {
+    background-color: #e2e8f0;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    width: 150px;
+    padding: 15px;
+    text-align: center;
+    color: #4a5568;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-candidate-btn:hover {
+    background-color: #cbd5e0;
+}
+
+.add-candidate-icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+/* 후보자 목록 스타일 */
+
+.vote-wrapper {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.candidate-list {
+    margin-top: 30px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.candidate-item {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.candidate-item:hover {
+    background-color: #e6f2ff;
+}
+
+.candidate-item.selected {
+    border-color: #1a4b8c;
+    background-color: #e6f2ff;
+}
+
+.candidate-number {
+    width: 40px;
+    height: 40px;
+    background-color: #1a4b8c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.candidate-info {
+    flex-grow: 1;
+}
+
+.candidate-name {
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 5px;
+}
+
+.candidate-description {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 0;
+}
+
+.view-pledge-btn {
+    background-color: #1a4b8c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.view-modify-btn {
+    background-color: #1E5B8D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+.view-delete-btn {
+    background-color: #E6542B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-left: 10px;
+}
+
+/* 투표 버튼 스타일 */
+.vote-btn {
+    background-color: #f97316;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.vote-btn:hover {
+    background-color: #ea580c;
+}
+
+.cancel-btn {
+    background-color: #64748b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+    background-color: #475569;
+}
+
+/* 모달 스타일 */
+.modal-header {
+    background-color: #1a4b8c;
+    color: white;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.pledge-content {
+    white-space: pre-line;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* 투표 결과 스타일 */
+.result-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.result-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 30px;
+}
+
+.winner-circle {
+    width: 100px;
+    height: 100px;
+    background-color: #1a4b8c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 2rem;
+    margin: 0 auto 20px;
+}
+
+.winner-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 10px;
+}
+
+.winner-class {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-bottom: 30px;
+}
+
+.result-progress {
+    height: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.vote-stats {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.stats-title {
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 15px;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats-label {
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.stats-value {
+    font-weight: 600;
+    color: #1a4b8c;
+}
+
+.back-btn {
+    background-color: #1a4b8c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #0d3b7a;
+    color: white;
+}
+
+/* 투표 기록 스타일 */
+.history-container {
+    padding: 30px 15px;
+}
+
+.history-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 30px;
+}
+
+.history-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.history-date {
+    font-size: 0.9rem;
+    color: #718096;
+    margin-bottom: 5px;
+}
+
+.history-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 15px;
+}
+
+.history-winner {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.history-winner-number {
+    width: 30px;
+    height: 30px;
+    background-color: #1a4b8c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.history-winner-name {
+    font-weight: 600;
+    color: #1a4b8c;
+}
+
+.history-winner-percent {
+    color: #f97316;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+/* 방 만들기 페이지 스타일 */
+.create-room-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.create-room-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+
+.candidate-form {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.candidate-form-title {
+    font-weight: 600;
+    color: #1a4b8c;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.candidate-badge {
+    background-color: #1a4b8c;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.remove-candidate {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.create-room-btn {
+    background-color: #1a4b8c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.create-room-btn:hover {
+    background-color: #0d3b7a;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .waiting-container, .create-room-container, .result-container {
+        padding: 20px;
+    }
+    
+    .room-title {
+        font-size: 1.3rem;
+    }
+    
+    .chat-container {
+        height: 250px;
+    }
+    
+    .winner-circle {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+    }
+    
+    .winner-name {
+        font-size: 1.3rem;
+    }
+    
+    .history-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .waiting-container, .create-room-container, .result-container {
+        padding: 15px;
+    }
+    
+    .room-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .room-code {
+        margin-top: 10px;
+    }
+    
+    .room-title {
+        font-size: 1.2rem;
+    }
+    
+    .chat-container {
+        height: 200px;
+    }
+    
+    .winner-circle {
+        width: 70px;
+        height: 70px;
+        font-size: 1.5rem;
+    }
+    
+    .winner-name {
+        font-size: 1.2rem;
+    }
+    
+    .history-title {
+        font-size: 1.3rem;
+    }
+    
+    .candidate-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .candidate-number {
+        margin-bottom: 10px;
+    }
+    
+    .view-pledge-btn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

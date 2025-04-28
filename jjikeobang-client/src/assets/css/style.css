@@ -1,0 +1,200 @@
+/* 전체 페이지 공통 스타일 */
+body {
+    background-color: #e6f2ff; /* 연한 하늘색 배경 */
+    font-family: 'Noto Sans KR', sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #ffffff; /* 흰색 배경 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 100px;
+}
+
+.main-container {
+    height: 100vh;
+    padding: 20px;
+}
+
+/* 로고 스타일 */
+.logo-main {
+    max-width: 200px;
+    margin-bottom: 10px;
+}
+
+.logo-circle {
+    max-height: 70px;
+    margin-bottom: 20px;
+}
+
+/* 환영 텍스트 스타일 */
+.welcome-text {
+    color: #003366; /* 진한 파란색 */
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.login-index {
+    width: 300px;
+}
+
+/* 버튼 스타일 */
+.btn-login, .btn-back, .btn-signup {
+    background-color: #1a4b8c; /* 진한 파란색 */
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover, .btn-back:hover {
+    background-color: #0d3b7a; /* 더 진한 파란색 */
+    color: white;
+}
+
+.btn-back {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.signup-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.signup-card h2 {
+    color: #1a4b8c; /* 진한 파란색 */
+    font-weight: 600;
+}
+
+/* 회원가입 링크 스타일 */
+.signup-link {
+    color: #5689D6; /* 파란색 */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.signup-link:hover {
+    color: #1a4b8c; /* 진한 파란색 */
+    text-decoration: underline;
+}
+
+/* 푸터 텍스트 스타일 */
+.footer-text {
+    color: #5689D6; /* 회색 */
+    font-size: 0.8rem;
+    bottom: 20px;
+    width: 100%;
+    margin-top: 100px;
+    text-align: center;
+}
+
+/* 로그인 페이지 스타일 */
+/* 로그인 카드 스타일 */
+.login-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.login-card h2 {
+    color: #1a4b8c; /* 진한 파란색 */
+    font-weight: 600;
+}
+
+/* 입력 필드 스타일 */
+.form-label {
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 12px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #3a7bd5; /* 파란색 */
+    box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
+}
+
+.form-control::placeholder {
+    color: #a0aec0;
+    font-size: 0.9rem;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .logo-main {
+        max-width: 180px;
+    }
+    
+    .logo-circle {
+        max-width: 65px;
+    }
+    
+    .welcome-text {
+        font-size: 1.1rem;
+    }
+
+    
+    .login-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .logo-main {
+        max-width: 150px;
+    }
+    
+    .logo-circle {
+        max-width: 60px;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+    }
+
+    .login-card {
+        padding: 20px;
+    }
+    
+    .footer-text {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .logo-main {
+        max-width: 120px;
+    }
+    
+    .logo-circle {
+        max-width: 50px;
+    }
+    
+    .login-card {
+        padding: 15px;
+    }
+    
+    .form-control {
+        padding: 10px;
+    }
+}
