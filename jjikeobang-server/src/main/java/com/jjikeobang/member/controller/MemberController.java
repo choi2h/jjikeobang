@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/member")
+@WebServlet(urlPatterns = {"/member/check-id","/member/join","/member/login"})
 public class MemberController extends HttpServlet {
 
     private final MemberServiceImpl memberService;
@@ -20,11 +20,29 @@ public class MemberController extends HttpServlet {
         this.memberService = new MemberServiceImpl();
     }
 
+    // 아이디 중복 검사
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Member> members = memberService.selectAllMember();
-        for (Member member : members) {
-            resp.getWriter().println(member);
+
+        super.doGet(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String urlPath= req.getServletPath();
+        switch(urlPath){
+            case "member/join":
+                // 회원가입 기능
+
+                break;
+            case "member/login":
+                // 로그인 기능
+
+                break;
+            default:
+                resp.sendError(404);
         }
+        super.doPost(req, resp);
     }
 }
