@@ -19,6 +19,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <!--    mysql connect 라이브러리-->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>9.1.0</version>
+    </dependency>
 
     <!-- websocket 라이브러리-->
     <dependency>
