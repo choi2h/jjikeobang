@@ -34,19 +34,34 @@ public class MemberController extends HttpServlet {
         switch(urlPath){
             case "member/join":
                 // 회원가입 기능
+                String userId = req.getParameter("userId");
                 String userPw = req.getParameter("userPw");
                 String comparePw = req.getParameter("comparePw");
+                String name = req.getParameter("name");
 
+                // 비밀번호 확인
                 if (!userPw.equals(comparePw)) {
                     resp.setContentType("text/plain; charset=UTF-8");
                     resp.getWriter().write("비밀번호가 일치하지 않습니다.");
                     return;
                 }
+                // 회원가입 요청 처리
+                Member newMember = new Member(userId, userPw, userName);
+                boolean isRegistered = memberService.registerMember(newMember);
 
+                if (isRegistered) {
+                    resp.sendRedirect("/member/login");  // 회원가입 성공 후 로그인 페이지로 리다이렉트
+                } else {
+                    resp.setContentType("text/plain; charset=UTF-8");
+                    resp.getWriter().write("회원가입에 실패했습니다. 다시 시도해주세요.");
+                }
                 break;
-            case "member/login":
+            case "/member/login":
                 // 로그인 기능
+                String loginId = req.getParameter("userId");
+                String loginPw = req.getParameter("userPw");
 
+                // 로그인 처리 로직 추가
                 break;
             default:
                 resp.sendError(404);
