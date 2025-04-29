@@ -1,7 +1,33 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Profile from "../components/Profile";
+import Profile from "../components/header/Profile";
+import Logo from "../components/header/Logo";
+import Button from "../components/common/Button";
+import AddCandidateModal from "../components/modal/AddCandidateModel";
+import CandidateItemSet from "../components/voteInfo/CandidateItemSet";
 
+const candidates = [
+    {
+        id: 1,
+        name: '김민준',
+        description: '2학년 7반',
+        promise: "더 나은 학급을 만들겠습니다 \n" +
+        "학급 소통 강화 \n" +
+        "공정한 의견 수렴 \n" + 
+        "투명한 학급비 운영 \n" +
+        "즐거운 학급 분위기 조성",
+    },
+    {
+        id: 2,
+        name: '이서연',
+        description: '2학년 12반',
+        promise: "모두가 행복한 교실을 만들겠습니다 \n" +
+        "학급 친목 활동 강화 \n" +
+        "학습 환경 개선 \n" + 
+        "학급 행사 다양화 \n" +
+        "소외되는 학생 없는 학급 문화 조성",
+    },
+]
 
 function CreateRoom(){
     const navigate = useNavigate();
@@ -12,8 +38,13 @@ function CreateRoom(){
 
     return (
         <>
-            {/* 상단 프로필 영역 */}
-            <Profile />
+             {/* 상단 프로필 영역 */}
+             <nav className="navbar mb-4">
+            <div className="container-fluid d-flex justify-content-between align-items-center">
+                <Logo/>
+                <Profile/>
+            </div>
+            </nav>
 
             <div className="container-fluid main-container">
                 {/* 방 만들기 컨테이너 */}
@@ -52,50 +83,14 @@ function CreateRoom(){
                                     <label className="form-label">후보자</label>
 
                                     <div className="candidate-card-list">
-                                        {/* 후보자 1 */}
-                                        <div className="candidate-card">
-                                            <div className="candidate-info">
-                                                <p style={{ fontWeight: 'bold' }}>후보자명: 홍길동</p>
-                                                <div className="candidate-description">
-                                                    <p style={{ fontWeight: 500, marginTop: '5px' }}>후보 공약</p>
-                                                    <div className="candidate-promise">
-                                                        1. 깨끗한 반을 만들겠습니다.<br/>
-                                                        2. 웹버거를 쏘겠습니다.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="d-flex justify-content-between">
-                                                <button type="button" className="candidate-modify-btn">수정</button>
-                                                <button type="button" className="candidate-delete-btn">삭제</button>
-                                            </div>
-                                        </div>
-                                        {/* 후보자 2 */}
-                                        <div className="candidate-card">
-                                            <div className="candidate-info">
-                                                <p style={{ fontWeight: 'bold' }}>후보자명: 홍길동</p>
-                                                <div className="candidate-description">
-                                                    <p style={{ fontWeight: 500, marginTop: '5px' }}>후보 공약</p>
-                                                    <div className="candidate-promise">
-                                                        1. 깨끗한 반을 만들겠습니다.<br/>
-                                                        2. 웹버거를 쏘겠습니다. <br/>
-                                                        2. 웹버거를 쏘겠습니다. <br/>
-                                                        2. 웹버거를 쏘겠습니다. <br/>
-                                                        2. 웹버거를 쏘겠습니다. <br/>
-                                                        2. 웹버거를 쏘겠습니다. <br/>
-                                                        2. 웹버거를 쏘겠습니다. <br/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="d-flex justify-content-between">
-                                                <button type="button" className="candidate-modify-btn">수정</button>
-                                                <button type="button" className="candidate-delete-btn">삭제</button>
-                                            </div>
-                                        </div>
-
+                                        {
+                                            candidates.map((candidate, index) => {
+                                                return <CandidateItemSet key={index} candidate={candidate}/>
+                                            })
+                                        }
 
                                         {/* 후보자 추가 버튼 */}
-                                        <div className="add-candidate-btn" data-bs-toggle="modal"
-                                            data-bs-target="#addCandidateModal">
+                                        <div className="add-candidate-btn" data-bs-toggle="modal" data-bs-target="#addCandidateModal">
                                             <i className="bi bi-plus-lg"></i>
                                             <span>등록하기</span>
                                         </div>
@@ -104,7 +99,7 @@ function CreateRoom(){
 
                                 {/* 방 생성하기 버튼 */}
                                 <div className="text-center mt-5">
-                                    <button type="button" className="btn create-room-btn" onClick={handleCreateRoom}>방 생성하기</button>
+                                    <Button type='createRoom' text='방 생성하기' onClick={handleCreateRoom}/>
                                 </div>
                             </form>
                         </div>
@@ -113,43 +108,7 @@ function CreateRoom(){
             </div>
 
             {/* 후보자 등록 모달 */}
-            <div className="modal fade" id="addCandidateModal" tabindex="-1" aria-labelledby="addCandidateModalLabel"
-                aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="addCandidateModalLabel">후보자 등록</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                {/* 후보자명 */}
-                                <div className="mb-3">
-                                    <label for="candidateName" className="form-label">후보자명</label>
-                                    <input type="text" className="form-control" id="candidateName" placeholder="후보자명을 입력하세요" />
-                                </div>
-
-                                {/* 후보자 한줄 소개 */}
-                                <div className="mb-3">
-                                    <label for="candidateDescription" className="form-label">후보자 한줄 소개</label>
-                                    <input type="text" className="form-control" id="candidateDescription"
-                                        placeholder="후보자 설명을 입력하세요" />
-                                </div>
-
-                                {/* 후보 공약 */}
-                                <div className="mb-3">
-                                    <label for="candidatePledge" className="form-label">후보 공약</label>
-                                    <textarea className="form-control" id="candidatePledge" rows="5"
-                                        placeholder="후보 공약을 입력하세요"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-primary">등록하기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <AddCandidateModal addCandidate={()=>{console.log('등록하기 버튼 클릭')}}/>
         </>
     );
 }

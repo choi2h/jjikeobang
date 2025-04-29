@@ -1,11 +1,17 @@
 import React from "react";
-import Profile from "../components/Profile";
+import Profile from "../components/header/Profile";
+import Logo from "../components/header/Logo";
 
 function VotingHistory(){
     return(
         <>
             {/* 상단 프로필 영역 */}
-            <Profile />
+            <nav className="navbar mb-4">
+            <div className="container-fluid d-flex justify-content-between align-items-center">
+                <Logo/>
+                <Profile/>
+            </div>
+            </nav>
             
             <div class="container-fluid main-container">
                 {/* 지난 투표 기록 */}
