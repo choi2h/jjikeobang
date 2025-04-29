@@ -34,6 +34,14 @@ public class MemberController extends HttpServlet {
         switch(urlPath){
             case "member/join":
                 // 회원가입 기능
+                String userPw = req.getParameter("userPw");
+                String comparePw = req.getParameter("comparePw");
+
+                if (!userPw.equals(comparePw)) {
+                    resp.setContentType("text/plain; charset=UTF-8");
+                    resp.getWriter().write("비밀번호가 일치하지 않습니다.");
+                    return;
+                }
 
                 break;
             case "member/login":
