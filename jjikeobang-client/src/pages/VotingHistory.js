@@ -1,6 +1,6 @@
 import React from "react";
-import Profile from "../components/Profile";
-import Logo from "../components/Logo";
+import Profile from "../components/header/Profile";
+import Logo from "../components/header/Logo";
 
 function VotingHistory(){
     return(

@@ -1,11 +1,11 @@
 import React from "react";
-import PromiseModal from "../components/PromiseModal";
-import Button from "../components/Button";
-import Chat from "../components/Chat";
-import CandidateItem from "../components/CandidateItem";
-import RoomHeader from "../components/RoomHeader";
-import Profile from "../components/Profile";
-import VoteStatusBoard from "../components/VoteStatusBoard";
+import PromiseModal from "../components/modal/PromiseModal";
+import Button from "../components/common/Button";
+import Chat from "../components/chat/Chat";
+import CandidateItem from "../components/voteInfo/CandidateItem";
+import RoomHeader from "../components/voteInfo/RoomHeader";
+import Profile from "../components/header/Profile";
+import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
 
 const candidates = [
     {
@@ -71,8 +71,12 @@ function AdminWaiting(){
 
                                     {/* 관리자 버튼 */}
                                     <div className="row mt-4">
-                                        <Button type='vote' text='투표하기' onClick={() => {console.log('투표하기 클릭')}}/>
-                                        <Button type='cancle' text='기권' onClick={() => {console.log('기권 클릭')}}/>
+                                        <div className="col-md-6 mb-3">
+                                            <Button type='vote' text='투표하기' onClick={() => {console.log('투표하기 클릭')}}/>
+                                        </div>
+                                        <div className="col-md-6 mb-3">
+                                            <Button type='cancle' text='기권' onClick={() => {console.log('기권 클릭')}}/>
+                                        </div>
                                     </div>
                                 </div>
 
