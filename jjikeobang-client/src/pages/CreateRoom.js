@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "../components/Profile";
+import Logo from "../components/Logo";
 
 
 function CreateRoom(){
@@ -12,8 +13,13 @@ function CreateRoom(){
 
     return (
         <>
-            {/* 상단 프로필 영역 */}
-            <Profile />
+             {/* 상단 프로필 영역 */}
+             <nav className="navbar mb-4">
+            <div className="container-fluid d-flex justify-content-between align-items-center">
+                <Logo/>
+                <Profile/>
+            </div>
+            </nav>
 
             <div className="container-fluid main-container">
                 {/* 방 만들기 컨테이너 */}
