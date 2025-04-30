@@ -29,4 +29,15 @@ public class MemberServiceImpl implements MemberService {
     public void putMember(JoinMemberDTO member) {
         memberRepository.putMember(member);
     }
+
+    @Override
+    public boolean isDuplicatedId(String userId) {
+        List<Member> members = memberRepository.selectAllMember();
+        for (Member member : members) {
+            if(userId.equals(member.getLoginId())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
