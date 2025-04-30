@@ -1,13 +1,13 @@
 package com.jjikeobang.member.repository;
 
+import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.model.Member;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jjikeobang.common.JDBCTemplate.Close;
-import static com.jjikeobang.common.JDBCTemplate.getConnection;
+import static com.jjikeobang.common.JDBCTemplate.*;
 import static com.jjikeobang.common.TypeMapperUtil.stringToLocalDateTime;
 
 public class MemberRepositoryImpl implements MemberRepository {
@@ -35,6 +35,23 @@ public class MemberRepositoryImpl implements MemberRepository {
         Close(connection);
 
         return members;
+    }
+
+    @Override
+    public void putMember(JoinMemberDTO member) {
+        Connection connection = getConnection();
+        try(PreparedStatement pstmt = connection.prepareStatement(INSERT_MEMBER_SQL)){
+            pstmt.setString(1, member.loginId());
+            pstmt.setString(2, member.password());
+            pstmt.setString(3, member.name());
+
+            pstmt.executeUpdate();
+            commit(connection);
+        }catch (SQLException se){
+            se.printStackTrace();
+        }
+        Close(connection);
+
     }
 
     @Override

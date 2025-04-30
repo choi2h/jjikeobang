@@ -1,5 +1,6 @@
 package com.jjikeobang.member.controller;
 
+import com.jjikeobang.member.model.JoinMemberDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

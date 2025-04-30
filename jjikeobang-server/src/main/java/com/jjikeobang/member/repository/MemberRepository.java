@@ -1,5 +1,6 @@
 package com.jjikeobang.member.repository;
 
+import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.model.Member;
 
 import java.util.List;
@@ -7,8 +8,12 @@ import java.util.List;
 public interface MemberRepository {
     String SELECT_MEMBER_SQL = "select * from member";
     String SELECT_MEMBER_BY_ID_SQL = "select * from member where member_id=?";
+    String INSERT_MEMBER_SQL = "insert into member(login_id,password,name,created_at)\n" +
+                                "values ('?','?','?',now());";
 
     List<Member> selectAllMember();
+
+    void putMember(JoinMemberDTO member);
 
     Member findById(int memberId);
 }

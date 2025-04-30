@@ -1,5 +1,6 @@
 package com.jjikeobang.member.service;
 
+import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.model.Member;
 import com.jjikeobang.member.repository.MemberRepository;
 import com.jjikeobang.member.repository.MemberRepositoryImpl;
@@ -22,5 +23,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findById(int memberId) {
         return memberRepository.findById(memberId);
+    }
+
+    @Override
+    public void putMember(JoinMemberDTO member) {
+        memberRepository.putMember(member);
     }
 }
