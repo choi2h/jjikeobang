@@ -1,8 +1,32 @@
-import React, { useRef } from "react";
+import React, { useRef , useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function Voting(){
+
+    const roomId = 1; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
+    const [candidates, setCandidates] = useState([]);
+
+    useEffect(()=>{
+        axios
+            .get(`http://localhost:8080/jjikeobang/room/candidate?roomId=${roomId}`)
+            .then((res)=>{
+                setCandidates(res.data);
+            })
+            .catch((err) => {
+                console.error("후보자 목록 불러오기 실패:", err);
+                });
+    },[]);
+
+    // 선택된 후보자의의 index 저장
+    const [selectedIndex, setSelectedIndex] = useState(null);
+        
+    // 후보자 클릭 (선택 시 selected 클래스 추가)
+    const selectCandidate = (index) => {
+          setSelectedIndex(index); // 클릭한 후보자의 index 번호 저장
+    };
+    
 
     const handleCloseModal = () => {
        let closeBtn = document.getElementById('closeModal');
@@ -43,61 +67,56 @@ function Voting(){
                             {/* 왼쪽 영역 (후보자 목록) */}
                             <div className="col-md-7 vote-wrapper">
                                 <div className="candidate-list">
-                                    {/* 후보자 1 (선택됨) */}
-                                    <div className="candidate-item selected" onClick="selectCandidate(1)">
-                                        <div className="candidate-number">1번</div>
-                                        <div className="candidate-info">
-                                            <div className="candidate-name">김민준</div>
-                                            <div className="candidate-description">2학년 7반</div>
-                                            <div className="candidate-description">더 나은 학급을 만들겠습니다</div>
-                                        </div>
-                                        <button className="view-pledge-btn" data-bs-toggle="modal"
-                                            data-bs-target="#pledgeModal1">
-                                            공약보기
-                                        </button>
-                                    </div>
+                                    {/* 후보자 목록 출력 */}
 
-                                    {/* 후보자 2 */}
-                                    <div className="candidate-item" onClick="selectCandidate(2)">
-                                        <div className="candidate-number">2번</div>
-                                        <div className="candidate-info">
-                                            <div className="candidate-name">이서연</div>
-                                            <div className="candidate-description">2학년 12반</div>
-                                            <div className="candidate-description">모두가 행복한 교실을 만들겠습니다</div>
-                                        </div>
-                                        <button className="view-pledge-btn" data-bs-toggle="modal"
-                                            data-bs-target="#pledgeModal1">
-                                            공약보기
-                                        </button>
-                                    </div>
+                                    {
+                                        candidates.map((candidate,index)=>{
+                                            const modalId = `pledgeModal-${candidate.candidateId}`;
+                                            const modalLabelId = `pledgeModalLabel-${candidate.candidateId}`;
+                                            
+                                            return(
+                                                <>
+                                                <div 
+                                                  className={`candidate-item ${selectedIndex === index ? 'selected' : ''}`}
+                                                  onClick={() => selectCandidate(index)}>
+                                                    <div className="candidate-number">{index+1}번</div>
+                                                    <div className="candidate-info">
+                                                        <div className="candidate-name">{candidate.name}</div>
+                                                        <div className="candidate-description">{candidate.description}</div>
+                                                </div>
+                                                <button className="view-pledge-btn" data-bs-toggle="modal"
+                                                     data-bs-target={`#${modalId}`}>
+                                                    공약보기
+                                                </button>
+                                                </div>
 
-                                    {/* 후보자 3 */}
-                                    <div className="candidate-item" onClick="selectCandidate(3)">
-                                        <div className="candidate-number">3번</div>
-                                        <div className="candidate-info">
-                                            <div className="candidate-name">박지훈</div>
-                                            <div className="candidate-description">2학년 15반</div>
-                                            <div className="candidate-description">소통하는 반장이 되겠습니다</div>
-                                        </div>
-                                        <button className="view-pledge-btn" data-bs-toggle="modal"
-                                            data-bs-target="#pledgeModal1">
-                                            공약보기
-                                        </button>
-                                    </div>
 
-                                    {/* 후보자 4 */}
-                                    <div className="candidate-item" onClick="selectCandidate(3)">
-                                        <div className="candidate-number">3번</div>
-                                        <div className="candidate-info">
-                                            <div className="candidate-name">박지훈</div>
-                                            <div className="candidate-description">2학년 15반</div>
-                                            <div className="candidate-description">소통하는 반장이 되겠습니다</div>
-                                        </div>
-                                        <button className="view-pledge-btn" data-bs-toggle="modal"
-                                            data-bs-target="#pledgeModal1">
-                                            공약보기
-                                        </button>
-                                    </div>
+                                                {/* 공약 모달 */}
+                                                <div className="modal fade"  id={modalId} tabindex="-1" aria-labelledby={modalLabelId} aria-hidden="true">
+                                                    <div className="modal-dialog modal-dialog-centered">
+                                                        <div className="modal-content">
+                                                            <div className="modal-header">
+                                                                <h5 className="modal-title" id="pledgeModalLabel1">{candidate.name}</h5>
+                                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div className="modal-body">
+                                                                <h6>{candidate.description}</h6>
+                                                                <h6 className="mt-3">후보 공약</h6>
+                                                                <div className="pledge-content">
+                                                                    {candidate.promise}
+                                                                </div>
+                                                            </div>
+                                                            <div className="modal-footer">
+                                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </>
+                                            )
+                                        })
+                                    }
+
                                 </div>
 
                                 {/* 투표 버튼 */}
@@ -164,31 +183,7 @@ function Voting(){
             </div>
         </div>
 
-        {/* 공약 모달 */}
-        <div className="modal fade" id="pledgeModal1" tabindex="-1" aria-labelledby="pledgeModalLabel1" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="pledgeModalLabel1">김민준</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                        <h6>2학년 7반</h6>
-                        <h6 className="mt-3">후보 공약</h6>
-                        <div className="pledge-content">
-                            더 나은 학급을 만들겠습니다
-                            학급 소통 강화
-                            공정한 의견 수렴
-                            투명한 학급비 운영
-                            즐거운 학급 분위기 조성
-                        </div>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         {/* 투표 결과 모달 */}
         <div className="modal fade" id="voteResultModal" tabindex="-1" aria-labelledby="voteResultModalLabel" aria-hidden="true">
