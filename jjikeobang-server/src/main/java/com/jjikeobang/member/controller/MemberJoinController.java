@@ -13,13 +13,27 @@ public class MemberJoinController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        String userId = req.getParameter("userId");
+        String name = req.getParameter("name");
         String userPw = req.getParameter("userPw");
         String comparePw = req.getParameter("comparePw");
-
+        // 비밀번호 불일치
         if (!userPw.equals(comparePw)) {
-            resp.setContentType("text/plain; charset=UTF-8");
-            resp.getWriter().write("비밀번호가 일치하지 않습니다.");
+            printAlert(resp, "비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        // 아이디 중복 통과 X
+        if(true){
+            printAlert(resp, "아이디를 확인해 주세요.");
+            return;
         }
 
+        
+    }
+
+    private static void printAlert(HttpServletResponse resp, String message) throws IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.getWriter().println(
+                "<script>alert('"+message+"'); location.href='"+"/signup"+"';</script>");
     }
 }
