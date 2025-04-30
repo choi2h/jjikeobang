@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jjikeobang.common.JDBCTemplate.Close;
 import static com.jjikeobang.common.JDBCTemplate.getConnection;
 import static com.jjikeobang.common.TypeMapperUtil.stringToLocalDateTime;
 
@@ -31,7 +32,32 @@ public class MemberRepositoryImpl implements MemberRepository {
         } catch (SQLException se) {
             se.printStackTrace();
         }
+        Close(connection);
 
         return members;
+    }
+
+    @Override
+    public Member findById(int memberId) {
+        Member member = null;
+
+        Connection connection = getConnection();
+        try(PreparedStatement pstmt = connection.prepareStatement(SELECT_MEMBER_BY_ID_SQL)){
+            pstmt.setInt(1, memberId);
+            ResultSet rs = pstmt.executeQuery();
+
+            member = new Member(
+                    rs.getLong(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    stringToLocalDateTime(rs.getString(5))
+            );
+        }catch (SQLException se){
+            se.printStackTrace();
+        }
+        Close(connection);
+
+        return member;
     }
 }

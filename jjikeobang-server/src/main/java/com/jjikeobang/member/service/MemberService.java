@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MemberService {
     List<Member> selectAllMember();
+
+    Member findById(int memberId);
 }
