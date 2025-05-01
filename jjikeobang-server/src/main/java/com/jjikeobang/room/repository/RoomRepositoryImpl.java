@@ -17,7 +17,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 		
 		Connection conn = JDBCTemplate.getConnection();
 		
-		try (PreparedStatement psmt = conn.prepareStatement(RoomRepository.INSERT_ROOM_SQL, 
+		try (PreparedStatement psmt = conn.prepareStatement(INSERT_ROOM_SQL, 
 															Statement.RETURN_GENERATED_KEYS)) {
 	            
 			psmt.setString(1, room.getName());
@@ -54,7 +54,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 	public void insertCandidate(Candidate candidate) throws SQLException {
 		Connection conn = JDBCTemplate.getConnection();
 		
-		try (PreparedStatement psmt = conn.prepareStatement(RoomRepository.INSERT_CANDIDATE_SQL)) {
+		try (PreparedStatement psmt = conn.prepareStatement(INSERT_CANDIDATE_SQL)) {
 	            
 			psmt.setLong(1, candidate.getRoomId());
 			psmt.setString(2, candidate.getName());
