@@ -1,5 +1,6 @@
 package com.jjikeobang.member.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.service.MemberService;
 import com.jjikeobang.member.service.MemberServiceImpl;
@@ -10,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/member/join")
 public class MemberJoinController extends HttpServlet {
@@ -17,30 +20,29 @@ public class MemberJoinController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper om = new ObjectMapper();
 
-        String userId = req.getParameter("userId");
-        String name = req.getParameter("name");
-        String userPw = req.getParameter("userPw");
-        String comparePw = req.getParameter("comparePw");
+        Map<String, Object> requestMap = om.convertValue(req.getReader(), Map.class);
 
-        // 비밀번호 불일치
-        if (!userPw.equals(comparePw)) {
-            printAlert(resp, "비밀번호가 일치하지 않습니다.");
-            return;
-        }
+        String name = (String) requestMap.get("name");
+        String userId = (String) requestMap.get("userId");
+        String userPw = (String) requestMap.get("userPw");
+
+        Map<String, String> resultMap = new HashMap<>();
+
         // 아이디 중복 통과 X
         if(memberService.isDuplicatedId(userId)){
-            printAlert(resp, "아이디를 확인해 주세요.");
+            resultMap.put("status","error");
+            resultMap.put("message","아이디 중복을 확인해 주세요.");
+
+            resp.setContentType("application/json; utf-8");
+            resp.getWriter().println(om.writeValueAsString(resultMap));
             return;
         }
 
         memberService.putMember(new JoinMemberDTO(userId,userPw,name));
+        resultMap.put("status", "success");
+        resultMap.put("message", "성공적으로 회원가입 하였습니다.");
 
-    }
-
-    private static void printAlert(HttpServletResponse resp, String message) throws IOException {
-        resp.setContentType("text/html; charset=UTF-8");
-        resp.getWriter().println(
-                "<script>alert('"+message+"'); location.href='"+"/signup"+"';</script>");
     }
 }
