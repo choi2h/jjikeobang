@@ -1,12 +1,14 @@
 package com.jjikeobang.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jjikeobang.member.model.Member;
 import com.jjikeobang.member.service.MemberServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,6 +49,12 @@ public class MemberLoginController extends HttpServlet {
         result.put("login_status", isLoggedIn);
 
         resp.setContentType("application/json; utf-8");
-        resp.getWriter().println();
+        resp.getWriter().println(result);
+        //로그인 성공 시 세션 저장
+        if(isLoggedIn){
+            HttpSession session = req.getSession();
+            Member currentMember = memberService.findByLoginId(userId);
+            session.setAttribute("memberId",currentMember.getId());
+        }
     }
 }

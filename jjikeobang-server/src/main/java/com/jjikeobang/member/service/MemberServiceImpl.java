@@ -26,6 +26,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member findByLoginId(String userId) {
+        return memberRepository.findByLoginId(userId);
+    }
+
+    @Override
     public void putMember(JoinMemberDTO member) {
         memberRepository.putMember(member);
     }
