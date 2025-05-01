@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.jjikeobang.common.JDBCTemplate;
+import com.jjikeobang.util.DatabaseUtil;
 import com.jjikeobang.room.model.Candidate;
 import com.jjikeobang.room.model.Room;
 
@@ -15,7 +15,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 	@Override
 	public Room insertRoom(Room room) throws SQLException {
 		
-		Connection conn = JDBCTemplate.getConnection();
+		Connection conn = DatabaseUtil.getConnection();
 		
 		try (PreparedStatement psmt = conn.prepareStatement(RoomRepository.INSERT_ROOM_SQL, 
 															Statement.RETURN_GENERATED_KEYS)) {
@@ -29,7 +29,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 		    int res = psmt.executeUpdate();
 		
 		    if (res > 0) {
-		    	JDBCTemplate.commit(conn);
+		    	DatabaseUtil.commit(conn);
 		    	
 		    	ResultSet rs = psmt.getGeneratedKeys();
 		        
@@ -37,12 +37,12 @@ public class RoomRepositoryImpl implements RoomRepository {
 		            room.setRoomId(rs.getLong(1));
 		        }
 		    }else {
-		    	JDBCTemplate.rollback(conn);
+		    	DatabaseUtil.rollback(conn);
 		    	throw new SQLException();
 		    }
 		    
 		} catch (SQLException e) {
-			JDBCTemplate.rollback(conn);
+			DatabaseUtil.rollback(conn);
 		    e.printStackTrace();
 		    throw e;
 		}
@@ -52,7 +52,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 
 	@Override
 	public void insertCandidate(Candidate candidate) throws SQLException {
-		Connection conn = JDBCTemplate.getConnection();
+		Connection conn = DatabaseUtil.getConnection();
 		
 		try (PreparedStatement psmt = conn.prepareStatement(RoomRepository.INSERT_CANDIDATE_SQL)) {
 	            
@@ -64,13 +64,13 @@ public class RoomRepositoryImpl implements RoomRepository {
 		    int res = psmt.executeUpdate();
 		
 		    if (res > 0) {
-		    	JDBCTemplate.commit(conn);
+		    	DatabaseUtil.commit(conn);
 		    }else {
-		    	JDBCTemplate.rollback(conn);
+		    	DatabaseUtil.rollback(conn);
 		    }
 		    
 		} catch (SQLException e) {
-			JDBCTemplate.rollback(conn);
+			DatabaseUtil.rollback(conn);
 		    e.printStackTrace();
 		    throw e;
 		}

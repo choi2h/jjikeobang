@@ -21,7 +21,7 @@ public class MemberController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<Member> members = memberService.selectAllMember();
         for (Member member : members) {
             resp.getWriter().println(member);
