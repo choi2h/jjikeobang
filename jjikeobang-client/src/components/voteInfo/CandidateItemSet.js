@@ -1,6 +1,16 @@
 import Button from "../common/Button";
+import ModalButton from "../common/ModalButton";
 
-function CandidateItemSet ({candidate}) {
+function CandidateItemSet ({candidate, modalId, openModalForEdit, deleteCandidate}) {
+
+    const handleEdit = () => {
+        openModalForEdit(candidate);
+    };
+
+    const handleDel = () => {
+        deleteCandidate(candidate.id);
+    };
+
     return (
         <div className="candidate-card">
             <div className="candidate-info">
@@ -13,8 +23,8 @@ function CandidateItemSet ({candidate}) {
                 </div>
             </div>
             <div className="d-flex justify-content-between">
-                <Button type='modify' onClick={()=>{'수정 버튼 클릭'}}/>
-                <Button type='delete' onClick={()=>{'삭제 버튼 클릭'}}/>
+                <ModalButton type='modify' modalId={modalId} onClick={handleEdit}/>
+                <Button type='delete' onClick={handleDel}/>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-package com.jjikeobang.common;
+package com.jjikeobang.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
