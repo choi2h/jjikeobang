@@ -1,17 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import logoCircle from '../assets/img/logo-circle.png';
 import SignupButton from '../components/signup/SignupButton';
 import SignupForm from '../components/signup/SignupForm';
-import { Sign } from 'crypto';
 
-const Signup = () => {
-    const [formData, setFormData] = {
+function Signup() {
+    const [formData, setFormData] = useState({
         userId: "",
         name: "",
         userPw: "",
         comparePw: ""
-    };
+    });
 
     return (
         <div className="container-fluid main-container">
@@ -29,7 +28,7 @@ const Signup = () => {
                         <p className="welcome-text text-center mb-4">새로운 계정을 만들어보세요</p>
                         <form>
                             <SignupForm formData={formData} setFormData={setFormData} />
-                            <SignupButton formdata={formData} />
+                            <SignupButton formData={formData} />
                             <div className="text-center">
                                 <Link to="/login" className="signup-link">로그인</Link>
                             </div>
@@ -43,6 +42,6 @@ const Signup = () => {
             <script src="../assets/js/bootstrap.bundle.min.js"></script>
         </div>
     );
-}
+};
 
 export default Signup;
