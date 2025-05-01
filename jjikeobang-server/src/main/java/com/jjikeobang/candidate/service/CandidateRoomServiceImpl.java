@@ -1,4 +1,4 @@
-package com.jjikeobang.room.service;
+package com.jjikeobang.candidate.service;
 
 import java.util.List;
 import com.jjikeobang.candidate.model.Candidate;

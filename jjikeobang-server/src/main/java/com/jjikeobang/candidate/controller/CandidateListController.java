@@ -1,4 +1,4 @@
-package com.jjikeobang.room.controller;
+package com.jjikeobang.candidate.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,11 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.jjikeobang.candidate.model.Candidate;
-import com.jjikeobang.room.service.CandidateRoomService;
-import com.jjikeobang.room.service.CandidateRoomServiceImpl;
+import com.jjikeobang.candidate.service.CandidateRoomService;
+import com.jjikeobang.candidate.service.CandidateRoomServiceImpl;
 
 
-@WebServlet("/room/candidate")  //요청 예시: /room/candidate?roomId=3 
+@WebServlet("/candidate")  //요청 예시: /room/candidate?roomId=3 
 public class CandidateListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final CandidateRoomService candidateRoomService = new CandidateRoomServiceImpl();

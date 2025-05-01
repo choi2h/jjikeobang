@@ -10,7 +10,7 @@ function Voting(){
 
     useEffect(()=>{
         axios
-            .get(`http://localhost:8080/jjikeobang/room/candidate?roomId=${roomId}`)
+            .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
             .then((res)=>{
                 setCandidates(res.data);
             })
