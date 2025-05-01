@@ -111,4 +111,7 @@ public class Room {
 		
 		this.entryCode = generatedCode;
 	}
+
+	// Room.java 내부에 추가 (예: 생성자 위쪽 또는 마지막에)
+
 }
