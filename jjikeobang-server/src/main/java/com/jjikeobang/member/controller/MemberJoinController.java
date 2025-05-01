@@ -32,7 +32,7 @@ public class MemberJoinController extends HttpServlet {
 
         // 아이디 중복 통과 X
         if(memberService.isDuplicatedId(userId)){
-            resultMap.put("status","error");
+            resultMap.put("joinstatus","error");
             resultMap.put("message","아이디 중복을 확인해 주세요.");
 
             resp.setContentType("application/json; utf-8");
@@ -41,8 +41,7 @@ public class MemberJoinController extends HttpServlet {
         }
 
         memberService.putMember(new JoinMemberDTO(userId,userPw,name));
-        resultMap.put("status", "success");
-        resultMap.put("message", "성공적으로 회원가입 하였습니다.");
+        resultMap.put("joinstatus", "success");
 
     }
 }
