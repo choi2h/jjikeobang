@@ -11,5 +11,7 @@ public interface MemberService {
     void putMember(JoinMemberDTO member);
     Member findById(int memberId);
 
-    boolean isDuplicatedId(String userId);
+    boolean checkIfDuplicated(String userId);
+
+    boolean checkUserInfo(String userId, String userPw);
 }

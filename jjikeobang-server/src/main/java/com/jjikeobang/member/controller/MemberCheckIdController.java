@@ -23,7 +23,7 @@ public class MemberCheckIdController extends HttpServlet {
         Map<String, Object> result = new HashMap<>();
 
         String userId = req.getParameter("userId");
-        boolean isDuplicated = memberService.isDuplicatedId(userId);
+        boolean isDuplicated = memberService.checkIfDuplicated(userId);
 
         result.put("isDuplicated", isDuplicated);
 

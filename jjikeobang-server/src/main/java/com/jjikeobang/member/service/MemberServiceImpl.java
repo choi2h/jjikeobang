@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean isDuplicatedId(String userId) {
+    public boolean checkIfDuplicated(String userId) {
         List<Member> members = memberRepository.selectAllMember();
         for (Member member : members) {
             if(userId.equals(member.getLoginId())){
@@ -39,5 +39,15 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean checkUserInfo(String userId, String userPw) {
+        Member member = memberRepository.findByLoginId(userId);
+        if(member != null){
+            return userPw.equals(member.getPassword());
+        }else{
+            return false;
+        }
     }
 }

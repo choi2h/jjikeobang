@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,15 @@ public class MemberJoinController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper om = new ObjectMapper();
 
-        Map<String, Object> requestMap = om.convertValue(req.getReader(), Map.class);
+        BufferedReader reader = req.getReader();
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+        String requestBody = sb.toString();
+
+        Map<String, Object> requestMap = om.readValue(requestBody, Map.class);
 
         String name = (String) requestMap.get("name");
         String userId = (String) requestMap.get("userId");
@@ -31,9 +40,9 @@ public class MemberJoinController extends HttpServlet {
         Map<String, String> resultMap = new HashMap<>();
 
         // 아이디 중복 통과 X
-        if(memberService.isDuplicatedId(userId)){
-            resultMap.put("joinstatus","error");
-            resultMap.put("message","아이디 중복을 확인해 주세요.");
+        if(memberService.checkIfDuplicated(userId)){
+            resultMap.put("join_status","error");
+            resultMap.put("message","아이디 중복 여부를 확인해 주세요.");
 
             resp.setContentType("application/json; utf-8");
             resp.getWriter().println(om.writeValueAsString(resultMap));
@@ -41,7 +50,7 @@ public class MemberJoinController extends HttpServlet {
         }
 
         memberService.putMember(new JoinMemberDTO(userId,userPw,name));
-        resultMap.put("joinstatus", "success");
+        resultMap.put("join_status", "success");
 
     }
 }

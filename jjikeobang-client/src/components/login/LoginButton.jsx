@@ -3,8 +3,33 @@ import { useNavigate } from 'react-router-dom';
 const LoginButton = ({ formData }) => {
     const navigate = useNavigate();
     const handleLogin = async () => {
-        navigate('/dashboard');
-        
+        if (formData.userId.trim() === "" ||
+            formData.userPw.trim() === "") {
+            alert("모든 필드는 빈 칸이 될 수 없습니다.");
+            return;
+        }
+        try {
+            const response = await fetch('/member/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: formData.userId,
+                    userPw: formData.userPw
+                }),
+            });
+
+            if (response.ok && response.login_status) {
+                alert('정상적으로 로그인 되었습니다.');
+                navigate('/');
+            } else {
+                alert('아이디 또는 비밀번호가 잘못되었습니다.');
+            }
+        } catch (error) {
+            console.error('오류 발생:', error);
+            alert('에러가 발생했습니다.');
+        }
     };
 
     return (
