@@ -6,9 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jjikeobang.common.JDBCTemplate.Close;
-import static com.jjikeobang.common.JDBCTemplate.getConnection;
-import static com.jjikeobang.common.TypeMapperUtil.stringToLocalDateTime;
+import static com.jjikeobang.util.DatabaseUtil.Close;
+import static com.jjikeobang.util.DatabaseUtil.getConnection;
+import static com.jjikeobang.util.TypeMapperUtil.stringToLocalDateTime;
 
 public class MemberRepositoryImpl implements MemberRepository {
 

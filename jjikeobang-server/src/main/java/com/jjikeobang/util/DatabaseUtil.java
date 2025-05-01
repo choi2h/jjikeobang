@@ -1,15 +1,15 @@
-package com.jjikeobang.common;
+package com.jjikeobang.util;
 
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
-public class JDBCTemplate {
+public class DatabaseUtil {
     public static Connection getConnection() {
         Connection conn = null;
         Properties prop = new Properties();
 
-        try (InputStream input = JDBCTemplate.class.getClassLoader().getResourceAsStream("db.properties")){
+        try (InputStream input = DatabaseUtil.class.getClassLoader().getResourceAsStream("db.properties")){
 
             if (input == null) {
                 throw new RuntimeException("db.properties 파일 없어!!!!");
