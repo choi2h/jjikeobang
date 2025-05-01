@@ -1,11 +1,12 @@
 package com.jjikeobang.candidate.repository;
+import static com.jjikeobang.util.DatabaseUtil.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static com.jjikeobang.common.JDBCTemplate.*;
 
 import com.jjikeobang.candidate.model.Candidate;
 

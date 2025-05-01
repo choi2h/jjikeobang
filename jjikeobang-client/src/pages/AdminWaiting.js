@@ -19,13 +19,17 @@ function AdminWaiting() {
     useEffect(() => {
         axios
             .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
-            .then((res) => {
-                setCandidates(res.data); // 응답 받은 후보자 리스트 저장
+            .then((res)=>{
+                if(res.data.statusCode===200){
+                    setCandidates(res.data.candidates);
+                }else{
+                    console.log('에러 코드 :',res.data.statusCode);
+                }
+   
             })
-            .catch((err) => {
+            .catch((err)=>{
                 console.error("후보자 목록 불러오기 실패:", err);
             });
-
     }, []);
 
 
