@@ -7,8 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jjikeobang.common.JDBCTemplate.*;
-import static com.jjikeobang.common.TypeMapperUtil.stringToLocalDateTime;
+import static com.jjikeobang.util.DatabaseUtil.*;
+import static com.jjikeobang.util.TypeMapperUtil.stringToLocalDateTime;
 
 public class MemberRepositoryImpl implements MemberRepository {
 

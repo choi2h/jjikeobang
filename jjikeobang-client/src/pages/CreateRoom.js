@@ -1,40 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
 import Button from "../components/common/Button";
-import AddCandidateModal from "../components/modal/AddCandidateModel";
+import AddCandidateModal from "../components/modal/AddCandidateModal";
 import CandidateItemSet from "../components/voteInfo/CandidateItemSet";
-
-const candidates = [
-    {
-        id: 1,
-        name: '김민준',
-        description: '2학년 7반',
-        promise: "더 나은 학급을 만들겠습니다 \n" +
-        "학급 소통 강화 \n" +
-        "공정한 의견 수렴 \n" + 
-        "투명한 학급비 운영 \n" +
-        "즐거운 학급 분위기 조성",
-    },
-    {
-        id: 2,
-        name: '이서연',
-        description: '2학년 12반',
-        promise: "모두가 행복한 교실을 만들겠습니다 \n" +
-        "학급 친목 활동 강화 \n" +
-        "학습 환경 개선 \n" + 
-        "학급 행사 다양화 \n" +
-        "소외되는 학생 없는 학급 문화 조성",
-    },
-]
 
 function CreateRoom(){
     const navigate = useNavigate();
+    const [roomName, setRoomName] = useState('');
+    const [maxParticipant, setmaxParticipant] = useState(0);
+    const [voteDuration, setvoteDuration] = useState(0);
+    const [candidates, setCandidates] = useState([]);
+    const [candidate, setCandidate] = useState(null);
+
+    const addCandidate = (candidate) => {
+        setCandidates([...candidates, { ...candidate, id: Date.now() }]);
+    };
+
+    const editCandidate = (updatedCandidate) => {
+        setCandidates(candidates.map(candidate =>
+           candidate.id === updatedCandidate.id ? { ...updatedCandidate } : candidate
+        ));
+    };
+
+    const deleteCandidate = (id) => {
+        if (window.confirm('삭제하시겠습니까?')) {
+            setCandidates(candidates.filter((c) => c.id !== id));
+        }
+    };
+
+    const openModalForAdd = () => {
+        setCandidate(null);
+    };
+
+    const openModalForEdit = (candidate) => {
+        setCandidate(candidate);
+    };
 
     const handleCreateRoom = () => {
-        navigate("/votingReady");
-    }
+        if (!roomName.trim()) {
+            alert("투표방 이름을 입력해주세요.");
+            return;
+        }
+    
+        if (!maxParticipant || maxParticipant < 1 || maxParticipant > 300) {
+            alert("인원수는 1 ~ 300 사이의 수를 입력해 주세요.");
+            return;
+        }
+    
+        if (!voteDuration || voteDuration < 1) {
+            alert("투표 시간은 1분 이상이어야 합니다.");
+            return;
+        }
+    
+        if (candidates.length === 0) {
+            alert("최소 1명의 후보자를 등록해주세요.");
+            return;
+        }
+
+        // 데이터 전송
+        const requestData = {
+            name: roomName,
+            maxParticipant: maxParticipant,
+            voteDuration: voteDuration,
+        };
+
+        fetch('http://localhost:8080/room', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+            })
+            .then((res) => {
+                if (!res.ok) { throw new Error('서버 오류');}
+                return res.json();
+            })
+            .then((roomInfo) => {
+                // 전송 성공 시 투표 준비 관리자 화면 이동
+                navigate('/adminWaiting',{
+                    state : {
+                        roomInfo, //방 정보 
+                        candidates, //후보자 정보
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error('에러 발생:', err);
+                alert('방 생성 중 오류가 발생했습니다.');
+            });
+    };
 
     return (
         <>
@@ -57,14 +113,14 @@ function CreateRoom(){
                                 {/* 투표방 이름 */}
                                 <div className="mb-4">
                                     <label for="roomName" className="form-label">투표방 이름</label>
-                                    <input type="text" className="form-control" id="roomName" placeholder="투표방 이름을 입력하세요" />
+                                    <input type="text" onChange={(e)=>{setRoomName(e.target.value)}} className="form-control" id="roomName" placeholder="투표방 이름을 입력하세요" />
                                 </div>
 
                                 {/* 인원수 */}
                                 <div className="mb-4">
-                                    <label for="maxParticipants" className="form-label">인원수</label>
+                                    <label for="maxParticipant" className="form-label">인원수</label>
                                     <div className="input-group">
-                                        <input type="number" className="form-control" id="maxParticipants" placeholder="최대 300명" />
+                                        <input type="number" onChange={(e)=>{setmaxParticipant(e.target.value)}} className="form-control" id="maxParticipant" placeholder="최대 300명" />
                                         <span className="input-group-text">명</span>
                                     </div>
                                 </div>
@@ -73,7 +129,7 @@ function CreateRoom(){
                                 <div className="mb-4">
                                     <label className="form-label">투표 시간</label>
                                     <div className="input-group">
-                                        <input type="number" className="form-control" id="voteMinutes" placeholder="30" />
+                                        <input type="number" onChange={(e)=>{setvoteDuration(e.target.value)}} className="form-control" id="voteDuration" placeholder="30" />
                                         <span className="input-group-text">분</span>
                                     </div>
                                 </div>
@@ -85,12 +141,12 @@ function CreateRoom(){
                                     <div className="candidate-card-list">
                                         {
                                             candidates.map((candidate, index) => {
-                                                return <CandidateItemSet key={index} candidate={candidate}/>
+                                                return <CandidateItemSet key={index} candidate={candidate} openModalForEdit={openModalForEdit} deleteCandidate={deleteCandidate} modalId='#addCandidateModal'/>
                                             })
                                         }
 
                                         {/* 후보자 추가 버튼 */}
-                                        <div className="add-candidate-btn" data-bs-toggle="modal" data-bs-target="#addCandidateModal">
+                                        <div className="add-candidate-btn" data-bs-toggle="modal" data-bs-target="#addCandidateModal" onClick={openModalForAdd}>
                                             <i className="bi bi-plus-lg"></i>
                                             <span>등록하기</span>
                                         </div>
@@ -108,7 +164,11 @@ function CreateRoom(){
             </div>
 
             {/* 후보자 등록 모달 */}
-            <AddCandidateModal addCandidate={()=>{console.log('등록하기 버튼 클릭')}}/>
+            <AddCandidateModal 
+                addCandidate={addCandidate}
+                editCandidate={editCandidate}
+                candidate={candidate}
+            />
         </>
     );
 }

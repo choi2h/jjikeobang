@@ -51,6 +51,8 @@ public class MemberJoinController extends HttpServlet {
 
         memberService.putMember(new JoinMemberDTO(userId,userPw,name));
         resultMap.put("join_status", "success");
+        resp.setContentType("application/json; utf-8");
+        resp.getWriter().println(om.writeValueAsString(resultMap));
 
     }
 }

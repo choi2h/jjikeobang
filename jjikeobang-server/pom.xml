@@ -41,6 +41,7 @@
       <version>6.1.0</version>
       <scope>provided</scope>
     </dependency>
+<<<<<<< HEAD
 
     <!-- jackson -->
     <dependency>
@@ -54,6 +55,22 @@
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>2.17.0</version>
     </dependency>
+=======
+    
+    <!-- jackson -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.17.0</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
+	    <version>2.17.0</version>
+	</dependency>
+
+>>>>>>> develop
   </dependencies>
   <build>
     <finalName>jjikeobang</finalName>
