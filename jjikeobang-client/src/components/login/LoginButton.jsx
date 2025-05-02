@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const LoginButton = ({ formData }) => {
     const navigate = useNavigate();
     const handleLogin = async () => {
@@ -9,7 +12,7 @@ const LoginButton = ({ formData }) => {
             return;
         }
         try {
-            const response = await fetch('/member/login', {
+            const response = await fetch(`${API_URL}/member/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,11 +23,17 @@ const LoginButton = ({ formData }) => {
                 }),
             });
 
-            if (response.ok && response.login_status) {
-                alert('정상적으로 로그인 되었습니다.');
-                navigate('/');
+            if (response.ok) {
+                const json = await response.json()
+                if (json.login_status) {
+                    alert('정상적으로 로그인 되었습니다.');
+                    navigate('/');
+                } else {
+                    alert('아이디 또는 비밀번호가 잘못되었습니다.');
+                }
             } else {
-                alert('아이디 또는 비밀번호가 잘못되었습니다.');
+                console.log(response.status);
+                alert('에러가 발생했습니다.');
             }
         } catch (error) {
             console.error('오류 발생:', error);

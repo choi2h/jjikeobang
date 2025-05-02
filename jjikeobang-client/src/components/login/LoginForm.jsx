@@ -7,7 +7,7 @@ const LoginForm = ({ formData, setFormData }) => {
     };
     return (<>
         <div className="mb-3">
-            <label for="userId" className="form-label">아이디</label>
+            <label htmlFor="userId" className="form-label">아이디</label>
             <input type="text" className="form-control" id="userId"
                 value={formData.userId}
                 onChange={handleChange}
@@ -15,7 +15,7 @@ const LoginForm = ({ formData, setFormData }) => {
         </div>
 
         <div className="mb-4">
-            <label for="userPw" className="form-label">비밀번호</label>
+            <label htmlFor="userPw" className="form-label">비밀번호</label>
             <input type="password" className="form-control" id="userPw"
                 value={formData.userPw}
                 onChange={handleChange}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useNavigate } from "react";
-
+const API_URL = process.env.REACT_APP_API_URL;
 function GuestDashboard() {
     const [name, setUsername] = useState(null);
     const navigate = useNavigate();
@@ -8,7 +8,7 @@ function GuestDashboard() {
     };
 
     useEffect(() => {
-        fetch('/profile', {
+        fetch(`${API_URL}/profile`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

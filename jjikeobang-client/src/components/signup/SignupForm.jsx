@@ -1,5 +1,7 @@
 import React from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const SignupForm = ({ formData, setFormData }) => {
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -12,11 +14,10 @@ const SignupForm = ({ formData, setFormData }) => {
             return;
         }
         try{
-            const response = await fetch('/member/check-id'
-              );
+            const response = await fetch(`${API_URL}/member/check-id?userId=${userId}`);
             if (response.ok) {
-                const result = response.json()
-                if(result.isDuplicate){
+                const result = await response.json()
+                if(result.isDuplicated){
                     alert('이미 사용 중인 아이디입니다.');
                     return;
                 }else{

@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const SignupButton = ({ formData }) => {
   const navigate = useNavigate();
   const handleSignup = async () => {
@@ -16,7 +18,7 @@ const SignupButton = ({ formData }) => {
     }
     // JSON 형식으로 서버에 데이터 전송, 현 시점 서버 개발 중
     try {
-      const response = await fetch('/member/signup', {
+      const response = await fetch(`${API_URL}/member/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,9 +30,14 @@ const SignupButton = ({ formData }) => {
         }),
       });
 
-      if (response.ok && response.joinstatus === 'success') {
-        alert('회원가입 성공');
-        navigate('/login');
+      if (response.ok) {
+        const json = await response.json();
+        if (json.join_status) {
+          alert('회원가입 성공');
+          navigate('/login');
+        } else {
+          alert('회원가입 실패');
+        }
       } else {
         alert(response.message);
       }
