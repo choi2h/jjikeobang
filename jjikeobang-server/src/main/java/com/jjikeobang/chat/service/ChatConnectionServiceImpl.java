@@ -4,6 +4,7 @@ import com.jjikeobang.chat.model.ChatConnectInfo;
 import jakarta.websocket.Session;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChatConnectionServiceImpl implements ChatConnectionService {
@@ -22,6 +23,9 @@ public class ChatConnectionServiceImpl implements ChatConnectionService {
 
     private ChatConnectionServiceImpl() {
         roomConnections = new HashMap<>();
+
+        // TODO 임시데이터
+        roomConnections.put(1L, new ChatConnectInfo(1L));
     }
 
     @Override
@@ -48,6 +52,16 @@ public class ChatConnectionServiceImpl implements ChatConnectionService {
 
     @Override
     public void removeParticipant(Long roomId, String sessionId) {
-        roomConnections.get(roomId).RemoveUser(sessionId);
+        ChatConnectInfo chatConnectInfo = roomConnections.get(roomId);
+        chatConnectInfo.RemoveUser(sessionId);
+
+        if(chatConnectInfo.isEmptyRoom()) {
+            roomConnections.remove(roomId);
+        }
+    }
+
+    @Override
+    public List<Session> getParticipantsFromRoom(Long roomId) {
+        return this.roomConnections.get(roomId).getParticipants();
     }
 }

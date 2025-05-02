@@ -11,16 +11,21 @@ function Chat({roomId}) {
             socket.current = socketService;
         }
 
-        // return () => {
-        //     if(socket.current) {
-        //         socket.current.close();
-        //         socket.current = null;
-        //     }
-        // }
+        return () => {
+            if(socket.current) {
+                socket.current.close();
+                socket.current = null;
+            }
+        }
     });
 
     const onClickSendButton = () => {
         console.log('전송 버튼 클릭');
+        if(socket.current) {
+            socket.current.sendMessage('user1', 'i can send message!!!!');
+        } else {
+            alert('채팅에 연결되어있지 않습니다.');
+        }
     }
 
     return (
