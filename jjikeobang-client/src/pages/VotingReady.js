@@ -24,7 +24,7 @@ function VotingReady(){
                                                 
 
     //후보자 수정 
-    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [candidateIndex, setCandidateIndex] = useState(null);
     const [editData, setEditData] = useState({
         name: '',
         description: '',
@@ -38,8 +38,8 @@ function VotingReady(){
         }
 
         const newCandidateList = [...candidateList];
-        newCandidateList[selectedIndex]={
-            ...newCandidateList[selectedIndex],
+        newCandidateList[candidateIndex]={
+            ...newCandidateList[candidateIndex],
             name : editData.name,
             description : editData.description,
             promise : editData.promise
@@ -49,9 +49,22 @@ function VotingReady(){
         window.alert('수정되었습니다');
     }
 
-    
+    //후보자 삭제
+    const handleDelete = (index)=>{
+        const confirm = window.confirm('삭제하시겠습니까?');
+        if(confirm){
+            const deletedCandidateList = [...candidateList];
+            deletedCandidateList.splice(index,1);
+            setCandidateList(deletedCandidateList);
+            window.sessionStorage.setItem('candidates',JSON.stringify(deletedCandidateList));
+            window.alert('삭제 되었습니다.');
+        }else{
+            return
+        }
+    }
 
     
+    const [selectedIndex, setSelectedIndex] = useState(null);
     // 후보자 클릭 (선택 시 selected 클래스 추가)
     const selectCandidate = (index) => {
       setSelectedIndex(index); // 클릭한 후보자의 index 번호 저장
@@ -108,7 +121,7 @@ function VotingReady(){
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target={`#${modalId}`}
                                                                 onClick={()=>{
-                                                                    setSelectedIndex(index);
+                                                                    setCandidateIndex(index);
                                                                     setEditData({
                                                                         name : candidate.name,
                                                                         description : candidate.description,
@@ -117,7 +130,12 @@ function VotingReady(){
                                                                 }}>
                                                             수정
                                                         </button>
-                                                        <button className="view-delete-btn">
+                                                        <button 
+                                                            className="view-delete-btn"
+                                                            onClick={()=>{
+                                                                setSelectedIndex(index);
+                                                                setTimeout(()=>handleDelete(index),0);
+                                                            }}>
                                                             삭제
                                                         </button>
                                                     </div>
@@ -135,9 +153,9 @@ function VotingReady(){
                                                                             onClick={()=>{
                                                                                 //수정하지 않았다면, value 초기화
                                                                                 setEditData({
-                                                                                    name:candidateList[selectedIndex].name,
-                                                                                    description:candidateList[selectedIndex].description,
-                                                                                    promise:candidateList[selectedIndex].promise,
+                                                                                    name:candidateList[candidateIndex].name,
+                                                                                    description:candidateList[candidateIndex].description,
+                                                                                    promise:candidateList[candidateIndex].promise,
                                                                                 });
                                                                             }}></button>
                                                                 </div>
