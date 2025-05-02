@@ -6,16 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.jjikeobang.util.DatabaseUtil;
-import com.jjikeobang.room.model.Candidate;
 import com.jjikeobang.room.model.Room;
+import static com.jjikeobang.util.DatabaseUtil.Close;
+import static com.jjikeobang.util.DatabaseUtil.getConnection;
+import static com.jjikeobang.util.DatabaseUtil.commit;
+import static com.jjikeobang.util.DatabaseUtil.rollback;
 
 public class RoomRepositoryImpl implements RoomRepository {
 	
 	@Override
 	public Room insertRoom(Room room) throws SQLException {
 		
-		Connection conn = DatabaseUtil.getConnection();
+		Connection conn = getConnection();
 		
 		try (PreparedStatement psmt = conn.prepareStatement(INSERT_ROOM_SQL, 
 															Statement.RETURN_GENERATED_KEYS)) {
@@ -29,7 +31,7 @@ public class RoomRepositoryImpl implements RoomRepository {
 		    int res = psmt.executeUpdate();
 		
 		    if (res > 0) {
-		    	DatabaseUtil.commit(conn);
+		    	commit(conn);
 		    	
 		    	ResultSet rs = psmt.getGeneratedKeys();
 		        
@@ -37,42 +39,47 @@ public class RoomRepositoryImpl implements RoomRepository {
 		            room.setRoomId(rs.getLong(1));
 		        }
 		    }else {
-		    	DatabaseUtil.rollback(conn);
+		    	rollback(conn);
 		    	throw new SQLException();
 		    }
 		    
 		} catch (SQLException e) {
-			DatabaseUtil.rollback(conn);
+			rollback(conn);
 		    e.printStackTrace();
 		    throw e;
+		} finally {
+			Close(conn);
 		}
 		
 		return room;
 	}
 
 	@Override
-	public void insertCandidate(Candidate candidate) throws SQLException {
-		Connection conn = DatabaseUtil.getConnection();
+	public Room findById(long roomId) {
 		
-		try (PreparedStatement psmt = conn.prepareStatement(INSERT_CANDIDATE_SQL)) {
-	            
-			psmt.setLong(1, candidate.getRoomId());
-			psmt.setString(2, candidate.getName());
-			psmt.setString(3, candidate.getDescription());
-			psmt.setString(4, candidate.getPromise());
-	            
-		    int res = psmt.executeUpdate();
-		
-		    if (res > 0) {
-		    	DatabaseUtil.commit(conn);
-		    }else {
-		    	DatabaseUtil.rollback(conn);
-		    }
-		    
+		Connection conn = getConnection();
+		try (PreparedStatement psmt = conn.prepareStatement(SELECT_ROOM_SQL)){
+			
+			psmt.setLong(1, roomId);
+			ResultSet rs = psmt.executeQuery();
+					
+			if(rs.next()) {
+				return new Room(
+						rs.getLong(1),
+                        rs.getString(2),
+                        rs.getInt(3),
+                        rs.getInt(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7));
+			}
+			
 		} catch (SQLException e) {
-			DatabaseUtil.rollback(conn);
-		    e.printStackTrace();
-		    throw e;
+			e.printStackTrace();
+		} finally {
+			Close(conn);
 		}
+		
+		return null;
 	}
 }

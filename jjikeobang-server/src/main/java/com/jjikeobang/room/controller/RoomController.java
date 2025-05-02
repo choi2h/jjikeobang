@@ -8,6 +8,8 @@ import com.jjikeobang.room.service.RoomService;
 import com.jjikeobang.room.service.RoomServiceImpl;
 
 import com.jjikeobang.util.JsonUtil;
+
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,7 +72,27 @@ public class RoomController extends HttpServlet{
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		String strRoomId = req.getParameter("roomId");
+		long roomId = 0;
+		
+		if(strRoomId == null || "".equals(strRoomId.trim())) {
+			setResponse(res, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, false);
+			return;
+		}
+		
+		roomId = Long.parseLong(strRoomId);
+		// 방 정보 조회
+		Room room = roomService.findById(roomId);
+		
+		// TODO 후보자 목록 조회
+		
+		
+	}
+	
 	private void setResponse(HttpServletResponse res, int responseCode, boolean isSuccess) throws IOException {
 		res.setContentType("application/json");
 		res.setCharacterEncoding("UTF-8");
