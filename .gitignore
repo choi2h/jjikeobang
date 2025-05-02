@@ -61,5 +61,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#resources
+#
 /jjikeobang-server/src/main/resources/

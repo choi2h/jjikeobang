@@ -31,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void putMember(JoinMemberDTO member) {
-        memberRepository.putMember(member);
+    public void insertMember(JoinMemberDTO member) {
+        memberRepository.insertMember(member);
     }
 
     @Override

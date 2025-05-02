@@ -8,7 +8,7 @@ import java.util.List;
 public interface MemberService {
     List<Member> selectAllMember();
 
-    void putMember(JoinMemberDTO member);
+    void insertMember(JoinMemberDTO member);
     Member findById(int memberId);
 
     Member findByLoginId(String userId);

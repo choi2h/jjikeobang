@@ -38,7 +38,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void putMember(JoinMemberDTO member) {
+    public void insertMember(JoinMemberDTO member) {
         Connection connection = getConnection();
         try(PreparedStatement pstmt = connection.prepareStatement(INSERT_MEMBER_SQL)){
             pstmt.setString(1, member.loginId());
