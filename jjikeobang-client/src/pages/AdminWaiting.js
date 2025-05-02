@@ -6,7 +6,9 @@ import CandidateItem from "../components/voteInfo/CandidateItem";
 import RoomHeader from "../components/voteInfo/RoomHeader";
 import Profile from "../components/header/Profile";
 import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
+import { useLocation } from "react-router-dom";
 
+/*
 const candidates = [
     {
         number: 1,
@@ -39,8 +41,13 @@ const candidates = [
         "모두의 의견이 존중받는 학급 문화 조성",
     }
 ]
+*/
 
 function AdminWaiting(){
+
+    const location = useLocation();
+    const { roomInfo, candidates } = location.state || {};
+
     return (
         <>
             <div className="container-fluid main-container">

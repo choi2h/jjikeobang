@@ -64,7 +64,6 @@ function CreateRoom(){
             name: roomName,
             maxParticipant: maxParticipant,
             voteDuration: voteDuration,
-            candidates:  candidates.map(({ id, ...excludedId_candidates }) => excludedId_candidates)
         };
 
         fetch('http://localhost:8080/room', {
@@ -81,7 +80,10 @@ function CreateRoom(){
             .then((roomInfo) => {
                 // 전송 성공 시 투표 준비 관리자 화면 이동
                 navigate('/adminWaiting',{
-                    state : roomInfo, //roomId, entryCode, name
+                    state : {
+                        roomInfo, //방 정보 
+                        candidates, //후보자 정보
+                    }
                 });
             })
             .catch((err) => {
