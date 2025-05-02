@@ -13,14 +13,13 @@ public class Room {
 	private long createMemberId;
 	private LocalDateTime createdAt;
 	private int totalEntryCount;
-	private List<Candidate> candidates;
 	
 	public Room() {
 		generateEntryCode();
 	}
 	
 	public Room(long roomId, String name, int maxParticipant, int voteDuration, String entryCode, long createMemberId,
-			LocalDateTime createdAt, int totalEntryCount) {
+			int totalEntryCount) {
 		super();
 		this.roomId = roomId;
 		this.name = name;
@@ -28,14 +27,9 @@ public class Room {
 		this.voteDuration = voteDuration;
 		this.entryCode = entryCode;
 		this.createMemberId = createMemberId;
-		this.createdAt = createdAt;
 		this.totalEntryCount = totalEntryCount;
 		
 		generateEntryCode();
-	}
-	
-	public static String createEntryCode() {
-		return "";
 	}
 	
 	public long getRoomId() {
@@ -85,12 +79,6 @@ public class Room {
 	}
 	public void setTotalEntryCount(int totalEntryCount) {
 		this.totalEntryCount = totalEntryCount;
-	}
-	public List<Candidate> getCandidates() {
-		return candidates;
-	}
-	public void setCandidates(List<Candidate> candidates) {
-		this.candidates = candidates;
 	}
 
 	@Override
