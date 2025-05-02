@@ -8,11 +8,14 @@ import CandidateItem from "../components/voteInfo/CandidateItem";
 import RoomHeader from "../components/voteInfo/RoomHeader";
 import Profile from "../components/header/Profile";
 import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
-
-
+import { useLocation } from "react-router-dom";
 
 function AdminWaiting() {
-
+  /* 
+    //방정보, 후보자 정보 데이터 받는 부분
+    const location = useLocation();
+    const { roomInfo, candidates } = location.state || {};
+  */
     const [candidates, setCandidates] = useState([]);
     const roomId = 1; //Q. 채팅방 별로 생성.. user 별 방 정보를 어떻게 얻어와야하지?. 일단 정적인 코드로 작성
 
@@ -31,7 +34,6 @@ function AdminWaiting() {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
     }, []);
-
 
     return (
         <>
