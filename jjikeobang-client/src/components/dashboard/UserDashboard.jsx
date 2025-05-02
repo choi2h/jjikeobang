@@ -1,9 +1,35 @@
-import React, { useNavigate } from "react";
+import React from "react";
+import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/img/logo.png';
+
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 function UserDashboard({ user }) {
     const navigate = useNavigate();
-    const handleVoting = async() => {
-        navigate("/voting");
-    };
+    const handleVoting = async () => {
+        navigate('/voting');
+    }
+    const handleLogout = async () => {
+        try {
+            const response = await fetch(`${API_URL}/member/logout`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                alert('정상적으로 로그아웃 되었습니다.');
+                window.location.reload();
+            } else {
+                console.log(response.status);
+                alert('에러가 발생했습니다.');
+            }
+        } catch (error) {
+            console.error('오류 발생:', error);
+            alert('에러가 발생했습니다.');
+        }
+    }
+    
     
     return (
         <>
@@ -14,13 +40,13 @@ function UserDashboard({ user }) {
                     <div className="dropdown profile-dropdown">
                         <button className="btn profile-btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div className="profile-circle">
-                                <span value={user.charAt(0)}>G</span>
+                                <span>{user.charAt(0)}</span>
                             </div>
-                            <span className="profile-name" value={user}>Guest</span>
+                            <span className="profile-name">{user}</span>
                         </button>
                         <ul className="dropdown-menu" aria-labelledby="profileDropdown">
                             <li><a className="dropdown-item" href="/history">지난 투표 기록</a></li>
-                            <li><a className="dropdown-item" href="/logout">로그아웃</a></li>
+                            <li><button className="dropdown-item" onClick={handleLogout}>로그아웃</button></li>
                         </ul>
                     </div>
                 </div>
@@ -29,7 +55,7 @@ function UserDashboard({ user }) {
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6 text-center">
                     <div className="logo-container mb-4">
-                        <img src="/assets/img/logo.png" alt="찍어방 로고" className="img-fluid logo-main" />
+                        <img src={logo} alt="찍어방 로고" className="img-fluid logo-main" />
                     </div>
                     <div className="welcome-text mb-5">
                         <p>새로운 방을 만들거나 참여하세요</p>
