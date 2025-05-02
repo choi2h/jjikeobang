@@ -24,16 +24,17 @@ public class ProfileController extends HttpServlet {
         ObjectMapper om = new ObjectMapper();
         Map<String, Object> result = new HashMap<>();
 
-        String memberId = (String) session.getAttribute("memberId");
+        Long memberId = (Long) session.getAttribute("memberId");
 
-        if(session.getAttribute("memberId") != null){
-            Member member = memberService.findById(Integer.parseInt(memberId));
+        if(memberId != null){
+            Member member = memberService.findById(memberId.intValue());
             result.put("is_logged_in",true);
             result.put("name", member.getName());
         }else{
             result.put("is_logged_in",false);
         }
 
+        resp.setContentType("application/json; utf-8");
         resp.getWriter().println(om.writeValueAsString(result));
     }
 }

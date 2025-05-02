@@ -21,6 +21,7 @@ const LoginButton = ({ formData }) => {
                     userId: formData.userId,
                     userPw: formData.userPw
                 }),
+                credentials: 'include'
             });
 
             if (response.ok) {

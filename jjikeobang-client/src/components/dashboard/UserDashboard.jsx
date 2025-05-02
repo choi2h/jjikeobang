@@ -14,7 +14,7 @@ function UserDashboard({ user }) {
                     <div className="dropdown profile-dropdown">
                         <button className="btn profile-btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div className="profile-circle">
-                                <span value={user.charAt(0)}></span>
+                                <span value={user.charAt(0)}>G</span>
                             </div>
                             <span className="profile-name" value={user}>Guest</span>
                         </button>
