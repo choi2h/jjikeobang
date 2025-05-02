@@ -49,7 +49,7 @@ public class MemberLoginController extends HttpServlet {
         result.put("login_status", isLoggedIn);
 
         resp.setContentType("application/json; utf-8");
-        resp.getWriter().println(result);
+        resp.getWriter().println(om.writeValueAsString(result));
         //로그인 성공 시 세션 저장
         if(isLoggedIn){
             HttpSession session = req.getSession();
