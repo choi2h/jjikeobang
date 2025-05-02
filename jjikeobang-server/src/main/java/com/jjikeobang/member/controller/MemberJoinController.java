@@ -1,9 +1,9 @@
 package com.jjikeobang.member.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.service.MemberService;
 import com.jjikeobang.member.service.MemberServiceImpl;
+import com.jjikeobang.util.JsonUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,17 +21,8 @@ public class MemberJoinController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ObjectMapper om = new ObjectMapper();
-
         BufferedReader reader = req.getReader();
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-        String requestBody = sb.toString();
-
-        Map<String, Object> requestMap = om.readValue(requestBody, Map.class);
+        Map<String, Object> requestMap = JsonUtil.getInstance().getObjectFromJson(reader, Map.class);
 
         String name = (String) requestMap.get("name");
         String userId = (String) requestMap.get("userId");
@@ -40,19 +31,18 @@ public class MemberJoinController extends HttpServlet {
         Map<String, String> resultMap = new HashMap<>();
 
         // 아이디 중복 통과 X
-        if(memberService.checkIfDuplicated(userId)){
-            resultMap.put("join_status","error");
-            resultMap.put("message","아이디 중복 여부를 확인해 주세요.");
+        if (memberService.checkIfDuplicated(userId)) {
+            resultMap.put("join_status", "error");
+            resultMap.put("message", "아이디 중복 여부를 확인해 주세요.");
 
             resp.setContentType("application/json; utf-8");
-            resp.getWriter().println(om.writeValueAsString(resultMap));
+            resp.getWriter().println(JsonUtil.getInstance().getJsonFromObject(resultMap));
             return;
         }
 
-        memberService.putMember(new JoinMemberDTO(userId,userPw,name));
+        memberService.putMember(new JoinMemberDTO(userId, userPw, name));
         resultMap.put("join_status", "success");
         resp.setContentType("application/json; utf-8");
-        resp.getWriter().println(om.writeValueAsString(resultMap));
-
+        resp.getWriter().println(JsonUtil.getInstance().getJsonFromObject(resultMap));
     }
 }
