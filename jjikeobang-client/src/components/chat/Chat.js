@@ -1,6 +1,28 @@
+import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
+import SocketService from "../../service/SocketService";
 
-function Chat() {
+function Chat({roomId}) {
+    const socket = useRef(null);
+    console.log('컴포넌트 마운트');
+    useEffect(() => {
+        if(!socket.current) {
+            const socketService = new SocketService(roomId);
+            socket.current = socketService;
+        }
+
+        // return () => {
+        //     if(socket.current) {
+        //         socket.current.close();
+        //         socket.current = null;
+        //     }
+        // }
+    });
+
+    const onClickSendButton = () => {
+        console.log('전송 버튼 클릭');
+    }
+
     return (
         <div>
             <div className="chat-container">
@@ -9,7 +31,7 @@ function Chat() {
             </div>
             <div className="chat-input-container">
                 <input type="text" className="chat-input" placeholder="메시지를 입력하세요..." />
-                <button className="chat-send-btn">
+                <button className="chat-send-btn" onClick={onClickSendButton}>
                     <i className="bi bi-send"></i>
                 </button>
             </div>

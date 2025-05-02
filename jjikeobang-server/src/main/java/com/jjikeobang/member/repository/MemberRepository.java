@@ -11,4 +11,6 @@ public interface MemberRepository {
     List<Member> selectAllMember();
 
     Member findById(int memberId);
+
+
 }
