@@ -10,7 +10,7 @@ function Main() {
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
                 console.log('로그인 확인', data.memberId);
-                if (data.user) {
+                if (data.is) {
                     return (<UserDashboard user={data.memberId} />);
                 } else {
                     return (<GuestDashboard />);

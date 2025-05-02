@@ -1,27 +1,9 @@
-import React, { useEffect, useState, useNavigate } from "react";
-const API_URL = process.env.REACT_APP_API_URL;
-function GuestDashboard() {
-    const [name, setUsername] = useState(null);
+import React, { useNavigate } from "react";
+function UserDashboard({ user }) {
     const navigate = useNavigate();
     const handleVoting = async() => {
         navigate("/voting");
     };
-
-    useEffect(() => {
-        fetch(`${API_URL}/profile`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        }).then(res => {
-            if (res.ok) {
-                setUsername(res.name);
-            } else {
-                throw new Error('프로필 불러오기 실패');
-            }
-        })
-    });
     
     return (
         <>
@@ -32,9 +14,9 @@ function GuestDashboard() {
                     <div className="dropdown profile-dropdown">
                         <button className="btn profile-btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div className="profile-circle">
-                                <span value={name.charAt(0)}></span>
+                                <span value={user.charAt(0)}></span>
                             </div>
-                            <span className="profile-name" value={name}>Guest</span>
+                            <span className="profile-name" value={user}>Guest</span>
                         </button>
                         <ul className="dropdown-menu" aria-labelledby="profileDropdown">
                             <li><a className="dropdown-item" href="/history">지난 투표 기록</a></li>
@@ -74,4 +56,4 @@ function GuestDashboard() {
 }
 
 
-export default GuestDashboard;
+export default UserDashboard;
