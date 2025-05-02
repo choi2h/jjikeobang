@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
@@ -37,6 +37,11 @@ function CreateRoom(){
     const openModalForEdit = (candidate) => {
         setCandidate(candidate);
     };
+
+    //CreateRoom에서만 후보자 리스트를 정의함
+    useEffect(() => {
+        sessionStorage.removeItem('candidates');
+      }, []);
 
     const handleCreateRoom = () => {
         if (!roomName.trim()) {
@@ -79,7 +84,7 @@ function CreateRoom(){
             })
             .then((roomInfo) => {
                 // 전송 성공 시 투표 준비 관리자 화면 이동
-                navigate('/adminWaiting',{
+                navigate('/votingReady',{
                     state : {
                         roomInfo, //방 정보 
                         candidates, //후보자 정보
