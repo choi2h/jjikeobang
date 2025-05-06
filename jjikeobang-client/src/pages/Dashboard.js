@@ -1,12 +1,22 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from '../assets/img/logo.png';
+import enterRoom from "../service/EntryRoomService";
 
 function Dashboard(){
+    const [roomCode, setRoomCode] = useState("");
 
-    const navigate = useNavigate();
+    const updateRoomCode = (e) => {
+        setRoomCode(e.target.value);
+    }
     const handleVoting = async() => {
-        navigate("/voting");
+        console.log(`ClickButton!!!!${roomCode}`);
+        if(roomCode === "") {
+            alert("입장 코드를 입력해주세요.");
+            return;
+        }
+        
+        enterRoom(roomCode);
     };
 
     return(
@@ -44,7 +54,12 @@ function Dashboard(){
                     <div className="mb-5">
                         <p className="text-center sub-text mb-2">또는 입장 코드로 참여</p>
                         <div className="input-group room-code-input">
-                            <input type="text" className="form-control" placeholder="입장 코드" aria-label="입장 코드" />
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="입장 코드" 
+                                aria-label="입장 코드" 
+                                onChange={updateRoomCode}/>
                             <button className="btn btn-primary" type="button" onClick={handleVoting}>입장</button>
                         </div>
                     </div>
