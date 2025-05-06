@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from '../assets/img/logo.png';
 import enterRoom from "../service/EntryRoomService";
 
 function Dashboard(){
+    const navigate = useNavigate();
     const [roomCode, setRoomCode] = useState("");
 
     const updateRoomCode = (e) => {
@@ -15,8 +16,17 @@ function Dashboard(){
             alert("입장 코드를 입력해주세요.");
             return;
         }
-        
-        enterRoom(roomCode);
+
+        enterRoom(roomCode).then((res) => {
+            console.log(`enter room result=${JSON.stringify(res)}`);
+            if(res && res.success) {
+                navigate('/userWaiting', {
+                    state: {
+                        roomInfo: res.data
+                    }
+                })
+            }
+        });
     };
 
     return(
