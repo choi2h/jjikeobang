@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import logoCircle from '../../assets/img/logo-circle.png';
-
 function Logo() {
     return (
         <div className="navbar-brand d-flex align-items-center">

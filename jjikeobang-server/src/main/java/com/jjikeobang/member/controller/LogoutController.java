@@ -1,24 +1,22 @@
-package com.jjikeobang.chat.controller;
-
+package com.jjikeobang.member.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet("/chat")
-public class ChatController extends HttpServlet {
-
-    @Override
-    public void init() throws ServletException {
-        System.out.println("init chat controller!");
-    }
-
+@WebServlet("/member/logout")
+public class LogoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("Hello,chat controller!");
+        HttpSession session = req.getSession();
+        if (session != null) {
+            session.invalidate();
+        }
+        resp.setStatus(200);
     }
 }

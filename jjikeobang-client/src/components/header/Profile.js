@@ -1,15 +1,16 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 
 
-function Profile(){
+function Profile({user}){
+    
     return (
         <div className="dropdown profile-dropdown">
             <button className="btn profile-btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 <div className="profile-circle">
-                    <span>김</span>
+                    <span>{user.charAt(0)}</span>
                 </div>
-                <span className="profile-name">김철수</span>
+                <span className="profile-name">{user}</span>
                 <i className="bi bi-chevron-down"></i>
             </button>
             <ul className="dropdown-menu" aria-labelledby="profileDropdown">

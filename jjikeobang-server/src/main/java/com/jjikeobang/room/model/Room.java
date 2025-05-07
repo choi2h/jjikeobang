@@ -13,14 +13,12 @@ public class Room {
 	private long createMemberId;
 	private LocalDateTime createdAt;
 	private int totalEntryCount;
-	private List<Candidate> candidates;
+	private String voteStatus;
 	
-	public Room() {
-		generateEntryCode();
-	}
+	public Room() {}
 	
 	public Room(long roomId, String name, int maxParticipant, int voteDuration, String entryCode, long createMemberId,
-			LocalDateTime createdAt, int totalEntryCount) {
+			int totalEntryCount) {
 		super();
 		this.roomId = roomId;
 		this.name = name;
@@ -28,14 +26,7 @@ public class Room {
 		this.voteDuration = voteDuration;
 		this.entryCode = entryCode;
 		this.createMemberId = createMemberId;
-		this.createdAt = createdAt;
 		this.totalEntryCount = totalEntryCount;
-		
-		generateEntryCode();
-	}
-	
-	public static String createEntryCode() {
-		return "";
 	}
 	
 	public long getRoomId() {
@@ -86,21 +77,22 @@ public class Room {
 	public void setTotalEntryCount(int totalEntryCount) {
 		this.totalEntryCount = totalEntryCount;
 	}
-	public List<Candidate> getCandidates() {
-		return candidates;
+	public String getVoteStatus() {
+		return voteStatus;
 	}
-	public void setCandidates(List<Candidate> candidates) {
-		this.candidates = candidates;
+
+	public void setVoteStatus(String voteStatus) {
+		this.voteStatus = voteStatus;
 	}
 
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", maxParticipant=" + maxParticipant + ", voteDuration="
 				+ voteDuration + ", entryCode=" + entryCode + ", createMemberId=" + createMemberId + ", createdAt="
-				+ createdAt + ", totalEntryCount=" + totalEntryCount + "]";
+				+ createdAt + ", totalEntryCount=" + totalEntryCount + ", voteStatus=" + voteStatus + "]";
 	}
-	
-	private void generateEntryCode() {
+
+	public void generateEntryCode() {
 		final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String generatedCode = "";
 		
@@ -111,4 +103,5 @@ public class Room {
 		
 		this.entryCode = generatedCode;
 	}
+
 }

@@ -1,0 +1,48 @@
+package com.jjikeobang.member.controller;
+
+import com.jjikeobang.member.model.JoinMemberDTO;
+import com.jjikeobang.member.service.MemberService;
+import com.jjikeobang.member.service.MemberServiceImpl;
+import com.jjikeobang.util.JsonUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+@WebServlet("/member/join")
+public class MemberJoinController extends HttpServlet {
+    private final MemberService memberService = new MemberServiceImpl();
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        Map<String, Object> requestMap = JsonUtil.getInstance().getObjectFromJson(reader, Map.class);
+
+        String name = (String) requestMap.get("name");
+        String userId = (String) requestMap.get("userId");
+        String userPw = (String) requestMap.get("userPw");
+
+        Map<String, String> resultMap = new HashMap<>();
+
+        // 아이디 중복 통과 X
+        if (memberService.checkIfDuplicated(userId)) {
+            resultMap.put("join_status", "error");
+            resultMap.put("message", "아이디 중복 여부를 확인해 주세요.");
+
+            resp.setContentType("application/json; utf-8");
+            resp.getWriter().println(JsonUtil.getInstance().getJsonFromObject(resultMap));
+            return;
+        }
+
+        memberService.insertMember(new JoinMemberDTO(userId, userPw, name));
+        resultMap.put("join_status", "success");
+        resp.setContentType("application/json; utf-8");
+        resp.getWriter().println(JsonUtil.getInstance().getJsonFromObject(resultMap));
+    }
+}
