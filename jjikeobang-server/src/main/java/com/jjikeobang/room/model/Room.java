@@ -3,6 +3,8 @@ package com.jjikeobang.room.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.jjikeobang.candidate.model.Candidate;
+
 public class Room {
 	
 	private long roomId; 
@@ -13,13 +15,13 @@ public class Room {
 	private long createMemberId;
 	private LocalDateTime createdAt;
 	private int totalEntryCount;
+	private String voteStatus;
+	private List<Candidate> candidates;
 	
-	public Room() {
-		generateEntryCode();
-	}
+	public Room() {}
 	
 	public Room(long roomId, String name, int maxParticipant, int voteDuration, String entryCode, long createMemberId,
-			int totalEntryCount) {
+			int totalEntryCount, String voteStatus) {
 		super();
 		this.roomId = roomId;
 		this.name = name;
@@ -28,8 +30,7 @@ public class Room {
 		this.entryCode = entryCode;
 		this.createMemberId = createMemberId;
 		this.totalEntryCount = totalEntryCount;
-		
-		generateEntryCode();
+		this.voteStatus = voteStatus;
 	}
 	
 	public long getRoomId() {
@@ -80,15 +81,31 @@ public class Room {
 	public void setTotalEntryCount(int totalEntryCount) {
 		this.totalEntryCount = totalEntryCount;
 	}
+	public String getVoteStatus() {
+		return voteStatus;
+	}
+
+	public void setVoteStatus(String voteStatus) {
+		this.voteStatus = voteStatus;
+	}
+	public List<Candidate> getCandidates() {
+		return candidates;
+	}
+
+	public void setCandidates(List<Candidate> candidates) {
+		this.candidates = candidates;
+	}
+
 
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", maxParticipant=" + maxParticipant + ", voteDuration="
 				+ voteDuration + ", entryCode=" + entryCode + ", createMemberId=" + createMemberId + ", createdAt="
-				+ createdAt + ", totalEntryCount=" + totalEntryCount + "]";
+				+ createdAt + ", totalEntryCount=" + totalEntryCount + ", voteStatus=" + voteStatus + ", candidates="
+				+ candidates + "]";
 	}
-	
-	private void generateEntryCode() {
+
+	public void generateEntryCode() {
 		final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String generatedCode = "";
 		

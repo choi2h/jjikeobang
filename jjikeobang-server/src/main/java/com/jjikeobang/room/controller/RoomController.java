@@ -58,6 +58,7 @@ public class RoomController extends HttpServlet{
 			Long memberId = (Long) session.getAttribute("memberId");
 
 			room.setCreateMemberId(memberId);
+			room.generateEntryCode(); //입장 코드 생성
         	
 			//방 정보 저장
 			roomService.insertRoom(room);
@@ -85,12 +86,12 @@ public class RoomController extends HttpServlet{
 		}
 		
 		roomId = Long.parseLong(strRoomId);
+		
 		// 방 정보 조회
 		Room room = roomService.findById(roomId);
 		
-		// TODO 후보자 목록 조회
-		
-		
+		setResponse(res, HttpServletResponse.SC_OK, true);
+		res.getWriter().write(jsonUtil.getJsonFromObject(room));
 	}
 	
 	private void setResponse(HttpServletResponse res, int responseCode, boolean isSuccess) throws IOException {

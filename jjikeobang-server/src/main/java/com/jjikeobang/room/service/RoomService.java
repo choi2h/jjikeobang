@@ -7,6 +7,11 @@ import com.jjikeobang.room.model.Room;
 public interface RoomService {
 	
 	Room findById(long roomId);
+	
 	void insertRoom(Room room) throws SQLException;
+	
+	Room findByEntryCode(String entryCode);
+
+	void updateRoom(Room room);
 	
 }

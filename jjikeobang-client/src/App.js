@@ -5,10 +5,8 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import VotingHistory from './pages/VotingHistory';
 import CreateRoom from './pages/CreateRoom';
-import VotingReady from './pages/VotingReady';
-import Voting from './pages/Voting';
-import AdminWaiting from './pages/AdminWaiting';
-import UserWaiting from './pages/UserWaiting';
+import VoteAdmin from './pages/VoteAdmin';
+import VoteUser from './pages/VoteUser';
 
 function App() {
   return (
@@ -20,10 +18,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/votingHistory" element={<VotingHistory />} />
         <Route path="/createRoom" element={<CreateRoom />} />
-        <Route path="/votingReady" element={<VotingReady />} />
-        <Route path="/voting" element={<Voting />} />
-        <Route path="/adminWaiting" element={<AdminWaiting />} />
-        <Route path="/userWaiting" element={<UserWaiting />} />
+        <Route path="/voteAdmin" element={<VoteAdmin />} />
+        <Route path="/voteUser" element={<VoteUser />} />
       </Routes>
     </BrowserRouter>
   );

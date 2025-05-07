@@ -8,7 +8,7 @@ function CandidateItemSet ({candidate, modalId, openModalForEdit, deleteCandidat
     };
 
     const handleDel = () => {
-        deleteCandidate(candidate.id);
+        deleteCandidate(candidate.candidateId);
     };
 
     return (

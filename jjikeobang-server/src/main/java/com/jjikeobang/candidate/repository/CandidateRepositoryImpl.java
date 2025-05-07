@@ -33,7 +33,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 	                rs.getString(4),                    
 	                rs.getString(5),                    
 	                rs.getInt(6),                        
-	                rs.getTimestamp(7).toLocalDateTime()  
+	                rs.getTimestamp(7).toLocalDateTime(),
+	                rs.getInt(8)
 	            ));
 	        }	
 			
@@ -59,6 +60,32 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 	@Override
 	public boolean deleteForAdmin(long roomId, long candidateId) {
 		return false;
+	}
+	
+	@Override
+	public void insertCandidate(Candidate candidate) {
+		Connection conn = getConnection();
+		
+		try (PreparedStatement psmt = conn.prepareStatement(INSERT_CANDIDATE_SQL)) {
+	            
+			psmt.setLong(1, candidate.getRoomId());
+			psmt.setString(2, candidate.getName());
+			psmt.setString(3, candidate.getDescription());
+			psmt.setString(4, candidate.getPromise());
+			psmt.setInt(5, candidate.getSignNumber());
+	            
+		    int res = psmt.executeUpdate();
+		
+		    if (res > 0) {
+		    	commit(conn);
+		    }else {
+		    	rollback(conn);
+		    }
+		    
+		} catch (SQLException e) {
+			rollback(conn);
+		    e.printStackTrace();
+		}
 	}
 
 }

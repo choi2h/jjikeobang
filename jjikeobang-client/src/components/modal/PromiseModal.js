@@ -1,10 +1,20 @@
-function PromiseModal({ id, name, description, promise }) {
+import React from "react";
+
+function PromiseModal({ candidate }) {
+    
+    const {
+      candidateId = '',
+      name = '',
+      description = '',
+      promise = ''
+    } = candidate || {}; // null 방지
+
     return (
-      <div className="modal fade" id={id} aria-labelledby={`${id}-label`} aria-hidden="true">
+      <div className="modal fade" id="promiseModal" aria-labelledby="promiseModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id={`${id}-label`}>{name}</h5>
+              <h5 className="modal-title" id="promiseModalLabel">{name}</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">

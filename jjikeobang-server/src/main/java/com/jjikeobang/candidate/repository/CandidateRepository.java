@@ -7,7 +7,7 @@ public interface CandidateRepository {
 	
     //해당 룸에 등록된 후보자 확인
 	String SELECT_ALL_CANDIDATES_BY_ROOM_ID = 
-		    "SELECT *  " +
+		    "SELECT CANDIDATE_ID, ROOM_ID, NAME, DESCRIPTION, PROMISE, VOTE_COUNT, CREATED_AT, SIGN_NUMBER  " +
 		    "FROM CANDIDATE " +
 		    "WHERE ROOM_ID = ?";
 	
@@ -22,9 +22,13 @@ public interface CandidateRepository {
 			"DELETE FROM CANDIDATE " +
 			"WHERE CANDIDATE_ID = ? AND ROOM_ID = ?";
 	
+	String INSERT_CANDIDATE_SQL = "INSERT INTO CANDIDATE (ROOM_ID, NAME, DESCRIPTION, "
+			+ "PROMISE, SIGN_NUMBER, CREATED_AT)VALUES(?,?,?,?,?,now());";
+
 	
 	List<Candidate> findAllByRoomId(long roomId);
 	boolean updateForAdmin(Candidate candidate);
 	boolean deleteForAdmin(long roomId, long candidateId);
+	void insertCandidate(Candidate candidate);
 
 }

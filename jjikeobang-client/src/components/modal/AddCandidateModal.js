@@ -10,7 +10,7 @@ function AddCandidateModal({addCandidate, editCandidate, candidate}) {
     const [btnName, setBtnName] = useState('');
     
     //후보자 정보
-    const [id, setId] = useState('');
+    const [candidateId, setCandidatId] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [promise, setPromise] = useState('');
@@ -20,7 +20,7 @@ function AddCandidateModal({addCandidate, editCandidate, candidate}) {
         if (candidate) {
             setTitle('수정');
             setBtnName('수정하기');
-            setId(candidate.id);
+            setCandidatId(candidate.candidateId);
             setName(candidate.name);
             setDescription(candidate.description);
             setPromise(candidate.promise);
@@ -66,7 +66,7 @@ function AddCandidateModal({addCandidate, editCandidate, candidate}) {
             return;
         }
 
-        editCandidate({id, name, description, promise});
+        editCandidate({candidateId, name, description, promise});
         closeBtnRef.current.click();
     };
 

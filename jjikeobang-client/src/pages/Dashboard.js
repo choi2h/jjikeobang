@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from '../assets/img/logo.png';
+import Profile from "../components/header/Profile";
 
 function Dashboard(){
-
+    const [entryCode, setEntryCode] = useState('');
     const navigate = useNavigate();
-    const handleVoting = async() => {
-        navigate("/voting");
+    const enterVoteRoom = async() => {
+
+        fetch('http://localhost:8080/room/entry', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'entryCode=' + entryCode
+            })
+            .then(async (res) => {
+                const resData = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(resData.message);
+                }
+                return resData;
+            })
+            .then((data) => {
+                navigate('/voteUser',{
+                    state : {
+                        roomInfo : data.roomInfo, //방 정보 
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error('에러 발생:', err);
+                alert(err.message);
+            });
     };
 
     return(
@@ -14,18 +41,7 @@ function Dashboard(){
             {/* 상단 프로필 영역 */}
             <div className="row mb-4">
                 <div className="col-12 d-flex justify-content-end">
-                    <div className="dropdown profile-dropdown">
-                        <button className="btn profile-btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div className="profile-circle">
-                                <span>김</span>
-                            </div>
-                            <span className="profile-name">김철수</span>
-                        </button>
-                        <ul className="dropdown-menu" aria-labelledby="profileDropdown">
-                            <li><Link className="dropdown-item" to="/votingHistory">지난 투표 기록</Link></li>
-                            <li><Link className="dropdown-item" to="/">로그아웃</Link></li>
-                        </ul>
-                    </div>
+                    <Profile />
                 </div>
             </div>
 
@@ -44,8 +60,8 @@ function Dashboard(){
                     <div className="mb-5">
                         <p className="text-center sub-text mb-2">또는 입장 코드로 참여</p>
                         <div className="input-group room-code-input">
-                            <input type="text" className="form-control" placeholder="입장 코드" aria-label="입장 코드" />
-                            <button className="btn btn-primary" type="button" onClick={handleVoting}>입장</button>
+                            <input type="text" className="form-control" value={entryCode} onChange={(e)=>{setEntryCode(e.target.value)}} placeholder="입장 코드" aria-label="입장 코드" />
+                            <button className="btn btn-primary" type="button" onClick={enterVoteRoom}>입장</button>
                         </div>
                     </div>
                 </div>

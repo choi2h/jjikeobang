@@ -6,7 +6,7 @@ import Button from "../components/common/Button";
 import AddCandidateModal from "../components/modal/AddCandidateModal";
 import CandidateItemSet from "../components/voteInfo/CandidateItemSet";
 
-function CreateRoom(){
+function CreateRoom({socket}){
     const navigate = useNavigate();
     const [roomName, setRoomName] = useState('');
     const [maxParticipant, setmaxParticipant] = useState(0);
@@ -15,18 +15,18 @@ function CreateRoom(){
     const [candidate, setCandidate] = useState(null);
 
     const addCandidate = (candidate) => {
-        setCandidates([...candidates, { ...candidate, id: Date.now() }]);
+        setCandidates([...candidates, { ...candidate, candidateId: Date.now() }]);
     };
 
     const editCandidate = (updatedCandidate) => {
         setCandidates(candidates.map(candidate =>
-           candidate.id === updatedCandidate.id ? { ...updatedCandidate } : candidate
+           candidate.candidateId === updatedCandidate.candidateId ? { ...updatedCandidate } : candidate
         ));
     };
 
     const deleteCandidate = (id) => {
         if (window.confirm('삭제하시겠습니까?')) {
-            setCandidates(candidates.filter((c) => c.id !== id));
+            setCandidates(candidates.filter((c) => c.candidateId !== id));
         }
     };
 
@@ -53,6 +53,11 @@ function CreateRoom(){
             alert("투표 시간은 1분 이상이어야 합니다.");
             return;
         }
+
+        if (voteDuration > 60) {
+            alert("투표 시간은 최대 60분 입니다.");
+            return;
+        }
     
         if (candidates.length === 0) {
             alert("최소 1명의 후보자를 등록해주세요.");
@@ -72,24 +77,24 @@ function CreateRoom(){
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(requestData)
-            })
-            .then((res) => {
-                if (!res.ok) { throw new Error('서버 오류');}
-                return res.json();
-            })
-            .then((roomInfo) => {
-                // 전송 성공 시 투표 준비 관리자 화면 이동
-                navigate('/adminWaiting',{
-                    state : {
-                        roomInfo, //방 정보 
-                        candidates, //후보자 정보
-                    }
-                });
-            })
-            .catch((err) => {
-                console.error('에러 발생:', err);
-                alert('방 생성 중 오류가 발생했습니다.');
+        })
+        .then((res) => {
+            if (!res.ok) { throw new Error('서버 오류');}
+            return res.json();
+        })
+        .then((roomInfo) => {
+            // 전송 성공 시 투표 준비 관리자 화면 이동
+            navigate('/voteAdmin',{
+                state : {
+                    roomInfo : roomInfo, //방 정보 
+                    candidateList : candidates, //후보자 정보
+                }
             });
+        })
+        .catch((err) => {
+            console.error('에러 발생:', err);
+            alert('방 생성 중 오류가 발생했습니다.');
+        });
     };
 
     return (
@@ -129,7 +134,7 @@ function CreateRoom(){
                                 <div className="mb-4">
                                     <label className="form-label">투표 시간</label>
                                     <div className="input-group">
-                                        <input type="number" onChange={(e)=>{setvoteDuration(e.target.value)}} className="form-control" id="voteDuration" placeholder="30" />
+                                        <input type="number" min="5" max="60" onChange={(e)=>{setvoteDuration(e.target.value)}} className="form-control" id="voteDuration" placeholder="30" />
                                         <span className="input-group-text">분</span>
                                     </div>
                                 </div>

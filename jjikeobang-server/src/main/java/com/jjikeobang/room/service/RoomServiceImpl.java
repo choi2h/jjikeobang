@@ -16,12 +16,22 @@ public class RoomServiceImpl implements RoomService {
 	
 	@Override
 	public void insertRoom(Room room) throws SQLException {
-		Room resRoom = roomRepository.insertRoom(room);
+		roomRepository.insertRoom(room);
 	}
 
 	@Override
 	public Room findById(long roomId) {
 		return roomRepository.findById(roomId);
+	}
+
+	@Override
+	public Room findByEntryCode(String entryCode) {
+		return roomRepository.findByEntryCode(entryCode);
+	}
+
+	@Override
+	public void updateRoom(Room room) {
+		roomRepository.updateRoomTotalEntryCount(room);
 	}
 	
 }

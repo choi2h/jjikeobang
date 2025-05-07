@@ -1,29 +1,35 @@
-function CandidateItem ({candidateInfo,number}) {
+import React, { useState } from "react";
 
-    const modalId = `pledgeModal-${candidateInfo.candidateId}`;
+function CandidateItem ({candidates, setCandidate, selectedCandidateId, setSelectedCandidateId}) {
+    
+    const handleSelectedCandidate = (candidateId) => {
+        console.log('candidates', candidates);
+        console.log('선택된 ID:', candidateId);
+        setSelectedCandidateId(candidateId);
+    };
 
     return (
-        <div className="candidate-item">
-            <div className="candidate-number">{number}번</div>
-            <div className="candidate-info">
-                <div className="candidate-name">{candidateInfo.name}</div>
-                <div className="candidate-description">{candidateInfo.description}</div>
-            </div>
-            <div className="d-flex">
-                <button className="view-pledge-btn" data-bs-toggle="modal" data-bs-target={`#${modalId}`} >
-                    공약보기
-                </button>
-            </div>
-
-                {/* 부트스트랩 JS */}
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        </div>
-
-        
-        
+        <>
+            {
+                candidates.map((candidate, idx) => {
+                    return (
+                        <div className={`candidate-item ${selectedCandidateId === candidate.candidateId ? "selected" : ""}`} onClick={() => handleSelectedCandidate(candidate.candidateId)}>
+                            <div className="candidate-number">{candidate.signNumber}번</div>
+                            <div className="candidate-info">
+                                <div className="candidate-name">{candidate.name}</div>
+                                <div className="candidate-description">{candidate.description}</div>
+                            </div>
+                            <div className="d-flex">
+                                <button className="view-pledge-btn" data-bs-toggle="modal" data-bs-target="#promiseModal" onClick={() => setCandidate(candidate)}>
+                                    공약보기
+                                </button>
+                            </div>
+                        </div>
+                    );
+                })
+            }
+        </>
     );
-
-    
 }
 
 export default CandidateItem;

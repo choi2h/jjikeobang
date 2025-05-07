@@ -11,16 +11,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.jjikeobang.candidate.model.Candidate;
-import com.jjikeobang.candidate.service.CandidateRoomService;
-import com.jjikeobang.candidate.service.CandidateRoomServiceImpl;
+import com.jjikeobang.candidate.service.CandidateService;
+import com.jjikeobang.candidate.service.CandidateServiceImpl;
 import com.jjikeobang.common.Response;
 import com.jjikeobang.util.JsonUtil;
 
 
-@WebServlet("/candidate")  //요청 예시: /room/candidate?roomId=3 
+@WebServlet("/candidates")  //요청 예시: /room/candidate?roomId=3 
 public class CandidateListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final CandidateRoomService candidateRoomService = new CandidateRoomServiceImpl();
+	private final CandidateService candidateRoomService = new CandidateServiceImpl();
      
 	 @Override
 	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

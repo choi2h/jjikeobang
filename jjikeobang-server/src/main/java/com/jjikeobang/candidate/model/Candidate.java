@@ -10,12 +10,13 @@ public class Candidate {
 	private String description;
 	private String promise;
 	private int voteCount;
+	private int signNumber;
     private LocalDateTime createdAt;
     
     public Candidate() {}
     
-	public Candidate(long candidateId, long roomId, String name, String description, String promise, int voteCount,
-			LocalDateTime createdAt) {
+	public Candidate(long candidateId, long roomId, String name, String description, String promise, int voteCount, 
+			LocalDateTime createdAt, int signNumber) {
 		this.candidateId = candidateId;
 		this.roomId = roomId;
 		this.name = name;
@@ -23,6 +24,7 @@ public class Candidate {
 		this.promise = promise;
 		this.voteCount = voteCount;
 		this.createdAt = createdAt;
+		this.signNumber = signNumber;
 	}
 
 
@@ -82,16 +84,18 @@ public class Candidate {
 		this.createdAt = createdAt;
 	}
 
+	public int getSignNumber() {
+		return signNumber;
+	}
+
+	public void setSignNumber(int signNumber) {
+		this.signNumber = signNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "Candidate [candidateId=" + candidateId + ", roomId=" + roomId + ", name=" + name + ", description="
-				+ description + ", promise=" + promise + ", voteCount=" + voteCount + ", createdAt=" + createdAt + "]";
+				+ description + ", promise=" + promise + ", voteCount=" + voteCount + ", signNumber=" + signNumber
+				+ ", createdAt=" + createdAt + "]";
 	}
-	
-	
-	
-	
-    
-    
-
 }
