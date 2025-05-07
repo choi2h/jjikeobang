@@ -33,6 +33,25 @@ function Voting() {
         setSelectedIndex(index);
     };
 
+    // ✅ 투표 요청 함수 추가
+    const voteCandidate = async (roomId, candidateId) => {
+        try {
+            const res = await axios.post("http://localhost:8080/jjikeobang/vote", {
+                roomId,
+                candidateId
+            });
+
+            if (res.data.statusCode === 200) {
+                alert("투표가 완료되었습니다!");
+            } else {
+                alert("투표 실패: " + res.data.message);
+            }
+        } catch (err) {
+            console.error("투표 요청 실패", err);
+            alert("투표 중 오류 발생");
+        }
+    };
+
     const handleCloseModal = () => {
         let closeBtn = document.getElementById("closeModal");
         closeBtn.click();
@@ -62,6 +81,8 @@ function Voting() {
                                 candidates={candidates}
                                 selectedIndex={selectedIndex}
                                 selectCandidate={selectCandidate}
+                                voteCandidate={voteCandidate}
+                                roomId={roomId}
                             />
 
                             {/* 오른쪽 영역 (채팅) */}

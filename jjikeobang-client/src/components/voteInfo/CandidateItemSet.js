@@ -1,6 +1,6 @@
 import React from "react";
 
-function CandidateItemSet({ candidates, selectedIndex, selectCandidate }) {
+function CandidateItemSet({ candidates, selectedIndex, selectCandidate, voteCandidate, roomId }) {
   return (
     <div className="col-md-7 vote-wrapper">
       <div className="candidate-list">
@@ -65,7 +65,18 @@ function CandidateItemSet({ candidates, selectedIndex, selectCandidate }) {
       {/* 투표 & 기권 버튼 */}
       <div className="row">
         <div className="col-md-6 mb-3">
-          <button className="btn vote-btn">투표하기</button>
+          <button
+            className="btn vote-btn"
+            onClick={() => {
+              if (selectedIndex === null) {
+                alert("후보를 선택해주세요.");
+                return;
+              }
+              voteCandidate(roomId, candidates[selectedIndex].candidateId);
+            }}
+          >
+            투표하기
+          </button>
         </div>
         <div className="col-md-6 mb-3">
           <button className="btn cancel-btn">기권</button>
