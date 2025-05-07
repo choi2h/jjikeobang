@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
 
 
@@ -30,7 +30,16 @@ function UserDashboard({ user }) {
         }
     }
     
-    
+    const handleCreatRoom = (e) => {
+        e.preventDefault();
+
+        navigate("/createRoom",{
+            state : {
+                user : user
+            }
+        });
+    };
+  
     return (
         <>
         <div className="container-fluid main-container">
@@ -61,7 +70,7 @@ function UserDashboard({ user }) {
                         <p>새로운 방을 만들거나 참여하세요</p>
                     </div>
                     <div className="mb-4">
-                        <a href="/createRoom" className="btn btn-login btn-makeroom mb-3">방 만들기</a>
+                        <Link onClick={handleCreatRoom} className="btn btn-login btn-makeroom mb-3">방 만들기</Link>
                     </div>
                     <div className="mb-5">
                         <p className="text-center sub-text mb-2">또는 입장 코드로 참여</p>

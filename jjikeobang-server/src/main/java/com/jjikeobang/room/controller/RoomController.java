@@ -41,23 +41,16 @@ public class RoomController extends HttpServlet{
 		}
 
         try {
-    		HttpSession session = req.getSession(false);
-
-    		/********** 테스트용 **********/
-    		if(session == null) {
-    			session = req.getSession(true);
-    			Long id = 777L;
-    			session.setAttribute("memberId", id);
-    		}
-    		/********** 테스트용 **********/
+    		HttpSession session = req.getSession();
 
     		if (session == null || session.getAttribute("memberId") == null) {
-			    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			    return;
-			}
-			Long memberId = (Long) session.getAttribute("memberId");
+    			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    			return;
+    		}
 
+			Long memberId = (Long) session.getAttribute("memberId");
 			room.setCreateMemberId(memberId);
+			room.generateEntryCode();
         	
 			//방 정보 저장
 			roomService.insertRoom(room);

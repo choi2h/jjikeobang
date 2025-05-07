@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
 import Button from "../components/common/Button";
 import AddCandidateModal from "../components/modal/AddCandidateModal";
 import CandidateItemSet from "../components/voteInfo/CandidateItemSet";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 function CreateRoom(){
     const navigate = useNavigate();
@@ -13,7 +15,8 @@ function CreateRoom(){
     const [voteDuration, setvoteDuration] = useState(0);
     const [candidates, setCandidates] = useState([]);
     const [candidate, setCandidate] = useState(null);
-
+    const location = useLocation();
+    const user = location.state.user || {};
     const addCandidate = (candidate) => {
         setCandidates([...candidates, { ...candidate, id: Date.now() }]);
     };
@@ -37,6 +40,11 @@ function CreateRoom(){
     const openModalForEdit = (candidate) => {
         setCandidate(candidate);
     };
+
+    //CreateRoom에서만 후보자 리스트를 정의함
+    useEffect(() => {
+        sessionStorage.removeItem('candidates');
+      }, []);
 
     const handleCreateRoom = () => {
         if (!roomName.trim()) {
@@ -66,12 +74,13 @@ function CreateRoom(){
             voteDuration: voteDuration,
         };
 
-        fetch('http://localhost:8080/room', {
+        fetch(`${API_URL}/room`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(requestData),
+            credentials: 'include'
             })
             .then((res) => {
                 if (!res.ok) { throw new Error('서버 오류');}
@@ -79,10 +88,10 @@ function CreateRoom(){
             })
             .then((roomInfo) => {
                 // 전송 성공 시 투표 준비 관리자 화면 이동
-                navigate('/adminWaiting',{
+                navigate('/votingReady',{
                     state : {
-                        roomInfo, //방 정보 
-                        candidates, //후보자 정보
+                        roomInfo : roomInfo, //방 정보 
+                        candidateList : candidates, //후보자 정보
                     }
                 });
             })
@@ -96,10 +105,10 @@ function CreateRoom(){
         <>
              {/* 상단 프로필 영역 */}
              <nav className="navbar mb-4">
-            <div className="container-fluid d-flex justify-content-between align-items-center">
-                <Logo/>
-                <Profile/>
-            </div>
+                <div className="container-fluid d-flex justify-content-between align-items-center">
+                    <Logo/>
+                    <Profile user={user}/>
+                </div>
             </nav>
 
             <div className="container-fluid main-container">

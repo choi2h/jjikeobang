@@ -1,16 +1,18 @@
 import React, { useRef , useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function Voting(){
+    const location = useLocation();
+    const roomInfo = location.state.room || {};
+    const roomId = roomInfo.roomId;
 
-    const roomId = 1; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
     const [candidates, setCandidates] = useState([]);
 
     useEffect(()=>{
         axios
-            .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
+            .get(`http://localhost:8080/candidate?roomId=${roomId}`)
             .then((res)=>{
                 if(res.data.statusCode===200){
                     setCandidates(res.data.candidates);

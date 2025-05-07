@@ -1,21 +1,18 @@
 package com.jjikeobang.room.service;
-
-import java.sql.SQLException;
-
-import com.jjikeobang.chat.service.ChatConnectionService;
-import com.jjikeobang.chat.service.ChatConnectionServiceImpl;
 import com.jjikeobang.room.dto.EntryRoomDto;
 import com.jjikeobang.room.model.Room;
 import com.jjikeobang.room.repository.RoomRepository;
 import com.jjikeobang.room.repository.RoomRepositoryImpl;
 
-public class RoomServiceImpl implements RoomService {
-	private final RoomRepository roomRepository;
-	private final ChatConnectionService chatConnectionService;
+import java.sql.SQLException;
 
-	public RoomServiceImpl () {
-		roomRepository = new RoomRepositoryImpl();
-		chatConnectionService = ChatConnectionServiceImpl.getInstance();
+public class RoomServiceImpl implements RoomService {
+
+	private final RoomRepository roomRepository;
+
+
+	public RoomServiceImpl() {
+		this.roomRepository = new RoomRepositoryImpl();
 	}
 
 	@Override

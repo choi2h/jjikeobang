@@ -11,11 +11,12 @@ public class Candidate {
 	private String promise;
 	private int voteCount;
     private LocalDateTime createdAt;
+    private int signNumber;
     
     public Candidate() {}
     
 	public Candidate(long candidateId, long roomId, String name, String description, String promise, int voteCount,
-			LocalDateTime createdAt) {
+			LocalDateTime createdAt, int signNumber) {
 		this.candidateId = candidateId;
 		this.roomId = roomId;
 		this.name = name;
@@ -23,6 +24,7 @@ public class Candidate {
 		this.promise = promise;
 		this.voteCount = voteCount;
 		this.createdAt = createdAt;
+		this.signNumber = signNumber;
 	}
 
 
@@ -80,6 +82,14 @@ public class Candidate {
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public int getSignNumber() {
+		return signNumber;
+	}
+
+	public void setSignNumber(int signNumber) {
+		this.signNumber = signNumber;
 	}
 
 	@Override
