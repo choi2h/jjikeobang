@@ -1,5 +1,6 @@
 package com.jjikeobang.member.service;
 
+import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.model.Member;
 import com.jjikeobang.member.repository.MemberRepository;
 import com.jjikeobang.member.repository.MemberRepositoryImpl;
@@ -20,7 +21,38 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findById(int memberId) {
+    public Member findById(Long memberId) {
         return memberRepository.findById(memberId);
+    }
+
+    @Override
+    public Member findByLoginId(String userId) {
+        return memberRepository.findByLoginId(userId);
+    }
+
+    @Override
+    public void insertMember(JoinMemberDTO member) {
+        memberRepository.insertMember(member);
+    }
+
+    @Override
+    public boolean checkIfDuplicated(String userId) {
+        List<Member> members = memberRepository.selectAllMember();
+        for (Member member : members) {
+            if(userId.equals(member.getLoginId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkUserInfo(String userId, String userPw) {
+        Member member = memberRepository.findByLoginId(userId);
+        if(member != null){
+            return userPw.equals(member.getPassword());
+        }else{
+            return false;
+        }
     }
 }

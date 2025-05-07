@@ -1,36 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import logoCircle from '../assets/img/logo-circle.png';
+import LoginForm from '../components/login/LoginForm';
+import LoginButton from '../components/login/LoginButton';
 
 function Login(){
+    
+    const [formData, setFormData] = useState({
+        userId: "",
+        password: ""
+    });
 
-    const [userId, setUserId] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();  // 페이지 이동을 위한 hook
-
-    const handleLogin = async () => {
-        navigate('/dashboard');
-        /*
-        try {
-            const response = await axios.post('http://localhost:8080/doLogin', {
-            userId,
-            password,
-        });
-
-            if (response.data.status === 'success') {
-                alert('로그인 성공!');
-                localStorage.setItem('isLoggedIn', 'true');
-                navigate('/dashboard');  // 로그인 성공 시 홈 화면으로 이동
-            } else {
-                alert('로그인 실패: ' + response.data.message);
-            }
-        } catch (error) {
-            alert('서버 오류: ' + error.message);
-        }
-        */
-    };
 
     return (
         <div className="container-fluid main-container">
@@ -50,25 +30,9 @@ function Login(){
                         <p className="text-center welcome-text mb-4">계정에 로그인하고 투표를 시작하세요!</p>
                         
                         <form>
-                            <div className="mb-3">
-                                <label for="userId" className="form-label">아이디</label>
-                                <input type="text" className="form-control" id="userId" 
-                                    value={userId} 
-                                    onChange={(e) => setUserId(e.target.value)}
-                                    placeholder="아이디를 입력하세요" />
-                            </div>
                             
-                            <div className="mb-4">
-                                <label for="userPassword" className="form-label">비밀번호</label>
-                                <input type="password" className="form-control" id="userPassword" 
-                                    value={password} 
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="비밀번호를 입력하세요" />
-                            </div>
-                            
-                            <div className="d-grid mb-3">
-                                <button type="button" className="btn btn-login" onClick={handleLogin}>로그인</button>
-                            </div>
+                            <LoginForm formData={formData} setFormData={setFormData} />
+                            <LoginButton formData={formData} />
                             
                             <div className="text-center">
                                 <Link to="/signup" className="signup-link">회원가입</Link>

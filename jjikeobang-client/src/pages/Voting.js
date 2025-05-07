@@ -5,12 +5,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function Voting(){
 
-    const roomId = 1; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
+    const roomId = 1; //일단 정적 코딩 진행
     const [candidates, setCandidates] = useState([]);
 
     useEffect(()=>{
         axios
-            .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
+            .get(`http://localhost:8080/candidate?roomId=${roomId}`)
             .then((res)=>{
                 if(res.data.statusCode===200){
                     setCandidates(res.data.candidates);
