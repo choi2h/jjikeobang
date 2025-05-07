@@ -6,6 +6,8 @@ import Button from "../components/common/Button";
 import AddCandidateModal from "../components/modal/AddCandidateModal";
 import CandidateItemSet from "../components/voteInfo/CandidateItemSet";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function CreateRoom(){
     const navigate = useNavigate();
     const [roomName, setRoomName] = useState('');
@@ -72,12 +74,13 @@ function CreateRoom(){
             voteDuration: voteDuration,
         };
 
-        fetch('http://localhost:8080/room', {
+        fetch(`${API_URL}/room`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(requestData),
+            credentials: 'include'
             })
             .then((res) => {
                 if (!res.ok) { throw new Error('서버 오류');}
@@ -102,10 +105,10 @@ function CreateRoom(){
         <>
              {/* 상단 프로필 영역 */}
              <nav className="navbar mb-4">
-            <div className="container-fluid d-flex justify-content-between align-items-center">
-                <Logo/>
-                <Profile user={user}/>
-            </div>
+                <div className="container-fluid d-flex justify-content-between align-items-center">
+                    <Logo/>
+                    <Profile user={user}/>
+                </div>
             </nav>
 
             <div className="container-fluid main-container">
