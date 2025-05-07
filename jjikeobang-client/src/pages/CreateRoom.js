@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
 import Button from "../components/common/Button";
@@ -13,7 +13,8 @@ function CreateRoom(){
     const [voteDuration, setvoteDuration] = useState(0);
     const [candidates, setCandidates] = useState([]);
     const [candidate, setCandidate] = useState(null);
-
+    const location = useLocation();
+    const user = location.state.user || {};
     const addCandidate = (candidate) => {
         setCandidates([...candidates, { ...candidate, id: Date.now() }]);
     };
@@ -103,7 +104,7 @@ function CreateRoom(){
              <nav className="navbar mb-4">
             <div className="container-fluid d-flex justify-content-between align-items-center">
                 <Logo/>
-                <Profile/>
+                <Profile user={user}/>
             </div>
             </nav>
 
