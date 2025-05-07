@@ -50,6 +50,7 @@ public class RoomController extends HttpServlet{
 
 			Long memberId = (Long) session.getAttribute("memberId");
 			room.setCreateMemberId(memberId);
+			room.generateEntryCode();
         	
 			//방 정보 저장
 			roomService.insertRoom(room);
