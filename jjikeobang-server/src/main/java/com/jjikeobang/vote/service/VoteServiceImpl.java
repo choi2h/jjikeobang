@@ -1,8 +1,8 @@
-package com.vote.service;
+package com.jjikeobang.vote.service;
 
 import com.jjikeobang.candidate.model.Candidate;
-import com.vote.repository.VoteRepository;
-import com.vote.repository.VoteRepositoryImpl;
+import com.jjikeobang.vote.repository.VoteRepository;
+import com.jjikeobang.vote.repository.VoteRepositoryImpl;
 
 public class VoteServiceImpl implements VoteService{
     private final VoteRepository voteRepository = new VoteRepositoryImpl();

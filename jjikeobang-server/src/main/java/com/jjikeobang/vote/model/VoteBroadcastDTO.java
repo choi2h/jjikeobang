@@ -1,4 +1,4 @@
-package com.vote.model;
+package com.jjikeobang.vote.model;
 
 public record VoteBroadcastDTO(
         String candidateId,

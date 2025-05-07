@@ -1,4 +1,4 @@
-package com.vote.repository;
+package com.jjikeobang.vote.repository;
 
 import com.jjikeobang.candidate.model.Candidate;
 

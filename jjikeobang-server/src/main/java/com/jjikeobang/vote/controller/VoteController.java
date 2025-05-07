@@ -1,11 +1,11 @@
-package com.vote.controller;
+package com.jjikeobang.vote.controller;
 
 import com.jjikeobang.candidate.model.Candidate;
 import com.jjikeobang.util.JsonUtil;
-import com.vote.model.VoteBroadcastDTO;
-import com.vote.model.VoteInfoDTO;
-import com.vote.service.VoteService;
-import com.vote.service.VoteServiceImpl;
+import com.jjikeobang.vote.model.VoteBroadcastDTO;
+import com.jjikeobang.vote.model.VoteInfoDTO;
+import com.jjikeobang.vote.service.VoteService;
+import com.jjikeobang.vote.service.VoteServiceImpl;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -33,13 +33,12 @@ public class VoteController {
         JsonUtil jsonUtil = JsonUtil.getInstance();
         VoteInfoDTO voteInfo = jsonUtil.getObjectFromJson(new StringReader(message), VoteInfoDTO.class);
 
-        int candidateId = Integer.parseInt(voteInfo.candidateId());
+        long candidateId = voteInfo.candidateId();
 
         Candidate candidate = voteService.findById(Long.parseLong(roomId), candidateId);
-        int voteCount = candidate.getVoteCount();
         voteService.vote(candidate);
 
-        VoteBroadcastDTO broadcastDTO = new VoteBroadcastDTO(String.valueOf(candidateId), ++voteCount);
+        VoteBroadcastDTO broadcastDTO = new VoteBroadcastDTO(String.valueOf(candidateId), candidate.getVoteCount() + 1);
 
         broadcast(roomId, broadcastDTO);
     }
