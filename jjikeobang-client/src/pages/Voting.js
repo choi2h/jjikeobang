@@ -1,18 +1,49 @@
-import React, { useRef , useState, useEffect } from "react";
+import React, { useEffect, useRef , useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // 컴포넌트 분리된 부분 import
 import RoomHeader from "../components/voteInfo/RoomHeader";
-import CandidateItemSet from "../components/voteInfo/CandidateItemSet";
+import VoteCandidateItemSet from "../components/voteInfo/VoteCandidateItemSet";
 import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
 
 function Voting() {
-    const roomId = 1; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
+    // const roomId = 1234; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
     const [candidates, setCandidates] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
 
+    // 🚨 테스트용 임시 후보자 데이터 주입 (API 대신)
+    useEffect(() => {
+        const dummyCandidates = [
+            {
+                candidateId: 1,
+                name: "김민준",
+                description: "책임감 있는 리더!",
+                promise: "모두가 행복한 학급을 만들겠습니다."
+            },
+            {
+                candidateId: 2,
+                name: "이서연",
+                description: "꼼꼼한 반장 후보",
+                promise: "청결한 교실, 활기찬 분위기 만들기!"
+            },
+            {
+                candidateId: 3,
+                name: "박지후",
+                description: "소통하는 리더",
+                promise: "친구들과 더 자주 이야기하겠습니다."
+            },
+            {
+                candidateId: 4,
+                name: "박지훈",
+                description: "그냥저냥 리더",
+                promise: "친구들과 더 자주 이야기하겠습니다."
+            }
+        ];
+        setCandidates(dummyCandidates);    
+    }, []);
+    
+    /*
     useEffect(() => {
         axios
             .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
@@ -27,6 +58,7 @@ function Voting() {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
     }, []);
+    */
 
     // 후보자 클릭 (선택 시 selected 클래스 추가)
     const selectCandidate = (index) => {
@@ -58,7 +90,7 @@ function Voting() {
                         {/* 메인 콘텐츠 */}
                         <div className="row">
                             {/* 왼쪽 영역 (후보자 목록) */}
-                            <CandidateItemSet
+                            <VoteCandidateItemSet
                                 candidates={candidates}
                                 selectedIndex={selectedIndex}
                                 selectCandidate={selectCandidate}
@@ -111,7 +143,7 @@ function Voting() {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="voteResultModalLabel">투표 결과</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleXButton}></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick = {handleXButton}></button>
                     </div>
                     <div className="modal-body">
                         {/* 결과 컨테이너 */}
@@ -149,7 +181,7 @@ function Voting() {
                             </div>
 
                             {/* 돌아가기 버튼 */}
-                            <Link to="/dashboard" className="btn back-btn" onClick={handleCloseModal} ref={linkBtnRef}>
+                            <Link to="/" className="btn back-btn" onClick={handleCloseModal} ref={linkBtnRef}>
                                 나가기
                             </Link>
 

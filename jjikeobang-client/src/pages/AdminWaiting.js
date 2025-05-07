@@ -2,13 +2,13 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import PromiseModal from "../components/modal/PromiseModal";
-import Button from "../components/common/Button";
 import Chat from "../components/chat/Chat";
-import CandidateItem from "../components/voteInfo/CandidateItem";
+import CandidateItemSet from "../components/voteInfo/VoteCandidateItemSet";
 import RoomHeader from "../components/voteInfo/RoomHeader";
 import Profile from "../components/header/Profile";
 import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
-import { useLocation } from "react-router-dom";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 function AdminWaiting() {
   /* 
@@ -17,11 +17,16 @@ function AdminWaiting() {
     const { roomInfo, candidates } = location.state || {};
   */
     const [candidates, setCandidates] = useState([]);
+    const [selectedIndex, setSelectedIndex] = useState(null);
     const roomId = 1; //Q. 채팅방 별로 생성.. user 별 방 정보를 어떻게 얻어와야하지?. 일단 정적인 코드로 작성
+
+    const selectCandidate = (index) => {
+        setSelectedIndex(index);
+    };
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
+            .get(`${API_URL}/candidate?roomId=${roomId}`)
             .then((res)=>{
                 if(res.data.statusCode===200){
                     setCandidates(res.data.candidates);
@@ -55,26 +60,11 @@ function AdminWaiting() {
                             {/* 메인 콘텐츠 */}
                             <div className="row">
                                 {/* 왼쪽 영역 (후보자 목록) */}
-                                <div className="col-md-7 vote-wrapper">
-                                    <div className="candidate-list">
-                                        {/* 후보자 */}
-                                        {
-                                            candidates.map((candidate, index) => {
-                                                return <CandidateItem key={index} candidateInfo={candidate} number={index + 1} />
-                                            })
-                                        }
-                                    </div>
-
-                                    {/* 관리자 버튼 */}
-                                    <div className="row mt-4">
-                                        <div className="col-md-6 mb-3">
-                                            <Button type='vote' text='투표하기' onClick={() => { console.log('투표하기 클릭') }} />
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <Button type='cancle' text='기권' onClick={() => { console.log('기권 클릭') }} />
-                                        </div>
-                                    </div>
-                                </div>
+                                <CandidateItemSet
+                                candidates={candidates}
+                                selectedIndex={selectedIndex}
+                                selectCandidate={selectCandidate}
+                                />
 
                                 {/* 오른쪽 영역 (채팅) */}
                                 <div className="col-md-5">
