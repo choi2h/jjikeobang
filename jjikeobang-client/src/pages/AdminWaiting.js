@@ -11,31 +11,33 @@ import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function AdminWaiting() {
-  /* 
-    //방정보, 후보자 정보 데이터 받는 부분
-    const location = useLocation();
-    const { roomInfo, candidates } = location.state || {};
-  */
+    /* 
+      //방정보, 후보자 정보 데이터 받는 부분
+      const location = useLocation();
+      const { roomInfo, candidates } = location.state || {};
+    */
     const [candidates, setCandidates] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const roomId = 1; //Q. 채팅방 별로 생성.. user 별 방 정보를 어떻게 얻어와야하지?. 일단 정적인 코드로 작성
+    
 
     const selectCandidate = (index) => {
         setSelectedIndex(index);
     };
 
+    
     useEffect(() => {
         axios
             .get(`${API_URL}/candidate?roomId=${roomId}`)
-            .then((res)=>{
-                if(res.data.statusCode===200){
+            .then((res) => {
+                if (res.data.statusCode === 200) {
                     setCandidates(res.data.candidates);
-                }else{
-                    console.log('에러 코드 :',res.data.statusCode);
+                } else {
+                    console.log('에러 코드 :', res.data.statusCode);
                 }
-   
+
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
     }, []);
@@ -61,9 +63,9 @@ function AdminWaiting() {
                             <div className="row">
                                 {/* 왼쪽 영역 (후보자 목록) */}
                                 <CandidateItemSet
-                                candidates={candidates}
-                                selectedIndex={selectedIndex}
-                                selectCandidate={selectCandidate}
+                                    candidates={candidates}
+                                    selectedIndex={selectedIndex}
+                                    selectCandidate={selectCandidate}
                                 />
 
                                 {/* 오른쪽 영역 (채팅) */}

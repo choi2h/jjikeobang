@@ -1,52 +1,48 @@
-import React, { useEffect, useRef , useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // 컴포넌트 분리된 부분 import
 import RoomHeader from "../components/voteInfo/RoomHeader";
 import VoteCandidateItemSet from "../components/voteInfo/VoteCandidateItemSet";
+import ResultCandidateItemSet from "../components/voteInfo/ResultCandidateItemSet";
 import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
 
+const API_URL = process.env.REACT_APP_API_URL;
+const WEB_SOCKET_URL = process.env.WEB_SOCKET_URL;
+
 function Voting() {
-    // const roomId = 1234; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
+    const roomId = 1; //Q. static 코딩, 유저가 접속한 방의 roomId를 받아와야함.
     const [candidates, setCandidates] = useState([]);
+    const [candidatesInfo, setCandidatesInfo] = useState([]);
+    const [voted, setVoted] = useState(false);
+    const [totalVotes, setTotalVotes] = useState(0);
     const [selectedIndex, setSelectedIndex] = useState(null);
 
-    // 🚨 테스트용 임시 후보자 데이터 주입 (API 대신)
+    // ************ WebSocket 연결 ************
+    const socketRef = useRef(null);
+
     useEffect(() => {
-        const dummyCandidates = [
-            {
-                candidateId: 1,
-                name: "김민준",
-                description: "책임감 있는 리더!",
-                promise: "모두가 행복한 학급을 만들겠습니다."
-            },
-            {
-                candidateId: 2,
-                name: "이서연",
-                description: "꼼꼼한 반장 후보",
-                promise: "청결한 교실, 활기찬 분위기 만들기!"
-            },
-            {
-                candidateId: 3,
-                name: "박지후",
-                description: "소통하는 리더",
-                promise: "친구들과 더 자주 이야기하겠습니다."
-            },
-            {
-                candidateId: 4,
-                name: "박지훈",
-                description: "그냥저냥 리더",
-                promise: "친구들과 더 자주 이야기하겠습니다."
+
+        socketRef.current = new WebSocket(`${WEB_SOCKET_URL}/vote/${roomId}`);
+        socketRef.current.onopen = () => {
+            console.log("WebSocket 연결 성공");
+        };
+        socketRef.current.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === "vote") {
+                setCandidatesInfo(data.candidates);
+                setTotalVotes(data.totalAmount);
             }
-        ];
-        setCandidates(dummyCandidates);    
-    }, []);
-    
-    /*
-    useEffect(() => {
+            console.log("WebSocket 메시지 수신:", data);
+        }
+        socketRef.current.onclose = () => {
+            console.log("WebSocket 연결 종료");
+        };
+
         axios
-            .get(`http://localhost:8080/jjikeobang/candidate?roomId=${roomId}`)
+            .get(`${API_URL}/candidate?roomId=${roomId}`)
             .then((res) => {
                 if (res.data.statusCode === 200) {
                     setCandidates(res.data.candidates);
@@ -58,7 +54,6 @@ function Voting() {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
     }, []);
-    */
 
     // 후보자 클릭 (선택 시 selected 클래스 추가)
     const selectCandidate = (index) => {
@@ -79,118 +74,119 @@ function Voting() {
 
     return (
         <>
-        <div className="container-fluid main-container">
-            {/* 투표 컨테이너 */}
-            <div className="row justify-content-center">
-                <div className="col-lg-9">
-                    <div className="waiting-container">
-                        {/* 방 헤더 */}
-                        <RoomHeader title="2학년 3반 반장 선거" entryCode="XK42P9" />
+            <div className="container-fluid main-container">
+                {/* 투표 컨테이너 */}
+                <div className="row justify-content-center">
+                    <div className="col-lg-9">
+                        <div className="waiting-container">
+                            {/* 방 헤더 */}
+                            <RoomHeader title="2학년 3반 반장 선거" entryCode="XK42P9" />
 
-                        {/* 메인 콘텐츠 */}
-                        <div className="row">
-                            {/* 왼쪽 영역 (후보자 목록) */}
-                            <VoteCandidateItemSet
-                                candidates={candidates}
-                                selectedIndex={selectedIndex}
-                                selectCandidate={selectCandidate}
-                            />
+                            {/* 메인 콘텐츠 */}
+                            <div className="row">
+                                {/* 왼쪽 영역 (후보자 목록) */}
+                                { voted
+                                    ? <ResultCandidateItemSet candidates={candidatesInfo} />
+                                    : <VoteCandidateItemSet
+                                        candidates={candidates}
+                                        selectedIndex={selectedIndex}
+                                        selectCandidate={selectCandidate}
+                                        onVoteComplete={() => setVoted(true)} // ✅ 여기서 교체 신호 전달
+                                    />
+                                }
 
-                            {/* 오른쪽 영역 (채팅) */}
-                            <div className="col-md-5">
-                                <div className="chat-wrapper">
-                                    <div className="chat-container">
-                                        <div className="notify-message">
-                                            <p className="mb-1" style={{ fontWeight: 'bold' }}>잠시만 기다려주세요. 곧 투표가 시작됩니다.</p>
-                                            <div className="chat-time">08:55:45</div>
+                                {/* 오른쪽 영역 (채팅) */}
+                                <div className="col-md-5">
+                                    <div className="chat-wrapper">
+                                        <div className="chat-container">
+                                            <div className="notify-message">
+                                                <p className="mb-1" style={{ fontWeight: 'bold' }}>잠시만 기다려주세요. 곧 투표가 시작됩니다.</p>
+                                                <div className="chat-time">08:55:45</div>
+                                            </div>
+                                            <div className="notify-message">
+                                                <p className="mb-1" style={{ fontWeight: 'bold' }}>투표 시작 전까지 자유롭게 대화해주세요!</p>
+                                                <div className="chat-time">08:57:15</div>
+                                            </div>
+                                            <div className="notify-message">
+                                                <p className="mb-1" style={{ fontWeight: 'bold' }}>🚨 투표가 시작되었습니다!</p>
+                                                <div className="chat-time">08:57:15</div>
+                                            </div>
+                                            <div className="chat-message">
+                                                <p className="mb-1">익명03: 모두 파이팅입니다!🔥</p>
+                                                <div className="chat-time">09:02:45</div>
+                                            </div>
                                         </div>
-                                        <div className="notify-message">
-                                            <p className="mb-1" style={{ fontWeight: 'bold' }}>투표 시작 전까지 자유롭게 대화해주세요!</p>
-                                            <div className="chat-time">08:57:15</div>
-                                        </div>
-                                        <div className="notify-message">
-                                            <p className="mb-1" style={{ fontWeight: 'bold' }}>🚨 투표가 시작되었습니다!</p>
-                                            <div className="chat-time">08:57:15</div>
-                                        </div>
-                                        <div className="chat-message">
-                                            <p className="mb-1">익명03: 모두 파이팅입니다!🔥</p>
-                                            <div className="chat-time">09:02:45</div>
+                                        <div className="chat-input-container">
+                                            <input type="text" className="chat-input" placeholder="메시지를 입력하세요..." />
+                                            <button className="chat-send-btn">
+                                                <i className="bi bi-send"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className="chat-input-container">
-                                        <input type="text" className="chat-input" placeholder="메시지를 입력하세요..." />
-                                        <button className="chat-send-btn">
-                                            <i className="bi bi-send"></i>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* 투표 현황 */}
-                        <VoteStatusBoard />
+                            {/* 투표 현황 */}
+                            <VoteStatusBoard totalAmount={totalVotes} />
 
-                        <button className="view-pledge-btn" data-bs-toggle="modal" data-bs-target="#voteResultModal">
-                            투표종료
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {/* 투표 결과 모달 */}
-        <div className="modal fade" id="voteResultModal" tabIndex="-1" aria-labelledby="voteResultModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="voteResultModalLabel">투표 결과</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick = {handleXButton}></button>
-                    </div>
-                    <div className="modal-body">
-                        {/* 결과 컨테이너 */}
-                        <div className="result-container">
-                            {/* 결과 헤더 */}
-                            <h2 className="result-title">🎉 당선을 축하합니다 🎉</h2>
-
-                            {/* 당선자 정보 */}
-                            <div className="winner-circle">1번</div>
-                            <div className="winner-name">김민준</div>
-                            <div className="winner-class">2학년 7반</div>
-                            <div className="winner-description mb-4">더 나은 학급을 만들겠습니다.</div>
-
-                            {/* 투표 결과 그래프 */}
-                            <div className="progress result-progress">
-                                <div className="progress-bar bg-primary" role="progressbar" style={{ width: '42%' }}
-                                    aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">42%</div>
-                            </div>
-
-                            {/* 투표 통계 */}
-                            <div className="vote-stats">
-                                <h4 className="stats-title">투표 통계</h4>
-                                <div className="stats-row">
-                                    <div className="stats-label">총 투표수</div>
-                                    <div className="stats-value">100표</div>
-                                </div>
-                                <div className="stats-row">
-                                    <div className="stats-label">투표율</div>
-                                    <div className="stats-value">96%</div>
-                                </div>
-                                <div className="stats-row">
-                                    <div className="stats-label">기권</div>
-                                    <div className="stats-value">4%</div>
-                                </div>
-                            </div>
-
-                            {/* 돌아가기 버튼 */}
-                            <Link to="/" className="btn back-btn" onClick={handleCloseModal} ref={linkBtnRef}>
-                                나가기
-                            </Link>
-
-                            <button id="closeModal" type="button" className="btn btn-secondary" data-bs-dismiss="modal" hidden={true}>닫기</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            {/* 투표 결과 모달 */}
+            <div className="modal fade" id="voteResultModal" tabIndex="-1" aria-labelledby="voteResultModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="voteResultModalLabel">투표 결과</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleXButton}></button>
+                        </div>
+                        <div className="modal-body">
+                            {/* 결과 컨테이너 */}
+                            <div className="result-container">
+                                {/* 결과 헤더 */}
+                                <h2 className="result-title">🎉 당선을 축하합니다 🎉</h2>
+
+                                {/* 당선자 정보 */}
+                                <div className="winner-circle">1번</div>
+                                <div className="winner-name">김민준</div>
+                                <div className="winner-class">2학년 7반</div>
+                                <div className="winner-description mb-4">더 나은 학급을 만들겠습니다.</div>
+
+                                {/* 투표 결과 그래프 */}
+                                <div className="progress result-progress">
+                                    <div className="progress-bar bg-primary" role="progressbar" style={{ width: '42%' }}
+                                        aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">42%</div>
+                                </div>
+
+                                {/* 투표 통계 */}
+                                <div className="vote-stats">
+                                    <h4 className="stats-title">투표 통계</h4>
+                                    <div className="stats-row">
+                                        <div className="stats-label">총 투표수</div>
+                                        <div className="stats-value">100표</div>
+                                    </div>
+                                    <div className="stats-row">
+                                        <div className="stats-label">투표율</div>
+                                        <div className="stats-value">96%</div>
+                                    </div>
+                                    <div className="stats-row">
+                                        <div className="stats-label">기권</div>
+                                        <div className="stats-value">4%</div>
+                                    </div>
+                                </div>
+
+                                {/* 돌아가기 버튼 */}
+                                <Link to="/" className="btn back-btn" onClick={handleCloseModal} ref={linkBtnRef}>
+                                    나가기
+                                </Link>
+
+                                <button id="closeModal" type="button" className="btn btn-secondary" data-bs-dismiss="modal" hidden={true}>닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
