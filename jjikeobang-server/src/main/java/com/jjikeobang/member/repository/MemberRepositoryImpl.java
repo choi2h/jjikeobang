@@ -1,13 +1,13 @@
 package com.jjikeobang.member.repository;
 
+import com.jjikeobang.member.model.JoinMemberDTO;
 import com.jjikeobang.member.model.Member;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jjikeobang.util.DatabaseUtil.Close;
-import static com.jjikeobang.util.DatabaseUtil.getConnection;
+import static com.jjikeobang.util.DatabaseUtil.*;
 import static com.jjikeobang.util.TypeMapperUtil.stringToLocalDateTime;
 
 public class MemberRepositoryImpl implements MemberRepository {
@@ -38,6 +38,23 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public void insertMember(JoinMemberDTO member) {
+        Connection connection = getConnection();
+        try(PreparedStatement pstmt = connection.prepareStatement(INSERT_MEMBER_SQL)){
+            pstmt.setString(1, member.loginId());
+            pstmt.setString(2, member.password());
+            pstmt.setString(3, member.name());
+
+            pstmt.executeUpdate();
+            commit(connection);
+        }catch (SQLException se){
+            se.printStackTrace();
+        }
+        Close(connection);
+
+    }
+
+    @Override
     public Member findById(int memberId) {
         Member member = null;
 
@@ -45,14 +62,41 @@ public class MemberRepositoryImpl implements MemberRepository {
         try(PreparedStatement pstmt = connection.prepareStatement(SELECT_MEMBER_BY_ID_SQL)){
             pstmt.setInt(1, memberId);
             ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                member = new Member(
+                        rs.getLong(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        stringToLocalDateTime(rs.getString(5))
+                );
+                return member;
+            }
+        }catch (SQLException se){
+            se.printStackTrace();
+        }
+        Close(connection);
 
-            member = new Member(
-                    rs.getLong(1),
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    stringToLocalDateTime(rs.getString(5))
-            );
+        return member;
+    }
+
+    @Override
+    public Member findByLoginId(String userId) {
+        Connection connection = getConnection();
+        Member member = null;
+        try(PreparedStatement pstmt = connection.prepareStatement(SELECT_MEMBER_BY_LOGIN_ID_SQL)){
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                member = new Member(
+                        rs.getLong(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        stringToLocalDateTime(rs.getString(5))
+                );
+                return member;
+            }
         }catch (SQLException se){
             se.printStackTrace();
         }

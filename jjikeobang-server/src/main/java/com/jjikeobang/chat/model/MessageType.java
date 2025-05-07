@@ -1,7 +1,7 @@
 package com.jjikeobang.chat.model;
 
 public enum MessageType {
-    ENTER, MESSAGE, LEAVE;
+    ENTER, MESSAGE, NOTICE, LEAVE;
 
     public static MessageType getType(String type) {
         for(MessageType messageType : MessageType.values()) {

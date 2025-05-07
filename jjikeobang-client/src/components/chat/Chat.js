@@ -29,7 +29,7 @@ function Chat({roomId}) {
     }
 
     return (
-        <div>
+        <div className="chat-wrapper">
             <div className="chat-container">
                 <ChatMessage message={"잠시만 기다려주세요. 곧 투표가 시작됩니다."} time={"08:55:45"}/>
                 <ChatMessage message={"투표 시작 전까지 자유롭게 대화해주세요!"} time={"08:57:15"}/>

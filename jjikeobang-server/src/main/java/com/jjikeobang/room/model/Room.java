@@ -28,8 +28,7 @@ public class Room {
 		this.entryCode = entryCode;
 		this.createMemberId = createMemberId;
 		this.totalEntryCount = totalEntryCount;
-		
-		generateEntryCode();
+//		generateEntryCode();
 	}
 	
 	public long getRoomId() {
@@ -99,4 +98,5 @@ public class Room {
 		
 		this.entryCode = generatedCode;
 	}
+
 }
