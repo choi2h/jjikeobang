@@ -14,7 +14,7 @@ function VotingReady(){
             return JSON.parse(sessionExist);
         }
 
-        const locationDataExist = location.state?.candidates;
+        const locationDataExist = location.state?.candidateList;
         if(locationDataExist){
             sessionStorage.setItem('candidates',JSON.stringify(locationDataExist));
             return locationDataExist;
