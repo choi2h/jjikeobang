@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 
 function VotingReady(){
@@ -49,8 +50,13 @@ function VotingReady(){
         window.alert('수정되었습니다');
     }
 
-    //후보자 삭제
+    //후보자 삭제 
     const handleDelete = (index)=>{
+        if(candidateList.length===1){
+            window.alert('후보자는 최소 1명 이상 존재해야 합니다.');
+            return;
+        }
+
         const confirm = window.confirm('삭제하시겠습니까?');
         if(confirm){
             const deletedCandidateList = [...candidateList];
@@ -70,9 +76,34 @@ function VotingReady(){
       setSelectedIndex(index); // 클릭한 후보자의 index 번호 저장
     };
 
+
+    // 후보자 정보 DB 저장 -> voting 페이지 이동
     const navigate = useNavigate();
-    const handleVoting = async() =>{
-        navigate("/voting");
+    const handleVoting = () =>{
+        const candidatesInfo = window.sessionStorage.getItem('candidates');
+        const parsedCandidatesInfo = JSON.parse(candidatesInfo);
+        const mappedCandidatesInfo = parsedCandidatesInfo.map(({id,...rest}, index) => ({
+            ...rest, 
+            signNumber: index + 1,
+            roomId: room.roomId
+          }));
+        
+          
+        axios 
+          .post('http://localhost:8080/candidates', mappedCandidatesInfo)
+          .then((res)=>{
+            if(res.data.statusCode===200){
+                navigate('/voting',{
+                    state : {room}
+                })
+            }else{
+                window.alert('에러 코드 : ',res.data.statusCode, '에러 메세지 : ',res.data.data);
+            }
+          })
+          .catch((err)=>{
+            window.alert('후보자 DB 등록에 실패했습니다.',err);
+          })
+
     };
 
     return (

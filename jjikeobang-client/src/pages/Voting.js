@@ -1,11 +1,13 @@
 import React, { useRef , useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function Voting(){
+    const location = useLocation();
+    const roomInfo = location.state.room || {};
+    const roomId = roomInfo.roomId;
 
-    const roomId = 1; //일단 정적 코딩 진행
     const [candidates, setCandidates] = useState([]);
 
     useEffect(()=>{

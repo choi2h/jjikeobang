@@ -11,20 +11,13 @@ public interface CandidateRepository {
 		    "FROM CANDIDATE " +
 		    "WHERE ROOM_ID = ?";
 	
-	//대기중 해당 룸에 등록된 후보자 수정[관리자]
-	String UPDATE_CANDIDATE_FOR_ADMIN = 
-			"UPDATE CANDIDATE " +
-			"SET NAME = ?, DESCRIPTION = ?, PROMISE = ? " +
-			"WHERE CANDIDATE_ID = ? AND ROOM_ID = ?";
-	
-	//대기중 해당 룸에 등록된 후보자 삭제[관리자]
-	String DELETE_CANDIDATE_FOR_ADMIN = 
-			"DELETE FROM CANDIDATE " +
-			"WHERE CANDIDATE_ID = ? AND ROOM_ID = ?";
-	
-	
+	//해당 룸에 등록된 후보자 DB 저장
+	String INSERT_ALL_CANDIDATES_BY_ROOM_ID = 
+			"INSERT INTO CANDIDATE "+
+			"(ROOM_ID,NAME,DESCRIPTION,PROMISE,SIGN_NUMBER,CREATED_AT,VOTE_COUNT) "+
+			"VALUES (?,?,?,?,?,now(),0)";
+
 	List<Candidate> findAllByRoomId(long roomId);
-	boolean updateForAdmin(Candidate candidate);
-	boolean deleteForAdmin(long roomId, long candidateId);
+	int insertCandidate(Candidate candidate);
 
 }
