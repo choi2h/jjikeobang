@@ -49,18 +49,38 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 		
 		return candidates;
 	}
-	
-	//후보자 수정[관리자]
-	@Override
-	public boolean updateForAdmin(Candidate candidate) {
-		
-		return false;
-	}
-	
-	//후보자 삭제[관리자]
-	@Override
-	public boolean deleteForAdmin(long roomId, long candidateId) {
-		return false;
-	}
 
+	@Override
+	public int insertCandidate(Candidate candidate) {
+		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
+		int rs = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(INSERT_ALL_CANDIDATES_BY_ROOM_ID);
+			pstmt.setLong(1,candidate.getRoomId());
+			pstmt.setString(2, candidate.getName());
+			pstmt.setString(3,candidate.getDescription());
+			pstmt.setString(4, candidate.getPromise());
+			pstmt.setInt(5, candidate.getSignNumber());
+			
+			rs = pstmt.executeUpdate();
+			
+			if(rs>0) {
+				commit(conn);
+			}else {
+				rollback(conn);
+			}
+			
+		}catch(SQLException e) {
+			rollback(conn);
+			e.printStackTrace();
+		}finally {
+			Close(pstmt);
+			Close(conn);
+		}
+		
+		return rs;
+	}
+	
 }
