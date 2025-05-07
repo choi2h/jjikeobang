@@ -16,7 +16,7 @@ public interface MemberRepository {
 
     void insertMember(JoinMemberDTO member);
 
-    Member findById(int memberId);
+    Member findById(Long memberId);
 
     Member findByLoginId(String userId);
 }

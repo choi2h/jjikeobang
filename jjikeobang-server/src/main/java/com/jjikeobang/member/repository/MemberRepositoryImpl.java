@@ -55,12 +55,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Member findById(int memberId) {
+    public Member findById(Long memberId) {
         Member member = null;
 
         Connection connection = getConnection();
         try(PreparedStatement pstmt = connection.prepareStatement(SELECT_MEMBER_BY_ID_SQL)){
-            pstmt.setInt(1, memberId);
+            pstmt.setLong(1, memberId);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
                 member = new Member(
