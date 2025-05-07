@@ -27,7 +27,7 @@ public class ProfileController extends HttpServlet {
         Long memberId = (Long) session.getAttribute("memberId");
 
         if (memberId != null) {
-            Member member = memberService.findById(memberId.intValue());
+            Member member = memberService.findById(memberId);
             result.put("is_logged_in", true);
             result.put("name", member.getName());
         } else {

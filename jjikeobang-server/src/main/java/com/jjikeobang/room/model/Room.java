@@ -96,7 +96,6 @@ public class Room {
 		this.candidates = candidates;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", maxParticipant=" + maxParticipant + ", voteDuration="
