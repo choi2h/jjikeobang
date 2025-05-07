@@ -2,10 +2,13 @@ package com.jjikeobang.vote.controller;
 
 import com.jjikeobang.candidate.model.Candidate;
 import com.jjikeobang.util.JsonUtil;
-import com.jjikeobang.vote.model.VoteBroadcastDTO;
-import com.jjikeobang.vote.model.VoteInfoDTO;
+import com.jjikeobang.vote.model.CandidateInfo;
+import com.jjikeobang.vote.model.VoteRequestDTO;
+import com.jjikeobang.vote.model.VoteResult;
+import com.jjikeobang.vote.model.VoteResultMap;
 import com.jjikeobang.vote.service.VoteService;
 import com.jjikeobang.vote.service.VoteServiceImpl;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -18,40 +21,40 @@ import java.io.StringReader;
 import java.util.*;
 
 @ServerEndpoint("/vote/{roomId}")
-public class VoteController {
-    private static Map<String, List<Session>> roomClients = new HashMap<>();
+public class VoteSocketController extends HttpServlet {
+    private static Map<Long, List<Session>> roomClients = new HashMap<>();
+
     private final VoteService voteService = new VoteServiceImpl();
     private static final Object lock = new Object();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("roomId") String roomId) {
+    public void onOpen(Session session, @PathParam("roomId") Long roomId) {
         roomClients.computeIfAbsent(roomId, key -> Collections.synchronizedList(new ArrayList<>())).add(session);
+
+        VoteResult voteResult = VoteResultMap.get(roomId);
+        broadcast(roomId, voteResult);
     }
 
     @OnMessage
-    public void onMessage(String message, @PathParam("roomId") String roomId) throws IOException {
+    public void onMessage(String message, @PathParam("roomId") Long roomId) throws IOException {
         JsonUtil jsonUtil = JsonUtil.getInstance();
-        VoteInfoDTO voteInfo = jsonUtil.getObjectFromJson(new StringReader(message), VoteInfoDTO.class);
+        VoteRequestDTO voteInfo = jsonUtil.getObjectFromJson(new StringReader(message), VoteRequestDTO.class);
 
         long candidateId = voteInfo.candidateId();
 
-        Candidate candidate = voteService.findById(Long.parseLong(roomId), candidateId);
-        voteService.vote(candidate);
+        VoteResult voteResult = VoteResultMap.get(roomId);
+        voteResult.vote(candidateId);
 
-        VoteBroadcastDTO broadcastDTO = new VoteBroadcastDTO(String.valueOf(candidateId), candidate.getVoteCount() + 1);
-
-        broadcast(roomId, broadcastDTO);
+        broadcast(roomId, voteResult);
     }
 
-    private static void broadcast(String roomId, VoteBroadcastDTO broadcastDTO) {
+    private static void broadcast(Long roomId, VoteResult voteResult) {
         List<Session> sessions = roomClients.get(roomId);
-        JsonUtil jsonUtil = JsonUtil.getInstance();
-
         try{
             synchronized (lock) {
                 for (Session client : sessions) {
                     if (client.isOpen()) {
-                        String response = jsonUtil.getJsonFromObject(broadcastDTO);
+                        String response = voteResult.toJson();
                         client.getBasicRemote().sendText(response);
                     }
                 }

@@ -1,6 +1,6 @@
 package com.jjikeobang.vote.model;
 
-public record VoteInfoDTO
+public record VoteRequestDTO
         (
                 Long candidateId
         ){}
