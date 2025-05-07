@@ -4,24 +4,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 function VotingReady(){
     const location = useLocation();
-    const room = location.state.roomInfo || {}; //room 정보는 투표방 세션이 유지될동안 필요함
-
+    const { roomInfo, candidateList } = location.state || {};
     //후보자 정보 렌더링
-    const [candidateList,setCandidateList] = useState(()=>{
-        const sessionExist = sessionStorage.getItem('candidates');
-        if(sessionExist){
-            return JSON.parse(sessionExist);
-        }
-
-        const locationDataExist = location.state?.candidates;
-        if(locationDataExist){
-            sessionStorage.setItem('candidates',JSON.stringify(locationDataExist));
-            return locationDataExist;
-        }
-
-        return [];
-    })
-                                                
+    const [candidates,setCandidates] = useState(candidateList);
 
     //후보자 수정 
     const [candidateIndex, setCandidateIndex] = useState(null);
@@ -44,7 +29,7 @@ function VotingReady(){
             description : editData.description,
             promise : editData.promise
             }
-        setCandidateList(newCandidateList);
+            setCandidates(newCandidateList);
         window.sessionStorage.setItem('candidates',JSON.stringify(newCandidateList));
         window.alert('수정되었습니다');
     }
@@ -55,14 +40,13 @@ function VotingReady(){
         if(confirm){
             const deletedCandidateList = [...candidateList];
             deletedCandidateList.splice(index,1);
-            setCandidateList(deletedCandidateList);
+            setCandidates(deletedCandidateList);
             window.sessionStorage.setItem('candidates',JSON.stringify(deletedCandidateList));
             window.alert('삭제 되었습니다.');
         }else{
             return
         }
     }
-
     
     const [selectedIndex, setSelectedIndex] = useState(null);
     // 후보자 클릭 (선택 시 selected 클래스 추가)
@@ -85,11 +69,11 @@ function VotingReady(){
                             {/* 방 헤더 */}
                             <div className="room-header">
                                 <div>
-                                    <h2 className="room-title">{room.name}</h2>
+                                    <h2 className="room-title">{roomInfo.name}</h2>
                                 </div>
                                 <div className="d-flex align-items-center">
                                     <span className="room-code-label">입장 코드:</span>
-                                    <span className="room-code">{room.entryCode}</span>
+                                    <span className="room-code">{roomInfo.entryCode}</span>
                                     <button className="copy-btn ms-2">
                                         <i className="bi bi-clipboard"></i> 복사
                                     </button>

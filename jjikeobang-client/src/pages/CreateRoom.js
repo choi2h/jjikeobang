@@ -41,11 +41,6 @@ function CreateRoom(){
         setCandidate(candidate);
     };
 
-    //CreateRoom에서만 후보자 리스트를 정의함
-    useEffect(() => {
-        sessionStorage.removeItem('candidates');
-      }, []);
-
     const handleCreateRoom = () => {
         if (!roomName.trim()) {
             alert("투표방 이름을 입력해주세요.");
