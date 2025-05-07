@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Index from './pages/Index';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
 import VotingHistory from './pages/VotingHistory';
 import CreateRoom from './pages/CreateRoom';
 import VoteAdmin from './pages/VoteAdmin';
@@ -15,7 +14,6 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/votingHistory" element={<VotingHistory />} />
         <Route path="/createRoom" element={<CreateRoom />} />
         <Route path="/voteAdmin" element={<VoteAdmin />} />

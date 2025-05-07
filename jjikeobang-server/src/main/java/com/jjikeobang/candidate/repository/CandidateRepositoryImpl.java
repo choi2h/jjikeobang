@@ -1,5 +1,6 @@
 package com.jjikeobang.candidate.repository;
 import static com.jjikeobang.util.DatabaseUtil.*;
+import static com.jjikeobang.util.TypeMapperUtil.stringToLocalDateTime;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

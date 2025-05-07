@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.jjikeobang.room.model.Room;
 import static com.jjikeobang.util.DatabaseUtil.Close;
@@ -56,7 +58,6 @@ public class RoomRepositoryImpl implements RoomRepository {
 
 	@Override
 	public Room findById(long roomId) {
-		
 		Connection conn = getConnection();
 		ResultSet rs = null;
 		

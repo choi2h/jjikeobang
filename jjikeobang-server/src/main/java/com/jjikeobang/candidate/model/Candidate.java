@@ -12,6 +12,7 @@ public class Candidate {
 	private int voteCount;
 	private int signNumber;
     private LocalDateTime createdAt;
+    private int signNumber;
     
     public Candidate() {}
     

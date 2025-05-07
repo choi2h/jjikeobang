@@ -1,19 +1,21 @@
 package com.jjikeobang.room.service;
 
-import java.sql.SQLException;
-
+import com.jjikeobang.room.dto.EntryRoomDto;
 import com.jjikeobang.room.model.Room;
 import com.jjikeobang.room.repository.RoomRepository;
 import com.jjikeobang.room.repository.RoomRepositoryImpl;
 
+import java.sql.SQLException;
+
 public class RoomServiceImpl implements RoomService {
-	
-	public final RoomRepository roomRepository;
-	
-	public RoomServiceImpl () {
-		roomRepository = new RoomRepositoryImpl();
+
+	private final RoomRepository roomRepository;
+
+
+	public RoomServiceImpl() {
+		this.roomRepository = new RoomRepositoryImpl();
 	}
-	
+
 	@Override
 	public void insertRoom(Room room) throws SQLException {
 		roomRepository.insertRoom(room);
@@ -21,7 +23,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public Room findById(long roomId) {
-		return roomRepository.findById(roomId);
+		return  roomRepository.findById(roomId);
 	}
 
 	@Override
@@ -34,4 +36,8 @@ public class RoomServiceImpl implements RoomService {
 		roomRepository.updateRoomTotalEntryCount(room);
 	}
 	
+
 }
+
+
+

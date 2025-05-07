@@ -1,8 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import logoCircle from '../assets/img/logo-circle.png';
+import SignupButton from '../components/signup/SignupButton';
+import SignupForm from '../components/signup/SignupForm';
 
 function Signup() {
+    const [formData, setFormData] = useState({
+        userId: "",
+        name: "",
+        userPw: "",
+        comparePw: ""
+    });
+
     return (
         <div className="container-fluid main-container">
             <div className="row">
@@ -18,31 +27,8 @@ function Signup() {
                         <h2 className="text-center mb-4">회원가입</h2>
                         <p className="welcome-text text-center mb-4">새로운 계정을 만들어보세요</p>
                         <form>
-                            <div className="mb-3">
-                                <label for="userId" className="form-label">아이디</label>
-                                <input type="text" className="form-control" id="userId" placeholder="아이디를 입력하세요" />
-                            </div>
-
-                            <div className="mb-3">
-                                <label for="userName" className="form-label">이름</label>
-                                <input type="text" className="form-control" id="userName" placeholder="이름을 입력하세요" />
-                            </div>
-
-                            <div className="mb-3">
-                                <label for="userPassword" className="form-label">비밀번호</label>
-                                <input type="password" className="form-control" id="userPassword" placeholder="비밀번호를 입력하세요" />
-                            </div>
-
-                            <div className="mb-4">
-                                <label for="userPasswordConfirm" className="form-label">비밀번호 확인</label>
-                                <input type="password" className="form-control" id="userPasswordConfirm"
-                                    placeholder="비밀번호를 다시 입력하세요" />
-                            </div>
-
-                            <div className="d-grid gap-2 mb-3">
-                                <button type="button" className="btn btn-primary btn-signup">회원가입</button>
-                            </div>
-
+                            <SignupForm formData={formData} setFormData={setFormData} />
+                            <SignupButton formData={formData} />
                             <div className="text-center">
                                 <Link to="/login" className="signup-link">로그인</Link>
                             </div>
@@ -56,6 +42,6 @@ function Signup() {
             <script src="../assets/js/bootstrap.bundle.min.js"></script>
         </div>
     );
-}
+};
 
 export default Signup;

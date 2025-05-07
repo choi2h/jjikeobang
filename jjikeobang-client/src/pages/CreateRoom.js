@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
@@ -37,6 +37,11 @@ function CreateRoom({socket}){
     const openModalForEdit = (candidate) => {
         setCandidate(candidate);
     };
+
+    //CreateRoom에서만 후보자 리스트를 정의함
+    useEffect(() => {
+        sessionStorage.removeItem('candidates');
+      }, []);
 
     const handleCreateRoom = () => {
         if (!roomName.trim()) {
