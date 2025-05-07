@@ -93,6 +93,7 @@ function VotingReady(){
           .post('http://localhost:8080/candidates', mappedCandidatesInfo)
           .then((res)=>{
             if(res.data.statusCode===200){
+                window.sessionStorage.removeItem('candidates');
                 navigate('/voting',{
                     state : {room}
                 })
