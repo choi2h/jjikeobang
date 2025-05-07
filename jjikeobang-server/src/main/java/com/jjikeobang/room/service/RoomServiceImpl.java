@@ -1,5 +1,4 @@
 package com.jjikeobang.room.service;
-
 import com.jjikeobang.room.dto.EntryRoomDto;
 import com.jjikeobang.room.model.Room;
 import com.jjikeobang.room.repository.RoomRepository;
@@ -19,6 +18,7 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public void insertRoom(Room room) throws SQLException {
 		Room resRoom = roomRepository.insertRoom(room);
+		chatConnectionService.addRoom(resRoom.getRoomId());
 	}
 
 	@Override
@@ -50,7 +50,6 @@ public class RoomServiceImpl implements RoomService {
 //		roomInfoDto.setUserNickname();
 		return roomInfoDto;
 	}
-
 }
 
 

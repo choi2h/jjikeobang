@@ -103,4 +103,5 @@ public class Room {
 		
 		this.entryCode = generatedCode;
 	}
+
 }

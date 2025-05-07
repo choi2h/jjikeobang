@@ -143,22 +143,26 @@
 }
 
 .chat-message {
-    margin-bottom: 15px;
-    padding: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
     border-radius: 8px;
-    background-color: #e6f2ff;
+    background-color: #E2E5EF;
+    font-size: 14px;
 }
 
 .notify-message {
     margin-bottom: 15px;
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
-    background-color: #E2E5EF;
+    background-color: #e6f2ff;
     color: #1a4b8c;
+
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .chat-time {
-    font-size: 0.75rem;
+    font-size: 11px;
     font-weight: lighter;
     color: #718096;
     text-align: right;

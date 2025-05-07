@@ -9,6 +9,7 @@ public interface MemberService {
     List<Member> selectAllMember();
 
     void insertMember(JoinMemberDTO member);
+  
     Member findById(Long memberId);
 
     Member findByLoginId(String userId);
