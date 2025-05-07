@@ -1,5 +1,6 @@
 package com.jjikeobang.candidate.repository;
 import static com.jjikeobang.util.DatabaseUtil.*;
+import static com.jjikeobang.util.TypeMapperUtil.stringToLocalDateTime;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +34,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 	                rs.getString(4),                    
 	                rs.getString(5),                    
 	                rs.getInt(6),                        
-	                rs.getTimestamp(7).toLocalDateTime()  
+	                stringToLocalDateTime(rs.getString(7)),
+	                rs.getInt(8)
 	            ));
 	        }	
 			
