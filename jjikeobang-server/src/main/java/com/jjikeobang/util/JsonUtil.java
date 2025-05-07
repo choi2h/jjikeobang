@@ -40,6 +40,10 @@ public class JsonUtil {
         return objectMapper.readValue(json, typeRef);
     }
 
+    public <T> T getObjectFromJson(String json, Class<T> classType) throws IOException {
+        return objectMapper.readValue(json, classType);
+    }
+
     public String getJsonFromObject(Object object) throws IOException {
         return objectMapper.writeValueAsString(object);
     }

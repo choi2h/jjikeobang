@@ -2,7 +2,6 @@ import React, { useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-
 function VotingReady(){
     const location = useLocation();
     const room = location.state.roomInfo || {}; //room 정보는 투표방 세션이 유지될동안 필요함
@@ -264,41 +263,16 @@ function VotingReady(){
                                 </div>
 
                                 {/* 오른쪽 영역 (채팅) */}
-                                <div className="col-md-5">
-                                    <div className="chat-wrapper">
-                                        <div className="chat-container">
-                                            <div className="chat-message">
-                                                <p className="mb-1">잠시만 기다려주세요. 곧 투표가 시작됩니다.</p>
-                                                <div className="chat-time">08:55:45</div>
-                                            </div>
-                                            <div className="chat-message">
-                                                <p className="mb-1">투표 시작 전까지 자유롭게 대화해주세요!</p>
-                                                <div className="chat-time">08:57:15</div>
-                                            </div>
-                                        </div>
-                                        <div className="chat-input-container">
-                                            <input type="text" className="chat-input" placeholder="메시지를 입력하세요..." />
-                                            <button className="chat-send-btn">
-                                                <i className="bi bi-send"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                 {/* 오른쪽 영역 (채팅) */}
+                                 <div className="col-md-5">
+                                    <Chat/>
                                 </div>
                             </div>
+
                             {/* 투표 현황 */}
                             <div className="row mt-4">
-                                <div className="col-md-6 mb-3">
-                                    <div className="vote-status">
-                                        <div className="vote-count-label">총 투표수</div>
-                                        <div className="vote-count">0표</div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 mb-3">
-                                    <div className="vote-status">
-                                        <div className="vote-time-label">남은 시간</div>
-                                        <div className="vote-time">15분 0초</div>
-                                    </div>
-                                </div>
+                                <VoteStatusBoard label='총 득표수' content='12표' color='#1a4b8c '/>
+                                <VoteStatusBoard label='남은 시간' content='14분 47초' color='#f59e0b '/>
                             </div>
                         </div>
                     </div>
