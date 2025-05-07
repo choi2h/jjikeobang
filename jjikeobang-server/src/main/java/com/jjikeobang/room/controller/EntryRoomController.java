@@ -26,6 +26,10 @@ public class EntryRoomController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String entryCode = req.getParameter("entryCode");
+        if(entryCode==null || entryCode.isBlank()){
+            setResponse(res, HttpServletResponse.SC_BAD_REQUEST, false, null);
+            return;
+        }
 
         try {
             EntryRoomDto dto = roomService.findByEntryCode(entryCode);
