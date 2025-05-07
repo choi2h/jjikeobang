@@ -10,6 +10,11 @@ public class RoomResponse extends Response {
         this.isSuccess = isSuccess;
     }
 
+    public RoomResponse(int statusCode, boolean isSuccess, Object data) {
+        super(statusCode, data);
+        this.isSuccess = isSuccess;
+    }
+
     public boolean isSuccess() {
         return isSuccess;
     }

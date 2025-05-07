@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.jjikeobang.room.model.Room;
 import static com.jjikeobang.util.DatabaseUtil.Close;
@@ -56,7 +58,6 @@ public class RoomRepositoryImpl implements RoomRepository {
 
 	@Override
 	public Room findById(long roomId) {
-		
 		Connection conn = getConnection();
 		try (PreparedStatement psmt = conn.prepareStatement(SELECT_ROOM_SQL)){
 			
@@ -80,6 +81,34 @@ public class RoomRepositoryImpl implements RoomRepository {
 			Close(conn);
 		}
 		
+		return null;
+	}
+
+	@Override
+	public Room findByEntryCode(String entryCode) {
+		Connection conn = getConnection();
+		try (PreparedStatement psmt = conn.prepareStatement(SELECT_ROOM_BY_ENTRY_CODE)){
+
+			psmt.setString(1, entryCode);
+			ResultSet rs = psmt.executeQuery();
+
+			if(rs.next()) {
+				return new Room(
+						rs.getLong(1),
+						rs.getString(2),
+						rs.getInt(3),
+						rs.getInt(4),
+						rs.getString(5),
+						rs.getInt(6),
+						rs.getInt(7));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Close(conn);
+		}
+
 		return null;
 	}
 }
