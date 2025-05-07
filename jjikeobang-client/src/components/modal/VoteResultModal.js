@@ -1,25 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
 
-function VoteResultModal({voteResult}){
-
-    const handleCloseModal = () => {
-        let closeBtn = document.getElementById('closeModal');
-        closeBtn.click();
-     }
- 
-     const handleXButton = () => {
-        handleCloseModal();
-     }
+function VoteResultModal({voteResult, voteResultModalClose}){
 
     return (
-        <div className="modal fade" id="voteResultModal" tabindex="-1" aria-labelledby="voteResultModalLabel" aria-hidden="true">
+    <>
+        <div className="modal show d-block" id="voteResultModal" tabindex="-1" aria-labelledby="voteResultModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="voteResultModalLabel">투표 결과</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={voteResultModalClose}></button>
                     </div>
                     <div className="modal-body">
                         {/* 결과 컨테이너 */}
@@ -65,7 +56,7 @@ function VoteResultModal({voteResult}){
                             </div>
 
                             {/* 돌아가기 버튼 */}
-                            <Link to="/dashboard" className="btn back-btn" onClick={handleXButton}>
+                            <Link to="/" className="btn back-btn">
                                 나가기
                             </Link>
 
@@ -75,6 +66,9 @@ function VoteResultModal({voteResult}){
                 </div>
             </div>
         </div>
+        <div className="modal-backdrop show"></div>
+    </>
+
     );
 }
 
