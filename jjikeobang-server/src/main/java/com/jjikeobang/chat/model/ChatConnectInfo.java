@@ -9,19 +9,24 @@ import java.util.Map;
 
 public class ChatConnectInfo {
     private Long roomId;
-    private Map<String, Session> participants;
+    private final Map<String, Session> participants;
 
     public ChatConnectInfo(Long roomId) {
         this.roomId = roomId;
         participants = new HashMap<>();
     }
 
-    public void AddUser(Session session) {
-        this.participants.put(session.getId(), session);
+    public void addUser(Session session) {
+        synchronized (participants) {
+            this.participants.put(session.getId(), session);
+            System.out.println("Add user on chat connect info. roomId=" + roomId + " session=" + session.getId() + " participants=" + participants.size());
+        }
     }
 
-    public void RemoveUser(String sessionId) {
-        if(this.participants.containsKey(sessionId)) participants.remove(sessionId);
+    public void removeUser(String sessionId) {
+        synchronized (participants) {
+            if(this.participants.containsKey(sessionId)) participants.remove(sessionId);
+        }
     }
 
     public boolean isEmptyRoom() {
@@ -29,6 +34,8 @@ public class ChatConnectInfo {
     }
 
     public List<Session> getParticipants() {
-        return new ArrayList<>(participants.values());
+        synchronized (participants) {
+            return new ArrayList<>(participants.values());
+        }
     }
 }

@@ -1,9 +1,12 @@
 class SocketService {
-    constructor(roomId) {
-        this.roomId = roomId;
-        this.websocket = new WebSocket(`ws://localhost:8080/chat/${roomId}`);
-        this.websocket.onmessage = (e) => console.log("👉 응답:", e.data);
+    constructor(roomId, onMessageCallback, username) {
+        this.websocket = new WebSocket(`ws://localhost:8080/chat/${roomId}?usernam=${username}`);
+        // this.websocket.addEventListener("open", () => {
+        //     this.sendMessage(username, `${username}님이 입장했습니다.`);
+        // })
 
+        this.websocket.onmessage = (e) => onMessageCallback(e.data);
+        
         console.log('완료!')
     }
 

@@ -47,13 +47,15 @@ public class ChatConnectionServiceImpl implements ChatConnectionService {
 
     @Override
     public void addParticipant(Long roomId, Session session) {
-        roomConnections.get(roomId).AddUser(session);
+        System.out.println("Add participant roomId:" + roomId + " session:" + session.getId());
+        roomConnections.get(roomId).addUser(session);
     }
 
     @Override
     public void removeParticipant(Long roomId, String sessionId) {
         ChatConnectInfo chatConnectInfo = roomConnections.get(roomId);
-        chatConnectInfo.RemoveUser(sessionId);
+        chatConnectInfo.removeUser(sessionId);
+        System.out.println("채팅방 연결 정보:" + chatConnectInfo.getParticipants().size() + " roomId=" + roomId);
 
         if(chatConnectInfo.isEmptyRoom()) {
             roomConnections.remove(roomId);
@@ -62,6 +64,8 @@ public class ChatConnectionServiceImpl implements ChatConnectionService {
 
     @Override
     public List<Session> getParticipantsFromRoom(Long roomId) {
-        return this.roomConnections.get(roomId).getParticipants();
+        ChatConnectInfo chatConnectInfo = roomConnections.get(roomId);
+        System.out.println("채팅방 연결 정보:" + chatConnectInfo.getParticipants().size() + " roomId=" + roomId);
+        return chatConnectInfo.getParticipants();
     }
 }

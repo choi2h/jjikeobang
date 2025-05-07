@@ -10,6 +10,13 @@ public class WebSocketMessage {
 
     public WebSocketMessage() {}
 
+    public WebSocketMessage(MessageType type, String name, String text) {
+        this.type = type;
+        this.name = name;
+        this.text = text;
+        this.dateTime = LocalDateTime.now();
+    }
+
     public void setType(String type) {
         this.type = MessageType.getType(type);
     }

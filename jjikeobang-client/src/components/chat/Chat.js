@@ -1,28 +1,45 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import SocketService from "../../service/SocketService";
 
 function Chat({roomId}) {
+    roomId = 1;
+    const username = '익명1';
+    const [chats, setChats] = useState([]);
+    const [inputMessage, setInputMessage] = useState('');
+    const scrollRef = useRef();
     const socket = useRef(null);
-    console.log('컴포넌트 마운트');
+
+    const onMessageCallback = (message) => {
+        console.log("채팅 메시지 받았어!!!!" + message);
+        const res = JSON.parse(message);
+        setChats(prevChats => [...prevChats, res]);
+    }
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [chats]);
+
     useEffect(() => {
         if(!socket.current) {
-            const socketService = new SocketService(roomId);
+            const socketService = new SocketService(roomId, onMessageCallback, username);
             socket.current = socketService;
         }
 
-        return () => {
-            if(socket.current) {
-                socket.current.close();
-                socket.current = null;
-            }
-        }
+        // return () => {
+        //     if(socket.current) {
+        //         socket.current.close();
+        //         socket.current = null;
+        //     }
+        // }
     });
 
     const onClickSendButton = () => {
-        console.log('전송 버튼 클릭');
+        console.log(`전송 버튼 클릭 message=${inputMessage}`);
         if(socket.current) {
-            socket.current.sendMessage('user1', 'i can send message!!!!');
+            socket.current.sendMessage('user1', inputMessage);
         } else {
             alert('채팅에 연결되어있지 않습니다.');
         }
@@ -30,12 +47,22 @@ function Chat({roomId}) {
 
     return (
         <div className="chat-wrapper">
-            <div className="chat-container">
-                <ChatMessage message={"잠시만 기다려주세요. 곧 투표가 시작됩니다."} time={"08:55:45"}/>
-                <ChatMessage message={"투표 시작 전까지 자유롭게 대화해주세요!"} time={"08:57:15"}/>
+            <div className="chat-container" ref={scrollRef}>
+                {
+                    chats.map((message) => {
+                        return <ChatMessage 
+                            messageInfo={message}
+                        />;
+                    })
+                }
             </div>
             <div className="chat-input-container">
-                <input type="text" className="chat-input" placeholder="메시지를 입력하세요..." />
+                <input 
+                    type="text" 
+                    className="chat-input" 
+                    placeholder="메시지를 입력하세요..."
+                    onChange={e => setInputMessage(e.target.value)}
+                 />
                 <button className="chat-send-btn" onClick={onClickSendButton}>
                     <i className="bi bi-send"></i>
                 </button>
