@@ -18,6 +18,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/vote")
 public class VoteController  extends HttpServlet{
@@ -47,10 +48,13 @@ public class VoteController  extends HttpServlet{
 		// 후보자 득표수 + 1
 		voteService.updateCandidateVoteCount(candidate);
 		
+		HttpSession session = req.getSession();
+		Long memberId = (Long) session.getAttribute("memberId");
+
 		// 투표 로그 저장
 		VoteHistory voteHistory = new VoteHistory();
 		voteHistory.setRoomId(roomId);
-		voteHistory.setMemberId(1);
+		voteHistory.setMemberId(memberId);
 		
 		voteService.insertVoteHistory(voteHistory);
 		

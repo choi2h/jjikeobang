@@ -46,6 +46,7 @@ function VoteUser(){
     const handleVoteEvent = () => {
         fetch('http://localhost:8080/candidates?roomId=' + roomInfo.roomId, {
             method: 'GET',
+            credentials: 'include'
         })
         .then((res) => {
             if (!res.ok) {throw new Error('서버 오류');}
@@ -85,7 +86,8 @@ function VoteUser(){
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: "roomId=" + roomInfo.roomId + "&candidateId=" + selectedCandidateId
+            body: "roomId=" + roomInfo.roomId + "&candidateId=" + selectedCandidateId,
+            credentials: 'include'
         })
         .then((res) => {
             if (!res.ok) {throw new Error('서버 오류');}

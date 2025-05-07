@@ -79,7 +79,8 @@ function CreateRoom(){
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(requestData),
+            credentials: 'include'
         })
         .then((res) => {
             if (!res.ok) { throw new Error('서버 오류');}

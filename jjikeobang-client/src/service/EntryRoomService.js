@@ -2,7 +2,8 @@ import { HttpStatusCode } from "axios";
 
 function enterRoom(entryCode) {
     return fetch(`http://localhost:8080/room/enter?entryCode=${entryCode}`, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
     .then((res) => {
         if(res.status === HttpStatusCode.BadRequest) {

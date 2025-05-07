@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
 
@@ -7,9 +7,39 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 function UserDashboard({ user }) {
     const navigate = useNavigate();
-    const handleVoting = async () => {
-        navigate('/voting');
-    }
+    const [entryCode, setEntryCode] = useState('');
+    
+    const enterVoteRoom = async() => {
+
+        fetch('http://localhost:8080/room/entry', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'entryCode=' + entryCode
+            })
+            .then(async (res) => {
+                const resData = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(resData.message);
+                }
+                return resData;
+            })
+            .then((data) => {
+                navigate('/voteUser',{
+                    state : {
+                        roomInfo : data.roomInfo, //방 정보 
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error('에러 발생:', err);
+                alert(err.message);
+            });
+    };
+
+
     const handleLogout = async () => {
         try {
             const response = await fetch(`${API_URL}/member/logout`, {
@@ -75,8 +105,8 @@ function UserDashboard({ user }) {
                     <div className="mb-5">
                         <p className="text-center sub-text mb-2">또는 입장 코드로 참여</p>
                         <div className="input-group room-code-input">
-                            <input type="text" className="form-control" placeholder="입장 코드" aria-label="입장 코드" />
-                            <button className="btn btn-primary" type="button" onClick={handleVoting}>입장</button>
+                            <input type="text" className="form-control" value={entryCode} onChange={(e)=>{setEntryCode(e.target.value)}} placeholder="입장 코드" aria-label="입장 코드" />
+                            <button className="btn btn-primary" type="button" onClick={enterVoteRoom}>입장</button>
                         </div>
                     </div>
                 </div>

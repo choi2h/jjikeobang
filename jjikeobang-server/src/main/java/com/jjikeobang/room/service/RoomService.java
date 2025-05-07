@@ -14,8 +14,5 @@ public interface RoomService {
 	Room findByEntryCode(String entryCode);
 
 	void updateRoom(Room room);
-	
-	EntryRoomDto findByEntryCode(String entryCode);
-	void insertRoom(Room room) throws SQLException;
 }
 

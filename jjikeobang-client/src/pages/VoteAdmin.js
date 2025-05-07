@@ -67,7 +67,8 @@ function VoteAdmin(){
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(requestData),
+            credentials: 'include'
         })
         .then(async (res) => {
             if (!res.ok) {throw new Error('서버 오류');}
@@ -123,7 +124,8 @@ function VoteAdmin(){
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: "roomId=" + roomInfo.roomId + "&candidateId=" + selectedCandidateId
+            body: "roomId=" + roomInfo.roomId + "&candidateId=" + selectedCandidateId,
+            credentials: 'include'
         })
         .then((res) => {
             if (!res.ok) {throw new Error('서버 오류');}

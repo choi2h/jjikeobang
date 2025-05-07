@@ -27,9 +27,9 @@ public class EntryRoomController extends HttpServlet {
         String entryCode = req.getParameter("entryCode");
 
         try {
-            EntryRoomDto dto = roomService.findByEntryCode(entryCode);
-            System.out.println("Get entryRoomDto: " + dto);
-            setResponse(res, HttpServletResponse.SC_OK, true, dto);
+            //EntryRoomDto dto = roomService.findByEntryCode(entryCode);
+            //System.out.println("Get entryRoomDto: " + dto);
+            //setResponse(res, HttpServletResponse.SC_OK, true, dto);
         } catch (RuntimeException e) {
             e.printStackTrace();
             setResponse(res, HttpServletResponse.SC_BAD_REQUEST, false, null);

@@ -18,6 +18,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/vote/abstain")
 public class VoteAbstainController extends HttpServlet{
@@ -39,10 +40,13 @@ public class VoteAbstainController extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		long roomId = Long.parseLong(req.getParameter("roomId"));
 		
+		HttpSession session = req.getSession();
+		Long memberId = (Long) session.getAttribute("memberId");
+		
 		// 투표 로그 저장
 		VoteHistory voteHistory = new VoteHistory();
 		voteHistory.setRoomId(roomId);
-		voteHistory.setMemberId(99l);
+		voteHistory.setMemberId(memberId);
 		
 		voteService.insertVoteHistory(voteHistory);
 		
@@ -52,7 +56,7 @@ public class VoteAbstainController extends HttpServlet{
 		int totVoteCnt = voteService.selectTotalVoteCount(roomId);
 		boolean isEnd = false;
 		
-		if(totEntCnt == totVoteCnt) {
+		if(totEntCnt <= totVoteCnt) {
 			// 투표 종료
 			System.out.println("투표 종료");
 			isEnd = true;

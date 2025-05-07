@@ -13,7 +13,8 @@ function Dashboard(){
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: 'entryCode=' + entryCode
+            body: 'entryCode=' + entryCode,
+            credentials: 'include'
             })
             .then(async (res) => {
                 const resData = await res.json();
