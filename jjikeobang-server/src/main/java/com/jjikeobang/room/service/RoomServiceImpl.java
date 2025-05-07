@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 public class RoomServiceImpl implements RoomService {
 
+	private static final String PREFIX_MEMBER_NAME = "익명";
+
 	private final RoomRepository roomRepository;
 	private final ChatConnectionService chatConnectionService;
 
@@ -56,8 +58,7 @@ public class RoomServiceImpl implements RoomService {
 		roomInfoDto.setMaxParticipantCount(room.getMaxParticipant());
 		roomInfoDto.setTotalEntryCount(room.getTotalEntryCount());
 		roomInfoDto.setCreateMemberId(room.getCreateMemberId());
-		// TODO 회원 이름 생성
-//		roomInfoDto.setUserNickname();
+		roomInfoDto.setUserNickname(PREFIX_MEMBER_NAME+(room.getTotalEntryCount()+1));
 		return roomInfoDto;
 	}
 }
