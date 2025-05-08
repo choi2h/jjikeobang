@@ -40,7 +40,7 @@ function Voting() {
             });
     }); */
 
-    const socketServiceRef = useRef(null);
+    const voteSocketServiceRef = useRef(null);
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
@@ -52,20 +52,26 @@ function Voting() {
         
     };
 
+    const onVoteStart = () => {
+        voteSocketService.current = new VoteSocketService(
+            roomId,
+            handleSocketMessage
+        );
+    }
+
+    const onVoted = () => {
+
+    }
+
+    const onVoteEnd = () => {
+        voteSocketService.close();
+    }
+
     // 투표 웹소켓 연결
     const [voteSocketService] = useState({});
 
     // 투표 웹소켓 연결, 추후 화면 전환 구현 시 VoteCandidateItemSet에서 초기화, 현재는 Voting.js에서 초기화
-    useEffect(() => {
-        socketServiceRef.current = new VoteSocketService(
-            roomId,
-            handleSocketMessage
-        );
 
-        return () => {
-            socketServiceRef.current?.close();
-        };
-    }, []);
 
     useEffect(() => {
         axios
