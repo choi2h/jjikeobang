@@ -1,13 +1,10 @@
 import React, { useState} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
 import Chat from '../components/chat/Chat';
 import axios from 'axios';
-import Chat from '../components/chat/Chat';
-import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
 import VoteResultModal from '../components/modal/VoteResultModal';
 import RoomHeader from '../components/voteInfo/RoomHeader';
-import CandidateEditModal from '../components/modal/CandidateEditModal';
 import CandidateEditItem from '../components/voteInfo/CandidateEditItem';
 
 const API_URL = process.env.REACT_APP_API_URL;

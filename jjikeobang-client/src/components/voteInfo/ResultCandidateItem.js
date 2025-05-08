@@ -1,3 +1,4 @@
+import React from 'react';
 function ResultCandidateItem({ candidateInfo, number }) {
     const voteRate = candidateInfo.voteRate || 0;
 

@@ -1,7 +1,7 @@
 import React from "react";
-import ResultCandidateItem from "./ResultVoteCandidateItem";
+import ResultCandidateItem from "./ResultCandidateItem";
 
-function ResultCandidateItemSet({ candidates }) {
+function ResultCandidateItemSet({ candidates, voteStatus }) {
   return (
     <div className="col-md-7 vote-wrapper">
       <div className="candidate-list">
