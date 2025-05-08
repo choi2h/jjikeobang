@@ -38,13 +38,27 @@ function CandidateEditItemSet({ selectedIndex, setSelectedIndex }) {
             })
             .catch((err) => {
                 window.alert('후보자 DB 등록에 실패했습니다.', err);
-            })
-        axios.get(`http://localhost:8080/vote-start?roomId=${room.roomId}`, {
-            withCredentials: true
-        })
+            });
+        voteInit();
         axios.get(`http://localhost:8080/notice/vote/start?roomId=${room.roomId}`, {
             withCredentials: true
         })
+    };
+
+    const voteInit = () => {
+        axios.get(`http://localhost:8080/vote-start?roomId=${room.roomId}`, {
+            withCredentials: true
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                
+            } else {
+                console.log("투표 초기화 실패 : ", res.status);
+            }
+        })
+        .catch((error) => {
+            console.error("투표 시작 중 오류 발생 : ", error);
+        });
     };
 
     return (

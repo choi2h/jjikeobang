@@ -22,7 +22,20 @@ public class VoteInitController extends HttpServlet {
     private final CandidateRoomService candidateRoomService = new CandidateRoomServiceImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
-        long roomId = Long.parseLong(req.getParameter("roomId"));
+        String roomIdParam = req.getParameter("roomId");
+
+        if (roomIdParam == null) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        long roomId;
+        try {
+            roomId = Long.parseLong(roomIdParam);
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         List<Candidate> room = candidateRoomService.findAllByRoomId(roomId);
         List<CandidateInfo> roomInfo = new ArrayList<>();
@@ -36,6 +49,8 @@ public class VoteInitController extends HttpServlet {
         VoteCounting voteCounting = VoteCounting.of(roomInfo);
 
         VoteCountingMap.put(roomId, voteCounting);
+
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
 }
