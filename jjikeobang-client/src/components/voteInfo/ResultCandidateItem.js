@@ -1,5 +1,5 @@
 function ResultCandidateItem({ candidateInfo, number }) {
-    const voteRate = candidateInfo.voteRate || 0; // 투표율 (0~100 값 예상)
+    const voteRate = candidateInfo.voteRate || 0;
 
     return (
         <div className="candidate-item">

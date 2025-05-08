@@ -21,7 +21,7 @@ import java.util.List;
 public class VoteInitController extends HttpServlet {
     private final CandidateRoomService candidateRoomService = new CandidateRoomServiceImpl();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         long roomId = Long.parseLong(req.getParameter("roomId"));
 
         List<Candidate> room = candidateRoomService.findAllByRoomId(roomId);
@@ -29,6 +29,10 @@ public class VoteInitController extends HttpServlet {
         for (Candidate candidate : room) {
             roomInfo.add(new CandidateInfo(candidate.getCandidateId()));
         }
+        //기권표 후보
+        CandidateInfo abstain = new CandidateInfo(-1L);
+        roomInfo.add(abstain);
+
         VoteCounting voteCounting = VoteCounting.of(roomInfo);
 
         VoteCountingMap.put(roomId, voteCounting);

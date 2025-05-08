@@ -1,5 +1,5 @@
 import React from "react";
-import ResultCandidateItem from "./ResultVoteCandidateItem"; // CandidateItem을 import
+import ResultCandidateItem from "./ResultVoteCandidateItem";
 
 function ResultCandidateItemSet({ candidates }) {
   return (
@@ -15,7 +15,7 @@ function ResultCandidateItemSet({ candidates }) {
         ))}
       </div>
 
-      {/* 투표 & 기권 버튼
+      {/* 투표 & 기권 버튼 비활성화할지 여부 필요
       <div className="row">
         <div className="col-md-6 mb-3">
           <button className="btn vote-btn">투표하기</button>

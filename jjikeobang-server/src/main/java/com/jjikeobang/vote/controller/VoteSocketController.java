@@ -4,8 +4,6 @@ import com.jjikeobang.util.JsonUtil;
 import com.jjikeobang.vote.model.VoteRequestDTO;
 import com.jjikeobang.vote.model.VoteCounting;
 import com.jjikeobang.vote.model.VoteCountingMap;
-import com.jjikeobang.vote.service.VoteService;
-import com.jjikeobang.vote.service.VoteServiceImpl;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
@@ -21,16 +19,16 @@ import java.util.*;
 @ServerEndpoint("/vote/{roomId}")
 public class VoteSocketController extends HttpServlet {
     private static Map<Long, List<Session>> roomClients = new HashMap<>();
-
-    private final VoteService voteService = new VoteServiceImpl();
     private static final Object lock = new Object();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("roomId") Long roomId) {
+    public void onOpen(Session session, @PathParam("roomId") Long roomId) throws IOException {
         roomClients.computeIfAbsent(roomId, key -> Collections.synchronizedList(new ArrayList<>())).add(session);
 
-        VoteCounting voteCounting = VoteCountingMap.get(roomId);
-        broadcast(roomId, voteCounting);
+        if(session.isOpen()){
+            VoteCounting voteCounting = VoteCountingMap.get(roomId);
+            session.getBasicRemote().sendText(voteCounting.toJson("vote"));
+        }
     }
 
     @OnMessage
