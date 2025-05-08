@@ -8,6 +8,7 @@ import VotingReady from './pages/VotingReady';
 import Voting from './pages/Voting';
 import AdminWaiting from './pages/AdminWaiting';
 import UserWaiting from './pages/UserWaiting';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/votingHistory" element={<VotingHistory />} />
         <Route path="/createRoom" element={<CreateRoom />} />
         <Route path="/votingReady" element={<VotingReady />} />

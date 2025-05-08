@@ -28,7 +28,7 @@ const LoginButton = ({ formData }) => {
                 const json = await response.json()
                 if (json.login_status) {
                     alert('정상적으로 로그인 되었습니다.');
-                    navigate('/');
+                    navigate('/dashboard');
                 } else {
                     alert('아이디 또는 비밀번호가 잘못되었습니다.');
                 }
