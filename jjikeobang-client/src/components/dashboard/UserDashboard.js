@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
-import enterRoom from "../../service/EntryRoomService";
+import enterRoom from "../../service/EntryRoomService.js";
 import Profile from '../header/Profile.js';
 
 function UserDashboard({ user }) {
+    console.log('UserDashBoard : ' + user);
     const [roomCode, setRoomCode] = useState("");
     const navigate = useNavigate();
 
@@ -45,7 +46,7 @@ function UserDashboard({ user }) {
         <div className="container-fluid main-container">
             <div className="row mb-4">
                 <div className="col-12 d-flex justify-content-end">
-                    <Profile />
+                    <Profile user={user}/>
                 </div>
             </div>
 

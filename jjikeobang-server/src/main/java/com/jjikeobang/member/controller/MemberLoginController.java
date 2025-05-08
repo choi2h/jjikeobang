@@ -45,7 +45,6 @@ public class MemberLoginController extends HttpServlet {
             HttpSession session = req.getSession();
             Member currentMember = memberService.findByLoginId(userId);
             session.setAttribute("memberId", currentMember.getId());
-            System.out.println(currentMember.getId());
         }
     }
 }

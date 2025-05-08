@@ -1,5 +1,6 @@
 import PercentageBar from "./PercentageBar";
 
+
 function HistoryCard({historyInfo}) {
     const winningCandidate = historyInfo.candidateInfos.length === 0 ? {signNumber:0, name:'', voteCount:0} : 
         historyInfo.candidateInfos.reduce((max, candidate) => {
@@ -37,6 +38,7 @@ function HistoryCard({historyInfo}) {
                 })}
             </div>
         </div>
+
         <div class="text-end mt-3">
             <small>총 투표수: {historyInfo.totalEntryCount}</small>
         </div>
