@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,8 +17,8 @@ import java.util.List;
 @WebServlet("/vote/history")
 public class VoteHistoryController extends HttpServlet {
 
-    private VoteHistoryService voteHistoryService;
-    private JsonUtil jsonUtil;
+    private final VoteHistoryService voteHistoryService;
+    private final JsonUtil jsonUtil;
 
     public VoteHistoryController() {
         this.voteHistoryService = new VoteHistoryServiceImpl();
@@ -26,7 +27,15 @@ public class VoteHistoryController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        long memberId = Integer.parseInt(req.getParameter("memberId"));
+        HttpSession session = req.getSession();
+        System.out.println("memberId: " + session.getAttribute("memberId"));
+        if (session == null || session.getAttribute("memberId") == null) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        Long memberId = (Long) session.getAttribute("memberId");
+        System.out.println("memberId:" + memberId);
 
         try {
             List<VoteHistoryDto> histories = voteHistoryService.findByMemberId(memberId);

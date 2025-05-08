@@ -6,6 +6,6 @@ import com.jjikeobang.history.model.VoteHistory;
 import java.util.List;
 
 public interface VoteHistoryService {
-    void insertVoteHistory(VoteHistory voteHistory);
+    void addVoteHistory(Long roomId, Long memberId, String nickname);
     List<VoteHistoryDto> findByMemberId(Long memberId);
 }
