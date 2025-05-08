@@ -1,34 +1,35 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
-
-
-const API_URL = process.env.REACT_APP_API_URL;
+import enterRoom from "../../service/EntryRoomService";
+import Profile from '../header/Profile.js';
 
 function UserDashboard({ user }) {
+    const [roomCode, setRoomCode] = useState("");
     const navigate = useNavigate();
-    const handleVoting = async () => {
-        navigate('/voting');
-    }
-    const handleLogout = async () => {
-        try {
-            const response = await fetch(`${API_URL}/member/logout`, {
-                method: 'GET',
-                credentials: 'include'
-            });
 
-            if (response.ok) {
-                alert('정상적으로 로그아웃 되었습니다.');
-                window.location.reload();
-            } else {
-                console.log(response.status);
-                alert('에러가 발생했습니다.');
-            }
-        } catch (error) {
-            console.error('오류 발생:', error);
-            alert('에러가 발생했습니다.');
-        }
+    const updateRoomCode = (e) => {
+        setRoomCode(e.target.value);
     }
+
+    const onClickEnterVotingRoom = async() => {
+        console.log(`click enter room button!!!! inputRoomCode=${roomCode}`);
+        if(roomCode === "") {
+            alert("입장 코드를 입력해주세요.");
+            return;
+        }
+
+        enterRoom(roomCode).then((res) => {
+            console.log(`enter room result=${JSON.stringify(res)}`);
+            if(res && res.success) {
+                navigate('/userWaiting', {
+                    state: {
+                        roomInfo: res.roomInfo
+                    }
+                })
+            }
+        });
+    };
     
     const handleCreatRoom = (e) => {
         e.preventDefault();
@@ -41,23 +42,10 @@ function UserDashboard({ user }) {
     };
   
     return (
-        <>
         <div className="container-fluid main-container">
-
             <div className="row mb-4">
                 <div className="col-12 d-flex justify-content-end">
-                    <div className="dropdown profile-dropdown">
-                        <button className="btn profile-btn dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div className="profile-circle">
-                                <span>{user.charAt(0)}</span>
-                            </div>
-                            <span className="profile-name">{user}</span>
-                        </button>
-                        <ul className="dropdown-menu" aria-labelledby="profileDropdown">
-                            <li><a className="dropdown-item" href="/history">지난 투표 기록</a></li>
-                            <li><button className="dropdown-item" onClick={handleLogout}>로그아웃</button></li>
-                        </ul>
-                    </div>
+                    <Profile />
                 </div>
             </div>
 
@@ -75,8 +63,13 @@ function UserDashboard({ user }) {
                     <div className="mb-5">
                         <p className="text-center sub-text mb-2">또는 입장 코드로 참여</p>
                         <div className="input-group room-code-input">
-                            <input type="text" className="form-control" placeholder="입장 코드" aria-label="입장 코드" />
-                            <button className="btn btn-primary" type="button" onClick={handleVoting}>입장</button>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="입장 코드" 
+                                aria-label="입장 코드" 
+                                onChange={updateRoomCode}/>
+                            <button className="btn btn-primary" type="button" onClick={onClickEnterVotingRoom}>입장</button>
                         </div>
                     </div>
                 </div>
@@ -86,7 +79,6 @@ function UserDashboard({ user }) {
                 <p>멋쟁이사자처럼 백엔드 15기 회고 8팀</p>;
             </div>
         </div>
-        </>
     );
 }
 
