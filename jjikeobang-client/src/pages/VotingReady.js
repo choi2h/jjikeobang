@@ -1,13 +1,10 @@
 import React, { useState} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
 import Chat from '../components/chat/Chat';
 import axios from 'axios';
-import Chat from '../components/chat/Chat';
-import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
 import VoteResultModal from '../components/modal/VoteResultModal';
 import RoomHeader from '../components/voteInfo/RoomHeader';
-import CandidateEditModal from '../components/modal/CandidateEditModal';
 import CandidateEditItem from '../components/voteInfo/CandidateEditItem';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -16,6 +13,7 @@ function VotingReady(){
     const location = useLocation();
     const room = location.state.roomInfo || {};
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     //후보자 목록 렌더링
     const [candidateList, setCandidateList] = useState(()=>{
@@ -133,11 +131,7 @@ function VotingReady(){
 
                             {/* 투표 현황 */}
                             <div className="row mt-4">
-
-                            {/* 테스트용 버튼 */}
-                            <button onClick={handleVoteEnd}>투표종료</button>
-                                <VoteStatusBoard label='총 득표수' content='12표' color='#1a4b8c '/>
-                                <VoteStatusBoard label='남은 시간' content='14분 47초' color='#f59e0b '/>
+                                <VoteStatusBoard totalAmount={totalAmount} />
                             </div>
                         </div>
                     </div>
