@@ -23,7 +23,7 @@ function UserDashboard({ user }) {
         enterRoom(roomCode).then((res) => {
             console.log(`enter room result=${JSON.stringify(res)}`);
             if(res && res.success) {
-                navigate('/userWaiting', {
+                navigate(`/voting/${res.roomInfo.entryCode}`, {
                     state: {
                         roomInfo: res.roomInfo
                     }

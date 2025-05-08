@@ -5,7 +5,8 @@ import axios from 'axios';
 import {addCandidate} from "../../service/CandidateService";
 import voteInit from "../../service/VoteInitService";
 
-function CandidateEditItemSet({ roomId, candidates, setCandidates, voteStart}) {
+function CandidateEditItemSet({ roomInfo, candidates, setCandidates, voteStart}) {
+    const roomId = roomInfo.roomId;
     console.log(`CandidateEnditItemSet roomId=${roomId} candidates=${JSON.stringify(candidates)}`)
     // 선택된 후보자의의 index 저장
     const [selectedIndex, setSelectedIndex] = useState(1);
@@ -44,6 +45,9 @@ function CandidateEditItemSet({ roomId, candidates, setCandidates, voteStart}) {
                 voteInit(roomId);
                 // 채팅 시작 안내 - 채팅방 전달
                 axios.get(`http://localhost:8080/notice/vote/start?roomId=${roomId}`, {
+                    withCredentials: true
+                });
+                axios.get(`http://localhost:8080/count?roomId=${roomId}&duration=${roomInfo.voteDuration}`, {
                     withCredentials: true
                 });
                 voteStart();

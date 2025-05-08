@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
-@WebServlet
+@WebServlet("/count")
 public class CountdownController extends HttpServlet {
     private static final Map<Long, ScheduledFuture<?>> roomTimers = new ConcurrentHashMap<>();
     private static final Map<Long, Integer> durationMap = new ConcurrentHashMap<>();
@@ -65,11 +65,13 @@ public class CountdownController extends HttpServlet {
             if (timeLeft <= 1) {
                 durationMap.remove(roomId);
                 roomTimers.remove(roomId).cancel(false);
-                System.out.println("Countdown finished for roomId: " + roomId);
+                Map<String,Object> msg = new HashMap<>();
+                System.out.println("투표끝");
+                VoteSocketController.broadcast(roomId, msg, "vote-over");
             } else {
                 durationMap.put(roomId, timeLeft - 1);
                 Map<String,Object> msg = new HashMap<>();
-                msg.put("timeRemaining", timeLeft);
+                msg.put("remainTime", timeLeft);
                 VoteSocketController.broadcast(roomId, msg, "time");
             }
         }, 0, 1, TimeUnit.SECONDS);

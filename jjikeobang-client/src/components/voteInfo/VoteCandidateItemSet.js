@@ -3,7 +3,7 @@ import CandidateItem from "./VoteCandidateItem"; // CandidateItem을 import
 
 
 
-function CandidateItemSet({ candidates, roomId, voteService }) {
+function CandidateItemSet({ candidates, roomId, voteService, voted }) {
 
   // 선택된 후보자의의 index 저장
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -23,12 +23,14 @@ function CandidateItemSet({ candidates, roomId, voteService }) {
     voteService.sendMessage(JSON.stringify({
       candidateId: selectedCandidateId
     }));
+    voted();
   };
 
   const handleAbstain = () => {
     voteService.sendMessage(JSON.stringify({
       candidateId: -1
     }));
+    voted();
   };
   
   return (
