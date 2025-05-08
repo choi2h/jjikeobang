@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Chat from "../components/chat/Chat";
 import VoteStatusBoard from "../components/voteInfo/VoteStatusBoard";
@@ -11,20 +10,21 @@ import CandidateEditItemSet from "../components/voteInfo/CandidateEditItemSet";
 import VoteCandidateItemSet from "../components/voteInfo/VoteCandidateItemSet";
 import ResultCandidateItemSet from "../components/voteInfo/ResultCandidateItemSet";
 import RoomHeader from "../components/voteInfo/RoomHeader";
+import getVoteResult from "../service/VoteResultService";
+import checkAdmin from '../service/CheckAdminService';
 
-const API_URL = process.env.REACT_APP_API_URL;
 function Voting() {
     const location = useLocation();
     const roomInfo = location.state.roomInfo || {};
     const roomId = roomInfo.roomId;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면
-    const [candidates, setCandidates] = useState([]);
+    const [candidates, setCandidates] = useState(location.state.candidateList);
     const [voteStatus, setVoteStatus] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);
 
-    
+    console.log(`방 입장!!!! room = ${JSON.stringify(roomInfo)}, candidates=${JSON.stringify(candidates)}`)
     /*
     useEffect(() => {
         axios
@@ -39,7 +39,8 @@ function Voting() {
             .catch((err) => {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
-    }); */
+    }); 
+    */
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
@@ -73,30 +74,18 @@ function Voting() {
 
 
     useEffect(() => {
-        axios
-            .get(`http://localhost:8080/room/check-admin?roomId=${roomId}`, {
-                withCredentials: true
-            })
-            .then((res) => {
-                if (res.data.statusCode === 200) {
-                    if(res.data.isAdmin){
-                        setProgress(1);
-                    }else{
-                        setProgress(0);
-                    }
-                } else {
-                    console.log('에러 코드 :', res.data.statusCode, '메세지 : ', res.data.message);
-                    setProgress(0);
-                }
-            })
-            .catch((err) => {
-                console.error("후보자 목록 불러오기 실패:", err);
-            });
-    }, []);
+        checkAdmin({roomId}).then((isAdmin) => {
+            if(isAdmin){
+                setProgress(1);
+            }else{
+                setProgress(0);
+            }
+        })
+    }, [roomId]);
 
     const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
-        () => <CandidateEditItemSet candidates={candidates} roomId={roomId}/>,
+        () => <CandidateEditItemSet roomId={roomId} candidates={candidates} setCandidates={setCandidates}/>,
         () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} socketService={voteSocketService} />,
         () => <ResultCandidateItemSet candidates={candidates} voteStatus={voteStatus} />
     ], [progress, candidates, voteStatus]);
@@ -107,40 +96,15 @@ function Voting() {
     
     // 투표 종료 => 결과 팝업 출력
     const handleVoteEnd = () => {
-        fetch(`${API_URL}/vote/result`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: "roomId=" + roomId,
-            credentials: 'include'
-            })
-            .then((res) => {
-                if (!res.ok) { throw new Error('서버 오류');}
-                return res.json();
-            })
-            .then((voteResult) => {
-                
-                //투표 결과 담기
-                setVoteResult({
-                    signNumber : voteResult.candidateId,
-                    name : voteResult.name,
-                    description : voteResult.description,
-                    promise : voteResult.promise,
-                    totVoteRate : voteResult.voteRate,
-                    absRate : voteResult.absVoteRate,
-                    totVoteCount : voteResult.totalEntryCount,
-                    candidateVoteRate : voteResult.topCandidateVoteRate,
-                });
+        getVoteResult(roomId).then((result) => {
+            //투표 결과 담기
+            setVoteResult(result);
 
-                //투표 결과 팝업 출력
-                setVoteResultModalOpen(true);
-            })
-            .catch((err) => {
-                console.error('에러 발생:', err);
-                alert('투표 결과 조회 중 오류가 발생하였습니다.');
-            });
+            //투표 결과 팝업 출력
+            setVoteResultModalOpen(true);
+        });     
     };
+
     return (
         <>
             <div className="container-fluid main-container">
@@ -151,10 +115,12 @@ function Voting() {
                             <RoomHeader title={roomInfo.name} entryCode={roomInfo.entryCode} />
 
                             <div className="row">
-                                
-                                {stepComponents[progress]()}
-                                
-                                <Chat roomId={roomId} />
+                                 <div className="col-md-7 vote-wrapper" >
+                                    {stepComponents[progress]()}
+                                </div>
+                                <div className="col-md-5">
+                                    <Chat roomId={roomId} />
+                                </div>
                             </div>
                             <button className="btn vote-end-btn" onClick={handleVoteEnd}>투표 종료</button>
 

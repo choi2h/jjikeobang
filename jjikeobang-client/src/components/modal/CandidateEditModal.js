@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-function CandidateEditModal({candidate, candidateList, setCandidateList, modalId}){
-    
-    const [t_Candidate, t_setCandidate] = useState(candidate);
-    const [id, setId] = useState(t_Candidate.id);
-    const [name, setName] = useState(t_Candidate.name);
-    const [description, setDescription] = useState(t_Candidate.description);
-    const [promise, setPromise] = useState(t_Candidate.promise);
+function CandidateEditModal({candidate, updateCandidateList, modalId}){
+    const [name, setName] = useState(candidate.name);
+    const [description, setDescription] = useState(candidate.description);
+    const [promise, setPromise] = useState(candidate.promise);
     
     //후보자 수정 
     const handleModify = ()=>{
@@ -15,13 +12,9 @@ function CandidateEditModal({candidate, candidateList, setCandidateList, modalId
             return;
         }
 
+        const id = candidate.id;
         const updatedCandidate = { id, name, description, promise };
-        const updatedList = candidateList.map(c =>
-            c.id === id ? { ...c, ...updatedCandidate } : c
-        );
-
-        setCandidateList(updatedList);
-        window.sessionStorage.setItem('candidates', JSON.stringify(updatedList));
+        updateCandidateList('UPDATE', updatedCandidate);
         window.alert('수정되었습니다');
     }
 
