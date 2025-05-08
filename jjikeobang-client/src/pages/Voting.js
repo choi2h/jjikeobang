@@ -12,6 +12,7 @@ import ResultCandidateItemSet from "../components/voteInfo/ResultCandidateItemSe
 import RoomHeader from "../components/voteInfo/RoomHeader";
 import getVoteResult from "../service/VoteResultService";
 import checkAdmin from '../service/CheckAdminService';
+import {getCandidate} from '../service/CandidateService';
 
 function Voting() {
     const location = useLocation();
@@ -25,22 +26,6 @@ function Voting() {
     const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);
 
     console.log(`방 입장!!!! room = ${JSON.stringify(roomInfo)}, candidates=${JSON.stringify(candidates)}`)
-    /*
-    useEffect(() => {
-        axios
-            .get(`http://localhost:8080/candidate?roomId=${roomId}`)
-            .then((res) => {
-                if (res.data.statusCode === 200) {
-                    setCandidates(res.data.candidates);
-                } else {
-                    console.log('에러 코드 :', res.data.statusCode);
-                }
-            })
-            .catch((err) => {
-                console.error("후보자 목록 불러오기 실패:", err);
-            });
-    }); 
-    */
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
@@ -49,10 +34,11 @@ function Voting() {
             setVoteStatus(data.candidates);
             setTotalAmount(data.totalAmount);
         }
-        
     };
 
     const onVoteStart = () => {
+        getCandidate(roomId, setCandidates);
+
         voteSocketService.current = new VoteSocketService(
             roomId,
             handleSocketMessage
@@ -85,8 +71,8 @@ function Voting() {
 
     const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
-        () => <CandidateEditItemSet roomId={roomId} candidates={candidates} setCandidates={setCandidates}/>,
-        () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} socketService={voteSocketService} />,
+        () => <CandidateEditItemSet roomId={roomId} candidates={candidates} setCandidates={setCandidates} voteStart={onVoteStart}/>,
+        () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} voteService={voteSocketService.current} />,
         () => <ResultCandidateItemSet candidates={candidates} voteStatus={voteStatus} />
     ], [progress, candidates, voteStatus]);
 
@@ -115,7 +101,7 @@ function Voting() {
                             <RoomHeader title={roomInfo.name} entryCode={roomInfo.entryCode} />
 
                             <div className="row">
-                                 <div className="col-md-7 vote-wrapper" >
+                                <div className="col-md-7 vote-wrapper" >
                                     {stepComponents[progress]()}
                                 </div>
                                 <div className="col-md-5">
