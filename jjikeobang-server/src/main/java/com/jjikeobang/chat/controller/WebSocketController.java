@@ -4,6 +4,8 @@ import com.jjikeobang.chat.model.MessageType;
 import com.jjikeobang.chat.model.SendMessage;
 import com.jjikeobang.chat.model.WebSocketMessage;
 import com.jjikeobang.chat.service.ChatConnectionServiceImpl;
+import com.jjikeobang.chat.service.SendMessageService;
+import com.jjikeobang.chat.service.SendMessageServiceImpl;
 import com.jjikeobang.room.service.RoomParticipantService;
 import com.jjikeobang.room.service.RoomParticipantServiceImpl;
 import com.jjikeobang.util.JsonUtil;
@@ -24,12 +26,13 @@ public class WebSocketController {
     private final ChatConnectionServiceImpl chatConnectionService;
     private final RoomParticipantService roomParticipantService;
     private final JsonUtil jsonUtil;
-    private static final Object lock = new Object();
+    private final SendMessageService sendMessageService;
 
     public WebSocketController() {
         this.chatConnectionService = ChatConnectionServiceImpl.getInstance();
         this.roomParticipantService = new RoomParticipantServiceImpl();
         this.jsonUtil = JsonUtil.getInstance();
+        this.sendMessageService = new SendMessageServiceImpl();
     }
 
     @OnOpen
@@ -52,9 +55,9 @@ public class WebSocketController {
         // 사용자 정보로 참여 기록 저장 추가
 
         // 입장 메시지 전달
-        broadcast(roomId, MessageType.NOTICE, SERVER_SEND, String.format(SendMessage.ENTER_USER, username));
-        sendMessage(session, MessageType.NOTICE, SendMessage.WAITING_VOTE);
-        sendMessage(session, MessageType.NOTICE, SendMessage.FREE_CHAT_BEFORE_VOTE);
+        sendMessageService.broadcast(roomId, MessageType.NOTICE, SERVER_SEND, String.format(SendMessage.ENTER_USER, username));
+        sendMessageService.sendMessage(session, MessageType.NOTICE, SendMessage.WAITING_VOTE);
+        sendMessageService.sendMessage(session, MessageType.NOTICE, SendMessage.FREE_CHAT_BEFORE_VOTE);
     }
 
     @OnClose
@@ -64,7 +67,7 @@ public class WebSocketController {
         if(chatConnectionService.isExistRoom(roomId)) {
             chatConnectionService.removeParticipant(roomId, sessionID);
             String userName = (String) session.getUserProperties().get("username");
-            broadcast(roomId, MessageType.NOTICE, SERVER_SEND, String.format(SendMessage.LEAVE_USER, userName));
+            sendMessageService.broadcast(roomId, MessageType.NOTICE, SERVER_SEND, String.format(SendMessage.LEAVE_USER, userName));
         }
     }
 
@@ -75,30 +78,7 @@ public class WebSocketController {
         WebSocketMessage webSocketMessage = jsonUtil.getObjectFromJson(message, WebSocketMessage.class);
         System.out.println("받은 메시지 : " + webSocketMessage);
 
-        broadcast(roomId, MessageType.MESSAGE, webSocketMessage.getName(), webSocketMessage.getText());
-    }
-
-    private void sendMessage(Session session, MessageType messageType, String message) {
-        try {
-            WebSocketMessage webSocketMessage = new WebSocketMessage(messageType, "Server", message);
-            session.getBasicRemote().sendText(jsonUtil.getJsonFromObject(webSocketMessage));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void broadcast(Long roomId, MessageType messageType, String sendName, String message) {
-        List<Session> participants = chatConnectionService.getParticipantsFromRoom(roomId);
-        WebSocketMessage webSocketMessage = new WebSocketMessage(messageType, sendName, message);
-        try {
-            synchronized (lock) {
-                for(Session session : participants) {
-                    if(session.isOpen()) session.getBasicRemote().sendText(jsonUtil.getJsonFromObject(webSocketMessage));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessageService.broadcast(roomId, MessageType.MESSAGE, webSocketMessage.getName(), webSocketMessage.getText());
     }
 
     @OnError
