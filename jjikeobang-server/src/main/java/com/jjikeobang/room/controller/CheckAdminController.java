@@ -18,30 +18,31 @@ import java.util.Map;
 @WebServlet("/room/check-admin")
 public class CheckAdminController extends HttpServlet {
     private final RoomService roomService = new RoomServiceImpl();
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        JsonUtil jsonUtil = JsonUtil.getInstance();
-        Map<String, Object> responseMap = new HashMap<>();
-        HttpSession session = req.getSession(true);
-
-        long memberId = (Long) session.getAttribute("memberId");
-        long roomId = Long.parseLong(req.getParameter("roomId"));
-
-        Room room = roomService.findById(roomId);
-
-        responseMap.put("status",200);
-
-        if(memberId == room.getCreateMemberId()){
-            responseMap.put("isAdmin", true);
-        }else{
-            responseMap.put("isAdmin",false);
-        }
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         try{
+            JsonUtil jsonUtil = JsonUtil.getInstance();
+            Map<String, Object> responseMap = new HashMap<>();
+            HttpSession session = req.getSession();
+
+            long memberId = (Long) session.getAttribute("memberId");
+            long roomId = Long.parseLong(req.getParameter("roomId"));
+
+            Room room = roomService.findById(roomId);
+
+            responseMap.put("statusCode", 200);
+
+            if (memberId == room.getCreateMemberId()) {
+                responseMap.put("isAdmin", true);
+            } else {
+                responseMap.put("isAdmin", false);
+            }
+
             String result = jsonUtil.getJsonFromObject(responseMap);
             resp.getWriter().write(result);
             resp.getWriter().flush();
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
