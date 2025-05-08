@@ -69,7 +69,6 @@ function VotingReady(){
             })
             .then((voteResult) => {
                 
-                //투표 결과 담기
                 setVoteResult({
                     signNumber : voteResult.signNumber,
                     name : voteResult.name,
@@ -81,7 +80,6 @@ function VotingReady(){
                     candidateVoteRate : voteResult.topCandidateVoteRate,
                 });
 
-                //투표 결과 모달 출력
                 setVoteResultModalOpen(true);
             })
             .catch((err) => {
@@ -93,29 +91,22 @@ function VotingReady(){
     return (
         <>
             <div className="container-fluid main-container">
-                {/* 투표 컨테이너 */}
                 <div className="row justify-content-center">
                     <div className="col-lg-9">
                         <div className="waiting-container">
                             
-                            {/* 방 헤더 */}
                             <RoomHeader title={room.name} entryCode={room.entryCode} />
 
-                            {/* 메인 콘텐츠 */}
                             <div className="row">
                                 
-                                {/* 왼쪽 영역 (후보자 수정/삭제 목록) */}
                                 <div className="col-md-7 vote-wrapper">
                                     <div className="candidate-list">
-                                        {/* 후보자 수정/삭제 목록 & 모달 출력 */}
                                         {
                                             candidateList.map((candidate,index)=>{
                                                 return <CandidateEditItem candidate={candidate} index={index} candidateList={candidateList} setCandidateList={setCandidateList} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}/>
                                             })
                                         }
                                     </div>
-
-                                    {/* 투표 시작 버튼 */}
                                     <div className="d-flex justify-content-center">
                                         <div className="col-md-5 mb-3">
                                             <button className="btn vote-btn" onClick={handleVoting}>투표 시작</button>
@@ -123,13 +114,11 @@ function VotingReady(){
                                     </div>
                                 </div>
 
-                                 {/* 오른쪽 영역 (채팅) */}
                                  <div className="col-md-5">
                                     <Chat/>
                                 </div>
                             </div>
 
-                            {/* 투표 현황 */}
                             <div className="row mt-4">
                                 <VoteStatusBoard totalAmount={totalAmount} />
                             </div>
@@ -138,7 +127,6 @@ function VotingReady(){
                 </div>
             </div>
 
-            {/* 투표 결과 모달 */}
             {   
                 isVoteResultModalOpen ? <VoteResultModal voteResult={voteResult} voteResultModalClose={() => setVoteResultModalOpen(false)}/> : <></>
             }

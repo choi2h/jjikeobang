@@ -1,4 +1,3 @@
-// Voting.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -159,11 +158,11 @@ function Voting() {
                                     </button>
                                 </div>
                             </div>
-                            {/* 투표 대기 화면 / 관리자 설정 화면 -> 투표 화면 -> 투표 집계 화면 -> 모달 띄우기 */}
+
                             <div className="row">
-                                {/* 화면 전환 구현 중*/}
+                                
                                 {stepComponents[progress]}
-                                {/* 채팅방 */}
+                                
                                 <Chat roomId={roomId} />
                             </div>
                             <button className="btn vote-end-btn" onClick={handleVoteEnd}>투표 종료</button>
@@ -173,7 +172,7 @@ function Voting() {
                     </div>
                 </div>
             </div>
-            {/* 투표 결과 모달 */}
+
         {   
             isVoteResultModalOpen ? <VoteResultModal voteResult={voteResult} voteResultModalClose={() => setVoteResultModalOpen(false)}/> : <></>
         }
