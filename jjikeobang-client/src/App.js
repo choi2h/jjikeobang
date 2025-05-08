@@ -18,7 +18,7 @@ function App() {
         <Route path="/votingHistory" element={<VotingHistory />} />
         <Route path="/createRoom" element={<CreateRoom />} />
         <Route path="/votingReady" element={<VotingReady />} />
-        <Route path="/voting" element={<Voting />} />
+        <Route path="/voting/:roomCode" element={<Voting />} />
         <Route path="/userWaiting" element={<UserWaiting />} />
       </Routes>
     </BrowserRouter>
