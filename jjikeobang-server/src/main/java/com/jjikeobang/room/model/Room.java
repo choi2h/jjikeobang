@@ -13,10 +13,9 @@ public class Room {
 	private long createMemberId;
 	private LocalDateTime createdAt;
 	private int totalEntryCount;
+	private String voteStatus;
 	
-	public Room() {
-		generateEntryCode();
-	}
+	public Room() {}
 	
 	public Room(long roomId, String name, int maxParticipant, int voteDuration, String entryCode, long createMemberId,
 			int totalEntryCount) {
@@ -28,8 +27,6 @@ public class Room {
 		this.entryCode = entryCode;
 		this.createMemberId = createMemberId;
 		this.totalEntryCount = totalEntryCount;
-		
-//		generateEntryCode();
 	}
 	
 	public long getRoomId() {
@@ -80,15 +77,22 @@ public class Room {
 	public void setTotalEntryCount(int totalEntryCount) {
 		this.totalEntryCount = totalEntryCount;
 	}
+	public String getVoteStatus() {
+		return voteStatus;
+	}
+
+	public void setVoteStatus(String voteStatus) {
+		this.voteStatus = voteStatus;
+	}
 
 	@Override
 	public String toString() {
 		return "Room [roomId=" + roomId + ", name=" + name + ", maxParticipant=" + maxParticipant + ", voteDuration="
 				+ voteDuration + ", entryCode=" + entryCode + ", createMemberId=" + createMemberId + ", createdAt="
-				+ createdAt + ", totalEntryCount=" + totalEntryCount + "]";
+				+ createdAt + ", totalEntryCount=" + totalEntryCount + ", voteStatus=" + voteStatus + "]";
 	}
-	
-	private void generateEntryCode() {
+
+	public void generateEntryCode() {
 		final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String generatedCode = "";
 		
@@ -99,7 +103,5 @@ public class Room {
 		
 		this.entryCode = generatedCode;
 	}
-
-	// Room.java 내부에 추가 (예: 생성자 위쪽 또는 마지막에)
 
 }

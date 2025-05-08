@@ -34,6 +34,15 @@ public class JsonUtil {
     public <T> T getObjectFromJson(Reader json, Class<T> classType) throws IOException {
         return objectMapper.readValue(json, classType);
     }
+    
+    //제네릭 타입 역직렬화를 위한 오버로딩
+    public <T> T getObjectFromJson(Reader json, com.fasterxml.jackson.core.type.TypeReference<T> typeRef) throws IOException {
+        return objectMapper.readValue(json, typeRef);
+    }
+
+    public <T> T getObjectFromJson(String json, Class<T> classType) throws IOException {
+        return objectMapper.readValue(json, classType);
+    }
 
     public String getJsonFromObject(Object object) throws IOException {
         return objectMapper.writeValueAsString(object);
