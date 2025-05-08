@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -52,9 +52,7 @@ function Voting() {
     };
 
     // 투표 웹소켓 연결
-    const [voteSocketService] = useState(() =>
-        new VoteSocketService(roomId, handleSocketMessage)
-    );
+    const [voteSocketService] = useState({});
 
     // 투표 웹소켓 연결, 추후 화면 전환 구현 시 VoteCandidateItemSet에서 초기화, 현재는 Voting.js에서 초기화
     useEffect(() => {
@@ -80,6 +78,7 @@ function Voting() {
                     }
                 } else {
                     console.log('에러 코드 :', res.data.statusCode);
+                    setProgress(0);
                 }
             })
             .catch((err) => {
@@ -87,12 +86,12 @@ function Voting() {
             });
     });
 
-    const stepComponents = [
+    const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
         () => <CandidateEditItemSet candidates={candidates} roomId={roomId}/>,
         () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} socketService={voteSocketService} />,
         () => <ResultCandidateItemSet candidates={candidates} voteStatus={voteStatus} />
-    ];
+    ], [progress, candidates, voteStatus]);
 
 
     const [isVoteResultModalOpen, setVoteResultModalOpen] = useState(false);

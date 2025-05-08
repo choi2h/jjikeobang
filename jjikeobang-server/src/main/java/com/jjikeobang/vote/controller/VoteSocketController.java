@@ -29,6 +29,8 @@ public class VoteSocketController extends HttpServlet {
     public void onOpen(Session session, @PathParam("roomId") Long roomId) throws IOException {
         roomClients.computeIfAbsent(roomId, key -> Collections.synchronizedList(new ArrayList<>())).add(session);
 
+        System.out.println("투표 세션 연결 성공 : userId = " + session.getId());
+
         if (session.isOpen()) {
             VoteCounting voteCounting = VoteCountingMap.get(roomId);
             if (voteCounting != null) {
