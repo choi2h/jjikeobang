@@ -27,7 +27,7 @@ function UserDashboard({ user }) {
                     state: {
                         roomInfo: res.roomInfo
                     }
-                })
+                });
             }
         });
     };
