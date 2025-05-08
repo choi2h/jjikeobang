@@ -20,7 +20,7 @@ function Voting() {
     const roomId = roomInfo.roomId;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면
-    const [candidates, setCandidates] = useState(location.state.candidateList);
+    const [candidates, setCandidates] = useState(location.state.candidateList ? location.state.candidateList : []);
     const [voteStatus, setVoteStatus] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);

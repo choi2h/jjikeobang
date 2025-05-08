@@ -23,11 +23,11 @@ function UserDashboard({ user }) {
         enterRoom(roomCode).then((res) => {
             console.log(`enter room result=${JSON.stringify(res)}`);
             if(res && res.success) {
-                navigate('/userWaiting', {
-                    state: {
-                        roomInfo: res.roomInfo
+                navigate(`/voting/${roomCode}`,{
+                    state : {
+                        roomInfo : res.roomInfo
                     }
-                })
+                });
             }
         });
     };
