@@ -111,4 +111,19 @@ public class RoomRepositoryImpl implements RoomRepository {
 
 		return null;
 	}
+
+	@Override
+	public int updateRoomParticipant(Long roomId) {
+		Connection conn = getConnection();
+		try (PreparedStatement psmt = conn.prepareStatement(UPDATE_ROOM_PARTICIPANTS)){
+			psmt.setLong(1, roomId);
+			return psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Close(conn);
+		}
+
+		return 0;
+	}
 }

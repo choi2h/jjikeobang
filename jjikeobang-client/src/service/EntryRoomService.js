@@ -5,8 +5,10 @@ function enterRoom(entryCode) {
         method: 'GET'
     })
     .then((res) => {
-        if(res.status === HttpStatusCode.BadRequest) {
+        if(res.status === HttpStatusCode.NotFound) {
             alert('존재하지 않는 입장 코드입니다.');
+        } if(res.status === HttpStatusCode.BadRequest) {
+            alert('방이 꽉 찼습니다.');
         } else if(!res.ok) {
             throw new Error('서버 오류');
         }
