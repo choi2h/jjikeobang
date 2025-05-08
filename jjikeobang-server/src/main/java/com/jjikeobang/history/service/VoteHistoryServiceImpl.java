@@ -26,7 +26,8 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
         this.candidateRoomService = new CandidateRoomServiceImpl();
     }
 
-    public void insertVoteHistory(VoteHistory voteHistory) {
+    public void addVoteHistory(Long roomId, Long memberId, String nickname) {
+        VoteHistory voteHistory = new VoteHistory(roomId, memberId, nickname);
         voteHistoryRepository.insertHistory(voteHistory);
     }
 
