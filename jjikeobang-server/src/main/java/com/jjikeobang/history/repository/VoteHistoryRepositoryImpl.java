@@ -1,6 +1,5 @@
 package com.jjikeobang.history.repository;
 
-import com.jjikeobang.history.dto.VoteHistoryDto;
 import com.jjikeobang.history.model.VoteHistory;
 import com.jjikeobang.util.DatabaseUtil;
 

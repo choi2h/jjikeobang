@@ -1,18 +1,29 @@
 package com.jjikeobang.history.service;
 
+import com.jjikeobang.candidate.model.Candidate;
+import com.jjikeobang.candidate.service.CandidateRoomService;
+import com.jjikeobang.candidate.service.CandidateRoomServiceImpl;
 import com.jjikeobang.history.dto.VoteHistoryDto;
+import com.jjikeobang.history.dto.HistoryCandidateDto;
 import com.jjikeobang.history.model.VoteHistory;
 import com.jjikeobang.history.repository.VoteHistoryRepository;
 import com.jjikeobang.history.repository.VoteHistoryRepositoryImpl;
+import com.jjikeobang.room.model.Room;
+import com.jjikeobang.room.service.RoomService;
+import com.jjikeobang.room.service.RoomServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VoteHistoryServiceImpl implements VoteHistoryService {
-    private VoteHistoryRepository voteHistoryRepository;
+    private final VoteHistoryRepository voteHistoryRepository;
+    private final RoomService roomService;
+    private final CandidateRoomService candidateRoomService;
 
     public VoteHistoryServiceImpl() {
         this.voteHistoryRepository = new VoteHistoryRepositoryImpl();
+        this.roomService = new RoomServiceImpl();
+        this.candidateRoomService = new CandidateRoomServiceImpl();
     }
 
     public void insertVoteHistory(VoteHistory voteHistory) {
@@ -33,22 +44,33 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
         List<VoteHistoryDto> dtoList = new ArrayList<>();
         //for문을 통해 toVoteHistoryDto 메소드 실행 후 값을 dto 리스트에 담음
         for (VoteHistory voteHistory : voteHistoryList) {
-            dtoList.add(toVoteHistoryDto(voteHistory));
+            Long roomId = voteHistory.getRoomId();
+            Room room = roomService.findById(roomId);
+            List<Candidate> candidates = candidateRoomService.findAllByRoomId(roomId);
+            dtoList.add(toVoteHistoryDto(voteHistory, room, candidates));
         }
+
         return dtoList;
     }
 
 
-    private VoteHistoryDto toVoteHistoryDto(VoteHistory voteHistory) {
+    private VoteHistoryDto toVoteHistoryDto(VoteHistory voteHistory, Room room, List<Candidate> candidates) {
         //객체 생성 (객체타입 변경)
         VoteHistoryDto voteHistoryDto = new VoteHistoryDto();
+        voteHistoryDto.setHistoryId(voteHistory.getHistoryId());
+        voteHistoryDto.setRoomTitle(room.getName());
+        voteHistoryDto.setTotalEntryCount(room.getTotalEntryCount());
+        voteHistoryDto.getCreatedAt(voteHistory.getCreatedAt());
+        List<HistoryCandidateDto> candidateDtoList = new ArrayList<>();
+        for (Candidate candidate : candidates) {
+            HistoryCandidateDto historyCandidateDto = new HistoryCandidateDto(candidate.getSignNumber(),
+                    candidate.getName(), candidate.getVoteCount());
+            candidateDtoList.add(historyCandidateDto);
 
-        voteHistoryDto.setCreated_at(voteHistory.getCreatedAt());
-        voteHistoryDto.setRoom_id(voteHistory.getRoomId());
-        voteHistoryDto.setMember_id(voteHistory.getMemberId());
-        voteHistoryDto.setHistory_id(voteHistory.getHistoryId());
-        voteHistoryDto.setName(voteHistory.getNickname());
+        }
+        voteHistoryDto.setCandidateInfos(candidateDtoList);
 
+        System.out.println("toVoteHistoryDto: " + voteHistoryDto);
         return voteHistoryDto;
     }
 }

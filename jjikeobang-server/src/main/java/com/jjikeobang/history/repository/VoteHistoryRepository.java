@@ -10,5 +10,6 @@ public interface VoteHistoryRepository {
     String SELECT_VOTE_HISTORY_BY_MEMBER_ID = "SELECT HISTORY_ID, MEMBER_ID, ROOM_ID, CREATED_AT, NAME FROM VOTE_HISTORY WHERE MEMBER_ID = ?";
 
     void insertHistory(VoteHistory voteHistory);
+
     List<VoteHistory> findByMemberId(Long memberId);
 }

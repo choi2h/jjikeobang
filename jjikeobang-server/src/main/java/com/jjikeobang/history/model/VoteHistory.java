@@ -9,9 +9,7 @@ public class VoteHistory {
     private String nickname;
     private LocalDateTime createdAt;
 
-
     public VoteHistory() {}
-
 
     public Long getHistoryId() {
         return historyId;
