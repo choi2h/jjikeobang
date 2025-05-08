@@ -1,5 +1,4 @@
 import React from "react";
-import ResultCandidateItem from "./ResultVoteCandidateItem";
 
 function ResultCandidateItemSet({ candidates }) {
   return (
@@ -7,10 +6,10 @@ function ResultCandidateItemSet({ candidates }) {
       <div className="candidate-list">
         {candidates.map((candidate, index) => (
           <div key={candidate.candidateId}>
-            <ResultCandidateItem
+            {/* <ResultCandidateItem
               candidateInfo={candidate}
               number={index + 1}
-            />
+            /> */}
           </div>
         ))}
       </div>
