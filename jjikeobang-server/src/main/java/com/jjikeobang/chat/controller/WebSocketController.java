@@ -32,7 +32,7 @@ public class WebSocketController {
         this.chatConnectionService = ChatConnectionServiceImpl.getInstance();
         this.roomParticipantService = new RoomParticipantServiceImpl();
         this.jsonUtil = JsonUtil.getInstance();
-        this.sendMessageService = new SendMessageServiceImpl();
+        this.sendMessageService = SendMessageServiceImpl.getInstance();
     }
 
     @OnOpen
