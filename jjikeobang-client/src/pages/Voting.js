@@ -35,6 +35,7 @@ function Voting() {
         if (data.type === "vote") {
             setVoteStatus(data.candidates);
             setTotalAmount(data.totalAmount);
+            getCandidate(roomId, setCandidates);
         }else if(data.type === "time"){
             setVoteDuration(data.remainTime);
         }else if(data.type === "vote-over"){
@@ -58,8 +59,8 @@ function Voting() {
 
     const onVoteEnd = () => {
         console.log('투표 종료');
-        voteSocketService.current.close();
         handleVoteEnd();
+        voteSocketService.current.close();
     }
 
     // 투표 웹소켓 연결

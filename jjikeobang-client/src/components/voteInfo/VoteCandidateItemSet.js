@@ -32,9 +32,9 @@ function CandidateItemSet({ candidates, roomId, voteService, voted }) {
     }));
     voted();
   };
-  
+
   return (
-    <div className="col-md-7 vote-wrapper">
+    <>
       <div className="candidate-list">
         {candidates.map((candidate, index) => (
           <div key={candidate.candidateId} onClick={() => selectCandidate(index)}>
@@ -56,7 +56,7 @@ function CandidateItemSet({ candidates, roomId, voteService, voted }) {
           <button className="btn cancel-btn" onClick={handleAbstain}>기권</button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
