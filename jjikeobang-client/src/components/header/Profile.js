@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Profile({user}){
-
+    console.log("profile : " + user);
     const handleLogout = async () => {
         try {
             const response = await fetch(`${API_URL}/member/logout`, {
