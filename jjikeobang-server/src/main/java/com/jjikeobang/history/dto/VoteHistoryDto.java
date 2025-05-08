@@ -1,63 +1,63 @@
 package com.jjikeobang.history.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class VoteHistoryDto {
-    private Long history_id;
-    private Long member_id;
-    private Long room_id;
-    private LocalDateTime created_at;
-    private String name;
+    private Long historyId;
+    private String roomTitle;
+    private int totalEntryCount;
+    private LocalDateTime createdAt;
+    private List<HistoryCandidateDto> candidateInfos;
 
-    public Long getHistory_id() {
-        return history_id;
+    public Long getHistoryId() {
+        return historyId;
     }
 
-    public void setHistory_id(Long history_id) {
-        this.history_id = history_id;
+    public void setHistoryId(Long historyId) {
+        this.historyId = historyId;
     }
 
-    public Long getMember_id() {
-        return member_id;
+    public String getRoomTitle() {
+        return roomTitle;
     }
 
-    public void setMember_id(Long member_id) {
-        this.member_id = member_id;
+    public void setRoomTitle(String roomTitle) {
+        this.roomTitle = roomTitle;
     }
 
-    public Long getRoom_id() {
-        return room_id;
+    public int getTotalEntryCount() {
+        return totalEntryCount;
     }
 
-    public void setRoom_id(Long room_id) {
-        this.room_id = room_id;
+    public void setTotalEntryCount(int totalEntryCount) {
+        this.totalEntryCount = totalEntryCount;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt(LocalDateTime createdAt) {
+        return this.createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getName() {
-        return name;
+    public List<HistoryCandidateDto> getCandidateInfos() {
+        return candidateInfos;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCandidateInfos(List<HistoryCandidateDto> candidateInfos) {
+        this.candidateInfos = candidateInfos;
     }
-
 
     @Override
     public String toString() {
         return "VoteHistoryDto{" +
-                "history_id=" + history_id +
-                ", member_id=" + member_id +
-                ", room_id=" + room_id +
-                ", created_at=" + created_at +
-                ", name='" + name + '\'' +
+                "historyId=" + historyId +
+                ", roomTitle='" + roomTitle + '\'' +
+                ", totalEntryCount=" + totalEntryCount +
+                ", createdAt=" + createdAt +
+                ", candidateInfos=" + candidateInfos +
                 '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.jjikeobang.room.controller;
 
+import com.jjikeobang.history.service.VoteHistoryService;
+import com.jjikeobang.history.service.VoteHistoryServiceImpl;
 import com.jjikeobang.room.dto.EntryRoomDto;
 import com.jjikeobang.room.exception.RoomFullException;
 import com.jjikeobang.room.service.RoomService;
@@ -10,16 +12,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 @WebServlet("/room/enter")
 public class EntryRoomController extends HttpServlet {
     private final RoomService roomService;
+    private final VoteHistoryService voteHistoryService;
     private final JsonUtil jsonUtil;
 
     public EntryRoomController() {
         this.roomService = new RoomServiceImpl();
+        this.voteHistoryService = new VoteHistoryServiceImpl();
         this.jsonUtil = JsonUtil.getInstance();
     }
 
@@ -31,9 +36,18 @@ public class EntryRoomController extends HttpServlet {
             return;
         }
 
+        HttpSession session = req.getSession();
+        if (session == null || session.getAttribute("memberId") == null) {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        Long memberId = (Long) session.getAttribute("memberId");
+
         try {
             EntryRoomDto dto = roomService.findByEntryCode(entryCode);
             System.out.println("Get entryRoomDto: " + dto);
+            voteHistoryService.addVoteHistory(dto.getRoomId(), memberId, dto.getUserNickname());
             setResponse(res, HttpServletResponse.SC_OK, true, dto);
         } catch (IllegalArgumentException e) {
             setResponse(res, HttpServletResponse.SC_NOT_FOUND, false, null);

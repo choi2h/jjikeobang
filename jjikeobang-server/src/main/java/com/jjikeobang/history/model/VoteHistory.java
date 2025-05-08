@@ -9,9 +9,13 @@ public class VoteHistory {
     private String nickname;
     private LocalDateTime createdAt;
 
-
     public VoteHistory() {}
 
+    public VoteHistory(Long roomId, Long memberId, String nickname) {
+        this.roomId = roomId;
+        this.memberId = memberId;
+        this.nickname = nickname;
+    }
 
     public Long getHistoryId() {
         return historyId;
