@@ -24,6 +24,11 @@ public class VoteCounting {
 
     public void vote(Long candidateId) throws IllegalArgumentException {
         lock.lock();
+        for (CandidateInfo candidate : candidates) {
+            System.out.println("candidate.getCandidateId() = " + candidate.getCandidateId());
+        }
+        System.out.println("input candidateId = " + candidateId);
+
         Optional<CandidateInfo> candidate = candidates.stream()
                 .filter(candidateInfo -> Objects.equals(candidateInfo.getCandidateId(), candidateId))
                 .findFirst();

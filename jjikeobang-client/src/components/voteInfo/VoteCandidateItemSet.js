@@ -19,7 +19,7 @@ function CandidateItemSet({ candidates, roomId, voteService }) {
       return;
     }
 
-    const selectedCandidateId = candidates[selectedIndex].id;
+    const selectedCandidateId = candidates[selectedIndex].candidateId;
     voteService.sendMessage(JSON.stringify({
       candidateId: selectedCandidateId
     }));
