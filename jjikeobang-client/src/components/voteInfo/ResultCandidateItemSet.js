@@ -1,16 +1,15 @@
 import React from "react";
-import ResultCandidateItem from "./ResultCandidateItem";
 
-function ResultCandidateItemSet({ candidates, voteStatus }) {
+function ResultCandidateItemSet({ candidates }) {
   return (
     <div className="col-md-7 vote-wrapper">
       <div className="candidate-list">
         {candidates.map((candidate, index) => (
           <div key={candidate.candidateId}>
-            <ResultCandidateItem
+            {/* <ResultCandidateItem
               candidateInfo={candidate}
               number={index + 1}
-            />
+            /> */}
           </div>
         ))}
       </div>

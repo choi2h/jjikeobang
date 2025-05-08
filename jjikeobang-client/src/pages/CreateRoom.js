@@ -72,11 +72,6 @@ function CreateRoom(){
             name: roomName,
             maxParticipant: maxParticipant,
             voteDuration: voteDuration,
-            candidates: candidates.map((candidate) => ({
-                name: candidate.name,
-                description: candidate.description,
-                pledge: candidate.pledge,
-            })),
         };
 
         fetch(`${API_URL}/room`, {

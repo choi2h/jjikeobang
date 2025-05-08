@@ -5,6 +5,7 @@ import enterRoom from "../../service/EntryRoomService";
 import Profile from '../header/Profile.js';
 
 function UserDashboard({ user }) {
+    console.log('UserDashBoard : ' + user);
     const [roomCode, setRoomCode] = useState("");
     const navigate = useNavigate();
 
@@ -45,7 +46,7 @@ function UserDashboard({ user }) {
         <div className="container-fluid main-container">
             <div className="row mb-4">
                 <div className="col-12 d-flex justify-content-end">
-                    <Profile />
+                    <Profile user={user}/>
                 </div>
             </div>
 
