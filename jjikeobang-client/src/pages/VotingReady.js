@@ -1,12 +1,13 @@
 import React, { useState} from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Chat from '../components/chat/Chat';
 import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
 import VoteResultModal from '../components/modal/VoteResultModal';
 import RoomHeader from '../components/voteInfo/RoomHeader';
-import CandidateEditModal from '../components/modal/CandidateEditModal';
 import CandidateEditItem from '../components/voteInfo/CandidateEditItem';
+import CandidateItem from '../components/voteInfo/CandidateItem';
+import PromiseModal from '../components/modal/PromiseModal';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -14,6 +15,7 @@ function VotingReady(){
     const location = useLocation();
     const room = location.state.roomInfo || {};
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [isVoteStart, setIsVoteStart] = useState(false);
 
     //후보자 목록 렌더링
     const [candidateList, setCandidateList] = useState(()=>{
@@ -30,7 +32,7 @@ function VotingReady(){
         return [];
     });
 
-    // 후보자 DB 저장
+    // 투표 시작 버튼 이벤트 : 후보자 DB 저장 및 후보자 목록 전환
     const handleVoting = () =>{
         const mappedCandidatesInfo = candidateList.map(({id,...rest}, index) => ({
             ...rest, 
@@ -45,6 +47,9 @@ function VotingReady(){
             }else{
                 window.alert('에러 코드 : ',res.data.statusCode, '에러 메세지 : ',res.data.data);
             }
+
+            // 후보자 목록 전환
+            setIsVoteStart(true);
           })
           .catch((err)=>{
             window.alert('후보자 DB 등록에 실패했습니다.',err);
@@ -107,10 +112,25 @@ function VotingReady(){
                                 {/* 왼쪽 영역 (후보자 수정/삭제 목록) */}
                                 <div className="col-md-7 vote-wrapper">
                                     <div className="candidate-list">
-                                        {/* 후보자 수정/삭제 목록 & 모달 출력 */}
                                         {
                                             candidateList.map((candidate,index)=>{
-                                                return <CandidateEditItem candidate={candidate} index={index} candidateList={candidateList} setCandidateList={setCandidateList} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}/>
+                                                if(isVoteStart){
+                                                    /* 후보자 공약 목록 */
+                                                    return <CandidateItem candidateInfo={candidate} number={index+1} />
+                                                }else{
+                                                    /* 후보자 수정/삭제 목록 & 모달 출력 */
+                                                    return <CandidateEditItem candidate={candidate} index={index} candidateList={candidateList} setCandidateList={setCandidateList} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex}/>
+                                                }
+                                            })
+                                        }
+
+                                        {
+                                            candidateList.map((candidate,index)=>{
+                                                /* 후보자 공약 팝업 */
+                                                if(isVoteStart){
+                                                    const modalId = `pledgeModal-${candidate.candidateId}`;
+                                                    return <PromiseModal key={index} id={modalId} name={candidate.name} description={candidate.description} promise={candidate.promise}/>
+                                                }
                                             })
                                         }
                                     </div>
