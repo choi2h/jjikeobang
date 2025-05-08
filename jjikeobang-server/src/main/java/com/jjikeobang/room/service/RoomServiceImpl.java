@@ -25,7 +25,7 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public void insertRoom(Room room) throws SQLException {
 		Room resRoom = roomRepository.insertRoom(room);
-		chatConnectionService.addRoom(resRoom.getRoomId());
+		//chatConnectionService.addRoom(resRoom.getRoomId());
 	}
 
 	@Override
