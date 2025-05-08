@@ -51,6 +51,7 @@ function CandidateEditItemSet({ roomId, candidates, setCandidates, voteStart}) {
                 alert('후보자 등록에 실패했습니다.');
             }
         });
+        voteStart();
     };
 
     

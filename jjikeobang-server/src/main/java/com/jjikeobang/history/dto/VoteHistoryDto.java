@@ -34,7 +34,7 @@ public class VoteHistoryDto {
         this.totalEntryCount = totalEntryCount;
     }
 
-    public LocalDateTime getCreatedAt(LocalDateTime createdAt) {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 

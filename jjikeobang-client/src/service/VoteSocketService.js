@@ -3,20 +3,14 @@ class VoteSocketService {
         this.websocket = new WebSocket(
             `ws://localhost:8080/vote/${roomId}`
         );
-
+        console.log("투표 소켓 서비스 연결 성공");
         this.websocket.onmessage = (e) => onMessageCallback(e.data);
-
     }
     
     sendMessage(message) {
-        const sendData = {
-            type: "message",
-            text: message,
-            dateTime: new Date().toISOString(),
-        };
 
-        console.log(`투표 실행 ${JSON.stringify(sendData)}`);
-        this.websocket.send(JSON.stringify(sendData));
+        console.log(`투표 실행 ${message}`);
+        this.websocket.send(message);
     }
 
     close() {

@@ -61,7 +61,7 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
         voteHistoryDto.setHistoryId(voteHistory.getHistoryId());
         voteHistoryDto.setRoomTitle(room.getName());
         voteHistoryDto.setTotalEntryCount(room.getTotalEntryCount());
-        voteHistoryDto.getCreatedAt(voteHistory.getCreatedAt());
+        voteHistoryDto.setCreatedAt(voteHistory.getCreatedAt());
         List<HistoryCandidateDto> candidateDtoList = new ArrayList<>();
         for (Candidate candidate : candidates) {
             HistoryCandidateDto historyCandidateDto = new HistoryCandidateDto(candidate.getSignNumber(),
@@ -70,8 +70,6 @@ public class VoteHistoryServiceImpl implements VoteHistoryService {
 
         }
         voteHistoryDto.setCandidateInfos(candidateDtoList);
-
-        System.out.println("toVoteHistoryDto: " + voteHistoryDto);
         return voteHistoryDto;
     }
 }

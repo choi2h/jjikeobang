@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
 import getVoteHistories from "../service/VoteHistoryService";
-import HsitoryCard from "../components/history/HistoryCard";
+import HistoryCard from "../components/history/HistoryCard";
 
 function VotingHistory(){
     const [histories, setHistories] = useState([]);
@@ -29,14 +29,13 @@ function VotingHistory(){
                         {
                             (!histories || histories.length === 0) ?
                                 '투표 참여기록이 없습니다.' : 
-                                histories.map(history => {
-                                    return <HsitoryCard historyInfo={history}/>;
+                                histories.map((history, index) => {
+                                    return <HistoryCard key={index} historyInfo={history}/>;
                                 }
                             )
                         }
                 </div>
             </div>
-
 
             {/* 부트스트랩 JS */}
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -43,18 +43,20 @@ function Voting() {
             roomId,
             handleSocketMessage
         );
+        setProgress(2);
     }
 
     const onVoted = () => {
-
+        setProgress(3);
     }
 
     const onVoteEnd = () => {
         voteSocketService.close();
+        handleVoteEnd();
     }
 
     // 투표 웹소켓 연결
-    const [voteSocketService] = useState({});
+    const voteSocketService = useRef(null);;
 
     // 투표 웹소켓 연결, 추후 화면 전환 구현 시 VoteCandidateItemSet에서 초기화, 현재는 Voting.js에서 초기화
 
