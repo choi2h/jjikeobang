@@ -4,6 +4,8 @@ import com.jjikeobang.chat.model.MessageType;
 import com.jjikeobang.chat.model.SendMessage;
 import com.jjikeobang.chat.model.WebSocketMessage;
 import com.jjikeobang.chat.service.ChatConnectionServiceImpl;
+import com.jjikeobang.room.service.RoomParticipantService;
+import com.jjikeobang.room.service.RoomParticipantServiceImpl;
 import com.jjikeobang.util.JsonUtil;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
@@ -20,11 +22,13 @@ public class WebSocketController {
 
     private static final String SERVER_SEND = "SERVER";
     private final ChatConnectionServiceImpl chatConnectionService;
+    private final RoomParticipantService roomParticipantService;
     private final JsonUtil jsonUtil;
     private static final Object lock = new Object();
 
     public WebSocketController() {
         this.chatConnectionService = ChatConnectionServiceImpl.getInstance();
+        this.roomParticipantService = new RoomParticipantServiceImpl();
         this.jsonUtil = JsonUtil.getInstance();
     }
 
@@ -44,6 +48,7 @@ public class WebSocketController {
 
         // 사용자 추가
         chatConnectionService.addParticipant(roomId, session);
+        roomParticipantService.incrementRoomParticipant(roomId);
         // 사용자 정보로 참여 기록 저장 추가
 
         // 입장 메시지 전달
