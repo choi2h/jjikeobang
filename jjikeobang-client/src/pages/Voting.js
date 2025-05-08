@@ -14,7 +14,7 @@ import ResultCandidateItemSet from "../components/voteInfo/ResultCandidateItemSe
 const API_URL = process.env.REACT_APP_API_URL;
 function Voting() {
     const location = useLocation();
-    const roomInfo = location.state.room || {};
+    const roomInfo = location.state.roomInfo || {};
     const roomId = roomInfo.roomId;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면

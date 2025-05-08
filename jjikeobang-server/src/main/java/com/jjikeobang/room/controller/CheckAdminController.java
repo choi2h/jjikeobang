@@ -40,9 +40,9 @@ public class CheckAdminController extends HttpServlet {
         try{
             String result = jsonUtil.getJsonFromObject(responseMap);
             resp.getWriter().write(result);
+            resp.getWriter().flush();
         }catch (IOException e){
             e.printStackTrace();
-            resp.setStatus(500);
         }
     }
 }
