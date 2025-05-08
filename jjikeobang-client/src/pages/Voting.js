@@ -29,10 +29,16 @@ function Voting() {
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
-        
+
+        console.log("수신한 투표 메시지: ", data);
+
         if (data.type === "vote") {
             setVoteStatus(data.candidates);
             setTotalAmount(data.totalAmount);
+        }else if(data.type === "time"){
+            setVoteDuration(data.remainTime);
+        }else if(data.type === "vote-over"){
+            onVoteEnd();
         }
     };
 
@@ -51,7 +57,8 @@ function Voting() {
     }
 
     const onVoteEnd = () => {
-        voteSocketService.close();
+        console.log('투표 종료');
+        voteSocketService.current.close();
         handleVoteEnd();
     }
 
@@ -73,8 +80,8 @@ function Voting() {
 
     const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
-        () => <CandidateEditItemSet roomId={roomId} candidates={candidates} setCandidates={setCandidates} voteStart={onVoteStart}/>,
-        () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} voteService={voteSocketService.current} />,
+        () => <CandidateEditItemSet roomInfo={roomInfo} candidates={candidates} setCandidates={setCandidates} voteStart={onVoteStart}/>,
+        () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} voteService={voteSocketService.current} voted={onVoted} />,
         () => <ResultCandidateItemSet candidates={candidates} voteStatus={voteStatus} />
     ], [progress, candidates, voteStatus]);
 
@@ -110,7 +117,6 @@ function Voting() {
                                     <Chat roomId={roomId} />
                                 </div>
                             </div>
-                            <button className="btn vote-end-btn" onClick={handleVoteEnd}>투표 종료</button>
 
                             <VoteStatusBoard totalAmount={totalAmount} voteDuration={voteDuration} />
                         </div>
