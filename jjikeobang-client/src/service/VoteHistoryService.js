@@ -1,6 +1,7 @@
 function getVoteHistories() {
     return fetch(`http://localhost:8080/vote/history`, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
     .then((res) => {
         console.log(res);
