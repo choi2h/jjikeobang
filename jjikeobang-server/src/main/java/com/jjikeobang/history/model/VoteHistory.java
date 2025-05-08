@@ -7,22 +7,11 @@ public class VoteHistory {
     private Long roomId;
     private Long memberId;
     private String nickname;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
-    public VoteHistory(Long roomId, Long memberId, String nickname, LocalDateTime createAt) {
-        this.roomId = roomId;
-        this.memberId = memberId;
-        this.nickname = nickname;
-        this.createAt = createAt;
-    }
 
-    public VoteHistory(Long historyId, Long roomId, Long memberId, String nickname, LocalDateTime createAt) {
-        this.historyId = historyId;
-        this.roomId = roomId;
-        this.memberId = memberId;
-        this.nickname = nickname;
-        this.createAt = createAt;
-    }
+    public VoteHistory() {}
+
 
     public Long getHistoryId() {
         return historyId;
@@ -40,12 +29,28 @@ public class VoteHistory {
         return nickname;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setHistoryId(Long historyId) {
         this.historyId = historyId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class VoteHistory {
                 ", roomId=" + roomId +
                 ", memberId=" + memberId +
                 ", nickname='" + nickname + '\'' +
-                ", createAt=" + createAt +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
