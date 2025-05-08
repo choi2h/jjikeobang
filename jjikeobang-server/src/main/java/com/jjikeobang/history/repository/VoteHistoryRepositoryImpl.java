@@ -18,7 +18,6 @@ public class VoteHistoryRepositoryImpl implements VoteHistoryRepository {
             psmt.setLong(1, voteHistory.getRoomId());
             psmt.setLong(2, voteHistory.getMemberId());
             psmt.setString(3, voteHistory.getNickname());
-            psmt.setTimestamp(4, Timestamp.valueOf(voteHistory.getCreatedAt()));
 
             int res = psmt.executeUpdate();
             if (res > 0) {
