@@ -47,7 +47,7 @@ function CandidateEditItemSet({ roomInfo, candidates, setCandidates, voteStart})
                 axios.get(`http://localhost:8080/notice/vote/start?roomId=${roomId}`, {
                     withCredentials: true
                 });
-                axios.get(`http://localhost:8080/count?roomId=${roomId}&duration=${roomInfo.voteDuration}`, {
+                axios.get(`http://localhost:8080/count?roomId=${roomId}&duration=${roomInfo.voteDuration * 60}`, {
                     withCredentials: true
                 });
                 voteStart();
