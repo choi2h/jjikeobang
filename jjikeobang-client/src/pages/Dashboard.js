@@ -22,7 +22,7 @@ function Dashboard(){
             if(res && res.success) {
                 navigate('/userWaiting', {
                     state: {
-                        roomInfo: res.data
+                        roomInfo: res.roomInfo
                     }
                 })
             }

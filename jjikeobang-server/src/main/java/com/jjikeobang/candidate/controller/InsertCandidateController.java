@@ -16,7 +16,7 @@ import com.jjikeobang.common.Response;
 import com.jjikeobang.util.JsonUtil;
 
 
-@WebServlet("/candidates") //요청 예시: /candidate?roomId=3 
+@WebServlet("/candidates")
 public class InsertCandidateController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final CandidateRoomService candidateRoomService = new CandidateRoomServiceImpl();

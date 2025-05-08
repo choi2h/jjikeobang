@@ -97,6 +97,7 @@ function VotingReady(){
           .post('http://localhost:8080/candidates', mappedCandidatesInfo)
           .then((res)=>{
             if(res.data.statusCode===200){
+                window.sessionStorage.removeItem('candidates');
                 navigate('/voting',{
                     state : {room}
                 })
@@ -286,6 +287,7 @@ function VotingReady(){
                                                                 <div className="modal-footer">
                                                                     <button type="button" 
                                                                             className="btn btn-primary"
+                                                                            data-bs-dismiss="modal"
                                                                             onClick={()=>{
                                                                                 handleModify()
                                                                                 }}>수정하기</button>
