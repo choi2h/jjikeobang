@@ -92,6 +92,7 @@ function CreateRoom() {
                     state: {
                         roomInfo: roomInfo, //방 정보 
                         candidateList: candidates, //후보자 정보
+                        usernickname : '관리자'
                     }
                 });
             })
