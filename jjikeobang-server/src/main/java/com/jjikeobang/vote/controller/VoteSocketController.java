@@ -1,5 +1,6 @@
 package com.jjikeobang.vote.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jjikeobang.util.JsonUtil;
 import com.jjikeobang.vote.model.VoteRequestDTO;
 import com.jjikeobang.vote.model.VoteCounting;
@@ -29,12 +30,16 @@ public class VoteSocketController extends HttpServlet {
     public void onOpen(Session session, @PathParam("roomId") Long roomId) throws IOException {
         roomClients.computeIfAbsent(roomId, key -> Collections.synchronizedList(new ArrayList<>())).add(session);
 
-        System.out.println("투표 세션 연결 성공 : userId = " + session.getId());
+        JsonUtil jsonUtil = JsonUtil.getInstance();
 
         if (session.isOpen()) {
             VoteCounting voteCounting = VoteCountingMap.get(roomId);
             if (voteCounting != null) {
-                session.getBasicRemote().sendText(voteCounting.toJson("vote"));
+                Map<String, Object> messageMap = voteCounting.toObjectMap();
+                messageMap.put("type","vote");
+
+                String msg = jsonUtil.getJsonFromObject(messageMap);
+                session.getBasicRemote().sendText(msg);
             } else {
                 session.getBasicRemote().sendText("{\"type\":\"error\", \"message\":\"투표 정보가 초기화되지 않았습니다.\"}");
             }
@@ -52,14 +57,16 @@ public class VoteSocketController extends HttpServlet {
         voteCounting.vote(candidateId);
         voteService.voteCandidate(roomId, candidateId);
 
-        broadcast(roomId, voteCounting);
+        broadcast(roomId, voteCounting.toObjectMap(), "vote");
     }
 
-    private static void broadcast(Long roomId, VoteCounting voteCounting) {
+    public static void broadcast(Long roomId, Map<String, Object> message, String type) {
         List<Session> sessions = roomClients.get(roomId);
+        JsonUtil jsonUtil = JsonUtil.getInstance();
         try{
             synchronized (lock) {
-                String response = voteCounting.toJson("vote");
+                message.put("type", type);
+                String response = jsonUtil.getJsonFromObject(message);
                 for (Session client : sessions) {
                     if (client.isOpen()) {
                         client.getBasicRemote().sendText(response);
