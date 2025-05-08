@@ -17,7 +17,7 @@ function UserWaiting(){
                 {/* 상단 프로필 영역 */}
                 <div className="row mb-4">
                     <div className="col-12 d-flex justify-content-end">
-                        <Profile />
+                        <Profile user="김철수"/>
                     </div>
                 </div>
 
