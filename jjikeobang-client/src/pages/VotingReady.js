@@ -1,5 +1,7 @@
 import React, { useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
+import Chat from '../components/chat/Chat';
 import axios from 'axios';
 import Chat from '../components/chat/Chat';
 import VoteStatusBoard from '../components/voteInfo/VoteStatusBoard';
