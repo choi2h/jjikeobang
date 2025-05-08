@@ -23,7 +23,6 @@ function CandidateItemSet({ candidates, roomId, socketService }) {
 
     socketService.sendMessage(JSON.stringify({
       action: "vote",
-      roomId: roomId,
       candidateId: selectedCandidateId
     }));
   };
@@ -31,7 +30,6 @@ function CandidateItemSet({ candidates, roomId, socketService }) {
   const handleAbstain = () => {
     socketService.sendMessage(JSON.stringify({
       action: "vote",
-      roomId: roomId,
       candidateId: -1
     }));
   };

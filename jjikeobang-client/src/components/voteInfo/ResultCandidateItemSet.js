@@ -1,28 +1,26 @@
 import React from "react";
+import ResultCandidateItem from './ResultCandidateItem'
 
-function ResultCandidateItemSet({ candidates }) {
+function ResultCandidateItemSet({ candidates, totalVote }) {
+
   return (
     <div className="col-md-7 vote-wrapper">
       <div className="candidate-list">
-        {candidates.map((candidate, index) => (
-          <div key={candidate.candidateId}>
-            {/* <ResultCandidateItem
-              candidateInfo={candidate}
-              number={index + 1}
-            /> */}
-          </div>
-        ))}
-      </div>
+        {candidates.map((candidate, index) => {
+          const voteRate = totalVote > 0
+            ? Math.min(100, Math.max(1, Math.floor((candidate.voteAmount / totalVote) * 100)))
+            : 0;
 
-      {/* 투표 & 기권 버튼 비활성화할지 여부 필요
-      <div className="row">
-        <div className="col-md-6 mb-3">
-          <button className="btn vote-btn">투표하기</button>
-        </div>
-        <div className="col-md-6 mb-3">
-          <button className="btn cancel-btn">기권</button>
-        </div>
-      </div> */}
+          return (
+            <div key={candidate.candidateId}>
+              <ResultCandidateItem
+                candidateInfo={{ ...candidate, voteRate }}
+                number={index + 1}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
