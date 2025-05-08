@@ -7,7 +7,7 @@ function ResultCandidateItemSet({ candidates, totalVote }) {
     <div className="candidate-list">
       {candidates.map((candidate, index) => {
         const voteRate = totalVote > 0
-          ? Math.min(100, Math.max(1, Math.floor((candidate.voteAmount / totalVote) * 100)))
+          ? Math.min(100, Math.max(1, Math.floor((candidate.voteCount / totalVote) * 100)))
           : 0;
 
         return (
