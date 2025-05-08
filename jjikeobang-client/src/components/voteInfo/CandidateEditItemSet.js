@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from 'react-router-dom';
 import CandidateEditItem from "./CandidateEditItem";
 import axios from 'axios';
+import addCandidate from "../../service/AddCandidateService";
 
 function CandidateEditItemSet({ selectedIndex, setSelectedIndex }) {
 
@@ -21,25 +22,19 @@ function CandidateEditItemSet({ selectedIndex, setSelectedIndex }) {
         }
         return [];
     });
+
     const handleVoting = () => {
         const mappedCandidatesInfo = candidateList.map(({ id, ...rest }, index) => ({
             ...rest,
             signNumber: index + 1,
             roomId: room.roomId
         }));
-
-        axios.post('http://localhost:8080/candidates', mappedCandidatesInfo)
-            .then((res) => {
-                if (res.data.statusCode === 200) {
-                    window.sessionStorage.removeItem('candidates');
-                } else {
-                    window.alert('에러 코드 : ', res.data.statusCode, '에러 메세지 : ', res.data.data);
-                }
-            })
-            .catch((err) => {
-                window.alert('후보자 DB 등록에 실패했습니다.', err);
-            });
+        
+        //  후보자 정보 등록(확정)
+        addCandidate(mappedCandidatesInfo);
+        // 후보자 투표 정보 초기화
         voteInit();
+        // 채팅 시작 안내 - 채팅방 전달
         axios.get(`http://localhost:8080/notice/vote/start?roomId=${room.roomId}`, {
             withCredentials: true
         })
