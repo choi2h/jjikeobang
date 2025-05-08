@@ -38,14 +38,12 @@ public class VoteCounting {
         lock.unlock();
     }
 
-    public String toJson(String type) throws IOException{
-        JsonUtil jsonUtil = JsonUtil.getInstance();
+    public Map<String, Object> toObjectMap(){
         Map<String, Object> response = new HashMap<>();
 
-        response.put("type",type);
         response.put("candidates", candidates);
         response.put("totalAmount",totalAmount);
 
-        return jsonUtil.getJsonFromObject(response);
+        return response;
     }
 }
