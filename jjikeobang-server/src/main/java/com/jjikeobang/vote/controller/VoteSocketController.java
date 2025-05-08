@@ -1,11 +1,9 @@
 package com.jjikeobang.vote.controller;
 
-import com.jjikeobang.candidate.model.Candidate;
 import com.jjikeobang.util.JsonUtil;
-import com.jjikeobang.vote.model.CandidateInfo;
 import com.jjikeobang.vote.model.VoteRequestDTO;
-import com.jjikeobang.vote.model.VoteResult;
-import com.jjikeobang.vote.model.VoteResultMap;
+import com.jjikeobang.vote.model.VoteCounting;
+import com.jjikeobang.vote.model.VoteCountingMap;
 import com.jjikeobang.vote.service.VoteService;
 import com.jjikeobang.vote.service.VoteServiceImpl;
 import jakarta.servlet.http.HttpServlet;
@@ -31,8 +29,8 @@ public class VoteSocketController extends HttpServlet {
     public void onOpen(Session session, @PathParam("roomId") Long roomId) {
         roomClients.computeIfAbsent(roomId, key -> Collections.synchronizedList(new ArrayList<>())).add(session);
 
-        VoteResult voteResult = VoteResultMap.get(roomId);
-        broadcast(roomId, voteResult);
+        VoteCounting voteCounting = VoteCountingMap.get(roomId);
+        broadcast(roomId, voteCounting);
     }
 
     @OnMessage
@@ -42,19 +40,19 @@ public class VoteSocketController extends HttpServlet {
 
         long candidateId = voteInfo.candidateId();
 
-        VoteResult voteResult = VoteResultMap.get(roomId);
-        voteResult.vote(candidateId);
+        VoteCounting voteCounting = VoteCountingMap.get(roomId);
+        voteCounting.vote(candidateId);
 
-        broadcast(roomId, voteResult);
+        broadcast(roomId, voteCounting);
     }
 
-    private static void broadcast(Long roomId, VoteResult voteResult) {
+    private static void broadcast(Long roomId, VoteCounting voteCounting) {
         List<Session> sessions = roomClients.get(roomId);
         try{
             synchronized (lock) {
+                String response = voteCounting.toJson("vote");
                 for (Session client : sessions) {
                     if (client.isOpen()) {
-                        String response = voteResult.toJson();
                         client.getBasicRemote().sendText(response);
                     }
                 }

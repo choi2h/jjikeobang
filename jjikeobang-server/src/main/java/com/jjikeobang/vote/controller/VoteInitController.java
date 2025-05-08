@@ -5,8 +5,8 @@ import com.jjikeobang.candidate.model.Candidate;
 import com.jjikeobang.candidate.service.CandidateRoomService;
 import com.jjikeobang.candidate.service.CandidateRoomServiceImpl;
 import com.jjikeobang.vote.model.CandidateInfo;
-import com.jjikeobang.vote.model.VoteResult;
-import com.jjikeobang.vote.model.VoteResultMap;
+import com.jjikeobang.vote.model.VoteCounting;
+import com.jjikeobang.vote.model.VoteCountingMap;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,9 +29,9 @@ public class VoteInitController extends HttpServlet {
         for (Candidate candidate : room) {
             roomInfo.add(new CandidateInfo(candidate.getCandidateId()));
         }
-        VoteResult voteResult = VoteResult.of(roomInfo);
+        VoteCounting voteCounting = VoteCounting.of(roomInfo);
 
-        VoteResultMap.put(roomId, voteResult);
+        VoteCountingMap.put(roomId, voteCounting);
     }
 
 }

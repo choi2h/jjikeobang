@@ -4,23 +4,22 @@ import com.jjikeobang.util.JsonUtil;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class VoteResult {
+public class VoteCounting {
     List<CandidateInfo> candidates;
     int totalAmount;
 
     private final Lock lock = new ReentrantLock();
 
-    private VoteResult(List<CandidateInfo> candidates) {
+    private VoteCounting(List<CandidateInfo> candidates) {
         this.candidates = candidates;
         totalAmount = 0;
     }
 
-    public static VoteResult of(List<CandidateInfo> candidates) {
-        return new VoteResult(candidates);
+    public static VoteCounting of(List<CandidateInfo> candidates) {
+        return new VoteCounting(candidates);
     }
 
     public void vote(Long candidateId) throws IllegalArgumentException {
@@ -39,10 +38,11 @@ public class VoteResult {
         lock.unlock();
     }
 
-    public String toJson() throws IOException{
+    public String toJson(String type) throws IOException{
         JsonUtil jsonUtil = JsonUtil.getInstance();
         Map<String, Object> response = new HashMap<>();
 
+        response.put("type",type);
         response.put("candidates", candidates);
         response.put("totalAmount",totalAmount);
 
