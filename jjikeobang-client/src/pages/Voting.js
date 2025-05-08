@@ -29,7 +29,7 @@ function Voting() {
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
-
+        
         if (data.type === "vote") {
             setVoteStatus(data.candidates);
             setTotalAmount(data.totalAmount);
