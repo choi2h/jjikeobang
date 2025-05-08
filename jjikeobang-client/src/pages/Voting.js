@@ -22,6 +22,7 @@ function Voting() {
     const [candidates, setCandidates] = useState([]);
     const [voteStatus, setVoteStatus] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);
 
     
     /*
@@ -39,8 +40,6 @@ function Voting() {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
     }); */
-
-    const voteSocketServiceRef = useRef(null);
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
@@ -159,7 +158,7 @@ function Voting() {
                             </div>
                             <button className="btn vote-end-btn" onClick={handleVoteEnd}>투표 종료</button>
 
-                            <VoteStatusBoard totalAmount={totalAmount} />
+                            <VoteStatusBoard totalAmount={totalAmount} voteDuration={voteDuration} />
                         </div>
                     </div>
                 </div>
