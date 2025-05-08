@@ -72,8 +72,9 @@ public class VoteSocketController extends HttpServlet {
     }
 
     @OnClose
-    public void onClose(Session session, @PathParam("roomId") String roomId) {
+    public void onClose(Session session, @PathParam("roomId") Long roomId) {
         List<Session> room = roomClients.get(roomId);
+        room.remove(session);
         // todo: room 비었을 때(투표가 끝났을 때) db 처리
     }
 }

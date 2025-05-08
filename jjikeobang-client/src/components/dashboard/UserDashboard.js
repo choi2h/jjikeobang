@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
-import enterRoom from "../../service/EntryRoomService";
+import enterRoom from "../../service/EntryRoomService.js";
 import Profile from '../header/Profile.js';
 
 function UserDashboard({ user }) {

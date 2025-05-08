@@ -39,6 +39,12 @@ function CandidateEditItemSet({ selectedIndex, setSelectedIndex }) {
             .catch((err) => {
                 window.alert('후보자 DB 등록에 실패했습니다.', err);
             })
+        axios.get(`http://localhost:8080/vote-start?roomId=${room.roomId}`, {
+            withCredentials: true
+        })
+        axios.get(`http://localhost:8080/notice/vote/start?roomId=${room.roomId}`, {
+            withCredentials: true
+        })
     };
 
     return (

@@ -10,6 +10,7 @@ import UserWaitingBoard from "../components/voteInfo/UserWaitingBoard";
 import CandidateEditItemSet from "../components/voteInfo/CandidateEditItemSet";
 import VoteCandidateItemSet from "../components/voteInfo/VoteCandidateItemSet";
 import ResultCandidateItemSet from "../components/voteInfo/ResultCandidateItemSet";
+import RoomHeader from "../components/voteInfo/RoomHeader";
 
 const API_URL = process.env.REACT_APP_API_URL;
 function Voting() {
@@ -39,7 +40,7 @@ function Voting() {
             });
     }); */
 
-    const socketServiceRef = useRef(null);
+    const voteSocketServiceRef = useRef(null);
 
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
@@ -51,24 +52,32 @@ function Voting() {
         
     };
 
+    const onVoteStart = () => {
+        voteSocketService.current = new VoteSocketService(
+            roomId,
+            handleSocketMessage
+        );
+    }
+
+    const onVoted = () => {
+
+    }
+
+    const onVoteEnd = () => {
+        voteSocketService.close();
+    }
+
     // 투표 웹소켓 연결
     const [voteSocketService] = useState({});
 
     // 투표 웹소켓 연결, 추후 화면 전환 구현 시 VoteCandidateItemSet에서 초기화, 현재는 Voting.js에서 초기화
-    useEffect(() => {
-        socketServiceRef.current = new VoteSocketService(
-            roomId,
-            handleSocketMessage
-        );
 
-        return () => {
-            socketServiceRef.current?.close();
-        };
-    }, []);
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/room/check-admin?roomid=${roomId}`)
+            .get(`http://localhost:8080/room/check-admin?roomId=${roomId}`, {
+                withCredentials: true
+            })
             .then((res) => {
                 if (res.data.statusCode === 200) {
                     if(res.data.isAdmin){
@@ -77,14 +86,14 @@ function Voting() {
                         setProgress(0);
                     }
                 } else {
-                    console.log('에러 코드 :', res.data.statusCode);
+                    console.log('에러 코드 :', res.data.statusCode, '메세지 : ', res.data.message);
                     setProgress(0);
                 }
             })
             .catch((err) => {
                 console.error("후보자 목록 불러오기 실패:", err);
             });
-    });
+    }, []);
 
     const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
@@ -139,22 +148,12 @@ function Voting() {
                 <div className="row justify-content-center">
                     <div className="col-lg-9">
                         <div className="waiting-container">
-                            <div className="room-header">
-                                <div>
-                                    <h2 className="room-title">2학년 3반 반장 선거</h2>
-                                </div>
-                                <div className="d-flex align-items-center">
-                                    <span className="room-code-label">입장 코드:</span>
-                                    <span className="room-code">XK42P9</span>
-                                    <button className="copy-btn ms-2">
-                                        <i className="bi bi-clipboard"></i> 복사
-                                    </button>
-                                </div>
-                            </div>
+                            
+                            <RoomHeader title={roomInfo.name} entryCode={roomInfo.entryCode} />
 
                             <div className="row">
                                 
-                                {stepComponents[progress]}
+                                {stepComponents[progress]()}
                                 
                                 <Chat roomId={roomId} />
                             </div>
