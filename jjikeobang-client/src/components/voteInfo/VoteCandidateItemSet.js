@@ -3,7 +3,7 @@ import CandidateItem from "./VoteCandidateItem"; // CandidateItem을 import
 
 
 
-function CandidateItemSet({ candidates, roomId, socketService }) {
+function CandidateItemSet({ candidates, roomId, voteService }) {
 
   // 선택된 후보자의의 index 저장
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -19,17 +19,14 @@ function CandidateItemSet({ candidates, roomId, socketService }) {
       return;
     }
 
-    const selectedCandidateId = candidates[selectedIndex].candidateId;
-
-    socketService.sendMessage(JSON.stringify({
-      action: "vote",
+    const selectedCandidateId = candidates[selectedIndex].id;
+    voteService.sendMessage(JSON.stringify({
       candidateId: selectedCandidateId
     }));
   };
 
   const handleAbstain = () => {
-    socketService.sendMessage(JSON.stringify({
-      action: "vote",
+    voteService.sendMessage(JSON.stringify({
       candidateId: -1
     }));
   };

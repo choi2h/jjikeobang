@@ -57,18 +57,20 @@ function Voting() {
             roomId,
             handleSocketMessage
         );
+        setProgress(2);
     }
 
     const onVoted = () => {
-
+        setProgress(3);
     }
 
     const onVoteEnd = () => {
         voteSocketService.close();
+        handleVoteEnd();
     }
 
     // 투표 웹소켓 연결
-    const [voteSocketService] = useState({});
+    const voteSocketService = useRef(null);;
 
     // 투표 웹소켓 연결, 추후 화면 전환 구현 시 VoteCandidateItemSet에서 초기화, 현재는 Voting.js에서 초기화
 
@@ -85,8 +87,9 @@ function Voting() {
 
     const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
-        () => <CandidateEditItemSet roomId={roomId} candidates={candidates} setCandidates={setCandidates}/>,
-        () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} socketService={voteSocketService} />,
+        () => <CandidateEditItemSet roomId={roomId} candidates={candidates}
+        setCandidates={setCandidates} voteStart={onVoteStart}/>,
+        () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} voteService={voteSocketService.current} />,
         () => <ResultCandidateItemSet candidates={candidates} voteStatus={voteStatus} />
     ], [progress, candidates, voteStatus]);
 
