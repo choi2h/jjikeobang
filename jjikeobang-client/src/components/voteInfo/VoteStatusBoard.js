@@ -1,7 +1,8 @@
 import React from "react";
 
-function VoteStatusBoard(totalAmount) {
+function VoteStatusBoard({ totalAmount }) {
   return (
+    <>
     <div className="row mt-4">
       <div className="col-md-6 mb-3">
         <div className="vote-status">
@@ -16,7 +17,9 @@ function VoteStatusBoard(totalAmount) {
         </div>
       </div>
     </div>
+    </>
   );
 }
+
 
 export default VoteStatusBoard;

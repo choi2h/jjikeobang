@@ -18,7 +18,7 @@ function Voting() {
     const roomId = roomInfo.roomId;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면
-    const [candidates] = useState([]); // [candidates, setCandidates] = useState([]);
+    const [candidates, setCandidates] = useState([]);
     const [voteStatus, setVoteStatus] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
 
@@ -46,11 +46,6 @@ function Voting() {
         new VoteSocketService(roomId, handleSocketMessage)
     );
 
-
-    // 테스트용 데이터
-    setTotalAmount(0);
-    // 테스트용 데이터 끝
-
     // 투표 웹소켓 연결, 추후 화면 전환 구현 시 VoteCandidateItemSet에서 초기화, 현재는 Voting.js에서 초기화
     useEffect(() => {
         socketServiceRef.current = new VoteSocketService(
@@ -61,7 +56,7 @@ function Voting() {
         return () => {
             socketServiceRef.current?.close();
         };
-    });
+    }, []);
 
     useEffect(() => {
         axios
