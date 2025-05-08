@@ -19,12 +19,12 @@ function Voting() {
     const roomId = roomInfo.roomId;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면
-    const [candidates, setCandidates] = useState([]);
+    const [candidates, setCandidates] = useState(location.state.candidateList);
     const [voteStatus, setVoteStatus] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);
 
-    
+    console.log(`방 입장!!!! room = ${JSON.stringify(roomInfo)}, candidates=${JSON.stringify(candidates)}`)
     /*
     useEffect(() => {
         axios
@@ -85,7 +85,7 @@ function Voting() {
 
     const stepComponents = useMemo(() =>[
         () => <UserWaitingBoard/>,
-        () => <CandidateEditItemSet candidates={candidates} roomId={roomId}/>,
+        () => <CandidateEditItemSet roomId={roomId} candidates={candidates} setCandidates={setCandidates}/>,
         () => <VoteCandidateItemSet candidates={candidates} roomId={roomId} socketService={voteSocketService} />,
         () => <ResultCandidateItemSet candidates={candidates} voteStatus={voteStatus} />
     ], [progress, candidates, voteStatus]);
