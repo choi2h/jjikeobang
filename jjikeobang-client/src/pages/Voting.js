@@ -66,7 +66,7 @@ function Voting() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/candidate?roomId=${roomId}`)
+            .get(`http://localhost:8080/room/check-admin?roomid=${roomId}`)
             .then((res) => {
                 if (res.data.statusCode === 200) {
                     if(res.data.isAdmin){
