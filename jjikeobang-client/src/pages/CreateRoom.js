@@ -88,7 +88,7 @@ function CreateRoom(){
             })
             .then((roomInfo) => {
                 // 전송 성공 시 투표 준비 관리자 화면 이동
-                navigate('/votingReady',{
+                navigate('/voting',{
                     state : {
                         roomInfo : roomInfo, //방 정보 
                         candidateList : candidates, //후보자 정보

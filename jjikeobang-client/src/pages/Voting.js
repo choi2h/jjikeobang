@@ -41,6 +41,16 @@ function Voting() {
 
     const socketServiceRef = useRef(null);
 
+    const handleSocketMessage = (rawData) => {
+        const data = JSON.parse(rawData);
+
+        if (data.type === "vote") {
+            setVoteStatus(data.candidates);
+            setTotalAmount(data.totalAmount);
+        }
+        
+    };
+
     // 투표 웹소켓 연결
     const [voteSocketService] = useState(() =>
         new VoteSocketService(roomId, handleSocketMessage)
@@ -85,17 +95,6 @@ function Voting() {
     ];
 
 
-    const handleSocketMessage = (rawData) => {
-        const data = JSON.parse(rawData);
-
-        if (data.type === "vote") {
-            // 실시간 투표 현황 갱신
-            setVoteStatus(data.candidates);
-            setTotalAmount(data.totalAmount);
-        }
-      
-        // 다른 type 처리 가능
-    };
     const [isVoteResultModalOpen, setVoteResultModalOpen] = useState(false);
     const [voteResult, setVoteResult] = useState({});
     
