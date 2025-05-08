@@ -4,6 +4,8 @@ import com.jjikeobang.util.JsonUtil;
 import com.jjikeobang.vote.model.VoteRequestDTO;
 import com.jjikeobang.vote.model.VoteCounting;
 import com.jjikeobang.vote.model.VoteCountingMap;
+import com.jjikeobang.vote.service.VoteService;
+import com.jjikeobang.vote.service.VoteServiceImpl;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
@@ -21,6 +23,7 @@ public class VoteSocketController extends HttpServlet {
     private static Map<Long, List<Session>> roomClients = new HashMap<>();
     private static final Object lock = new Object();
 
+    private static final VoteService voteService = new VoteServiceImpl();
     @OnOpen
     public void onOpen(Session session, @PathParam("roomId") Long roomId) throws IOException {
         roomClients.computeIfAbsent(roomId, key -> Collections.synchronizedList(new ArrayList<>())).add(session);
@@ -40,6 +43,7 @@ public class VoteSocketController extends HttpServlet {
 
         VoteCounting voteCounting = VoteCountingMap.get(roomId);
         voteCounting.vote(candidateId);
+        voteService.voteCandidate(roomId, candidateId);
 
         broadcast(roomId, voteCounting);
     }
