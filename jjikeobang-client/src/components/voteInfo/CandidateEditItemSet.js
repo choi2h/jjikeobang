@@ -5,7 +5,7 @@ import axios from 'axios';
 import addCandidate from "../../service/AddCandidateService";
 import voteInit from "../../service/VoteInitService";
 
-function CandidateEditItemSet({ roomId, candidates, setCandidates}) {
+function CandidateEditItemSet({ roomId, candidates, setCandidates, voteStart}) {
     console.log(`CandidateEnditItemSet roomId=${roomId} candidates=${JSON.stringify(candidates)}`)
     // 선택된 후보자의의 index 저장
     const [selectedIndex, setSelectedIndex] = useState(1);
@@ -45,6 +45,7 @@ function CandidateEditItemSet({ roomId, candidates, setCandidates}) {
         axios.get(`http://localhost:8080/notice/vote/start?roomId=${roomId}`, {
             withCredentials: true
         });
+        voteStart();
     };
 
     
