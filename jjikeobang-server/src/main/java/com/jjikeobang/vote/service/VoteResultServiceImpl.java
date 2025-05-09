@@ -26,6 +26,7 @@ public class VoteResultServiceImpl implements VoteResultService {
 		voteRateInfo.put("name", candidate.getName());
 		voteRateInfo.put("description", candidate.getDescription());
 		voteRateInfo.put("promise", candidate.getPromise());
+		voteRateInfo.put("voteCount",candidate.getVoteCount());
 		
 		return voteRateInfo;
 	}

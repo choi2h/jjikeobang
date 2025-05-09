@@ -104,7 +104,7 @@ function Voting() {
     
     // 투표 종료 => 결과 팝업 출력
     const handleVoteEnd = () => {
-        getVoteResult({roomId}).then((result) => {
+        getVoteResult({roomId, totalAmount}).then((result) => {
             //투표 결과 담기
             setVoteResult(result);
 
