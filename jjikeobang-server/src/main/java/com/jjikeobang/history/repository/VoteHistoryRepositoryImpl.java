@@ -22,12 +22,6 @@ public class VoteHistoryRepositoryImpl implements VoteHistoryRepository {
             int res = psmt.executeUpdate();
             if (res > 0) {
                 DatabaseUtil.commit(conn);
-
-                ResultSet rs = psmt.getGeneratedKeys();
-
-                if (rs.next()) {
-                    voteHistory.setHistoryId(rs.getLong(1));
-                }
             }else {
                 DatabaseUtil.rollback(conn);
                 throw new SQLException();
