@@ -647,7 +647,14 @@
 
 .history-winner-percent {
     color: #f97316;
-  font-weight: bold;
+    font-weight: bold;
+}
+
+.winner-percent {
+  color: #f97316;
+  font-weight: 600;
+  font-size: 30px;
+  margin-bottom: 30px;
 }
 
 /* 방 만들기 페이지 스타일 */

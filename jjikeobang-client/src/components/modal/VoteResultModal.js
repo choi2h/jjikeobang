@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function VoteResultModal({voteResult, voteResultModalClose}){
-
+    console.log(voteResult);
     return (
     <>
         <div className="modal show d-block" id="voteResultModal" tabindex="-1" aria-labelledby="voteResultModalLabel" aria-hidden="true">
@@ -32,18 +32,21 @@ function VoteResultModal({voteResult, voteResultModalClose}){
                                 {voteResult.promise}
                             </div>
 
+                            <div class="winner-percent">{voteResult.voteCount}표</div>
+
                             {/* 투표 결과 그래프 */}
-                            <div className="progress result-progress">
-                                <div className="progress-bar bg-primary" role="progressbar" style={{ width: `${voteResult.candidateVoteRate}%` }}
-                                    aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">{voteResult.candidateVoteRate}%</div>
-                            </div>
+                            {/* <div className="progress result-progress"> */}
+                            
+                                {/* <div className="progress-bar bg-primary" role="progressbar" style={{ width: `${voteResult.candidateVoteRate}%` }}
+                                    aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">{voteResult.candidateVoteRate}%</div> */}
+                            {/* </div> */}
 
                             {/* 투표 통계 */}
-                            <div className="vote-stats">
+                            {/* <div className="vote-stats">
                                 <h4 className="stats-title">투표 통계</h4>
                                 <div className="stats-row">
                                     <div className="stats-label">총 투표수</div>
-                                    <div className="stats-value">{voteResult.totVoteCount}표</div>
+                                    <div className="stats-value">{totalAmount}표</div>
                                 </div>
                                 <div className="stats-row">
                                     <div className="stats-label">투표율</div>
@@ -53,7 +56,7 @@ function VoteResultModal({voteResult, voteResultModalClose}){
                                     <div className="stats-label">기권</div>
                                     <div className="stats-value">{voteResult.absRate}%</div>
                                 </div>
-                            </div>
+                            </div> */}
 
                             {/* 돌아가기 버튼 */}
                             <Link to="/" className="btn back-btn">

@@ -23,9 +23,7 @@ function getCandidate(roomId, setCandidates) {
     axios
         .get(`${API_URL}/candidate?roomId=${roomId}`)
         .then((res) => {
-            console.log('@@@@@@@@@' + JSON.stringify(res));
             if (res.data.statusCode === 200) {
-                console.log('@@@@@@@@@@' + JSON.stringify(res.data));
                 setCandidates(res.data.candidates);
             } else {
                 console.log('에러 코드 :', res.data.statusCode);

@@ -138,10 +138,8 @@ function Voting() {
             </div>
 
         {   
-            isVoteResultModalOpen ? <VoteResultModal voteResult={voteResult} voteResultModalClose={() => setVoteResultModalOpen(false)}/> : <></>
+            isVoteResultModalOpen ? <VoteResultModal voteResult={voteResult} totalAmount={totalAmount} voteResultModalClose={() => setVoteResultModalOpen(false)}/> : <></>
         }
-
-        
         </>
     );
 }
