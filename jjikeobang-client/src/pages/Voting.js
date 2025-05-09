@@ -21,7 +21,13 @@ function Voting() {
     const usernickname = location.state.usernickname;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면
-    const [candidates, setCandidates] = useState(location.state.candidateList ? location.state.candidateList : []);
+        const [candidates, setCandidates] = useState(()=>{
+          const sessionExist = sessionStorage.getItem('candidates');
+            if (sessionExist) {
+                return JSON.parse(sessionExist);
+            }
+            return location.state?.candidateList || [];
+    });
     const [voteStatus, setVoteStatus] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);
