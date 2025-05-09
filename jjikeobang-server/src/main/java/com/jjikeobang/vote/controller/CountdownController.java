@@ -66,7 +66,6 @@ public class CountdownController extends HttpServlet {
                 durationMap.remove(roomId);
                 roomTimers.remove(roomId).cancel(false);
                 Map<String,Object> msg = new HashMap<>();
-                System.out.println("투표끝");
                 VoteSocketController.broadcast(roomId, msg, "vote-over");
             } else {
                 durationMap.put(roomId, timeLeft - 1);

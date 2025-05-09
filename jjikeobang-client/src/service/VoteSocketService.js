@@ -9,7 +9,6 @@ class VoteSocketService {
     
     sendMessage(message) {
 
-        console.log(`투표 실행 ${message}`);
         this.websocket.send(message);
     }
 
