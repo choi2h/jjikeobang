@@ -3,8 +3,11 @@ import Profile from "../components/header/Profile";
 import Logo from "../components/header/Logo";
 import getVoteHistories from "../service/VoteHistoryService";
 import HistoryCard from "../components/history/HistoryCard";
+import { useLocation } from "react-router-dom";
 
 function VotingHistory(){
+    const location = useLocation();
+    const user = location.state.user;
     const [histories, setHistories] = useState([]);
 
     useEffect(() => {
@@ -19,7 +22,7 @@ function VotingHistory(){
             <nav className="navbar mb-4">
                 <div className="container-fluid d-flex justify-content-between align-items-center">
                     <Logo/>
-                    <Profile/>
+                    <Profile user={user}/>
                 </div>
             </nav>
             

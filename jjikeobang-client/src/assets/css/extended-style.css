@@ -548,7 +548,7 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px 40px 0px 40px;
+    padding: 20px 40px 20px 40px;
     margin-bottom: 20px;
 }
 
@@ -582,6 +582,15 @@
     padding: 28px 40px;
 }
 
+.history-canidate-box {
+    display: flex;
+    align-items: center;       /* 수직 중앙 정렬 */
+    justify-content: center;   /* 가로 중앙 정렬 */
+    gap: 100px;                 /* 각 글자 사이 간격 */
+    border-radius: 12px;
+    padding: 10px 40px;
+}
+
 .history-name-box {
     display: flex;
     align-items: center;       /* 수직 중앙 정렬 */
@@ -609,10 +618,31 @@
     flex-shrink: 0;
 }
 
+.history-canidate-number {
+    width: 20px;
+    height: 20px;
+    background-color: #1a4b8c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 10px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+}
+
 .history-winner-name {
     color: #222;
   font-weight: 600;
   font-size: 1.2rem;
+}
+
+.history-canidate-name {
+    color: #222;
+  font-weight: 400;
+  font-size: 1.0rem;
 }
 
 .history-winner-percent {

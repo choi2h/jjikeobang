@@ -36,7 +36,7 @@ function Profile({user}){
                 <i className="bi bi-chevron-down"></i>
             </button>
             <ul className="dropdown-menu" aria-labelledby="profileDropdown">
-                <li><Link className="dropdown-item" to='/votingHistory'>지난 투표 기록</Link></li>
+                <li><Link className="dropdown-item" to='/votingHistory' state={{user:user}}>지난 투표 기록</Link></li>
                 <li><Link className="dropdown-item" onClick={handleLogout}>로그아웃</Link></li>
             </ul>
         </div>
