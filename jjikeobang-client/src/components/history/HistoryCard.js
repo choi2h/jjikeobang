@@ -7,9 +7,11 @@ function HistoryCard({historyInfo}) {
             return candidate.voteCount > max.voteCount ? candidate : max;
         });
 
+        const totalEntryCount = historyInfo.totalEntryCount > 0 ? historyInfo.totalEntryCount-1 : 0;
+
     const getVoteRate = (voteAmount) => {
-        if(!historyInfo.tototalVote || historyInfo.tototalVote <= 0) return 0;
-        return Math.min(100, Math.max(1, Math.floor((voteAmount / historyInfo.totalEntryCount) * 100)));
+        if(!historyInfo.totalEntryCount || historyInfo.totalEntryCount <= 0 || voteAmount <= 0) return 0;
+        return Math.min(100, Math.max(1, Math.floor((voteAmount / totalEntryCount) * 100)));
     }
     return (
         <div class="history-card">
@@ -27,19 +29,14 @@ function HistoryCard({historyInfo}) {
                 </div>
             </div>
             <div class="candidates col-md-6">
-            <small style={{display: 'block', textAlign: 'right'}}>총 투표수: {historyInfo.totalEntryCount}</small>
+            <small style={{display: 'block', textAlign: 'right'}}>총 참여자 수: {totalEntryCount}</small>
+            
                 {!historyInfo || historyInfo.candidateInfos.length === 0 ? 
                     '후보자 정보가 없습니다.' :
                     historyInfo.candidateInfos.map((candidate, index) => {
                         return (
                             <div class="row">
-                                <div class="history-canidate-box">
-                                    <div class="history-name-box">
-                                        <div class="history-canidate-number">{candidate.signNumber}</div>
-                                        <div class="history-canidate-name">{candidate.name}</div>
-                                    </div>
-                                    <div class="history-canidate-name">{candidate.voteCount}표</div>
-                                </div>
+                                <PercentageBar key={index} name={candidate.name} percentage={getVoteRate(candidate.voteCount)} />
                             </div>
                         );
                 })}
