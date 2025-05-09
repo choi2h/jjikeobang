@@ -128,7 +128,6 @@ function Voting() {
                             <VoteStatusBoard totalAmount={totalAmount} voteDuration={voteDuration} />
                         </div>
                     </div>
-                    <button class="btn btn-primary" onClick={onVoteEnd}>zxcvad</button>
                 </div>
             </div>
 
