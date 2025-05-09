@@ -10,11 +10,13 @@ function Chat({roomId, username, onVoteStart}) {
 
     const onMessageCallback = (message) => {
         console.log("채팅 메시지 받았어!!!!" + message);
-        if(message.type === 'VOTE_START') {
+        const res = JSON.parse(message);
+        if(res.type === 'VOTE_START') {
+            console.log('투표를 시작한다!!!!');
+            res.type = 'NOTICE';
             onVoteStart();
         }
 
-        const res = JSON.parse(message);
         setChats(prevChats => [...prevChats, res]);
     }
 
