@@ -18,6 +18,7 @@ function Voting() {
     const location = useLocation();
     const roomInfo = location.state.roomInfo || {};
     const roomId = roomInfo.roomId;
+    const usernickname = location.state.usernickname;
 
     const [progress, setProgress] = useState(0); // 0: 대기 화면, 1: 후보자 설정 화면, 2: 투표 화면, 3: 투표 결과 화면
     const [candidates, setCandidates] = useState(location.state.candidateList ? location.state.candidateList : []);
@@ -120,7 +121,7 @@ function Voting() {
                                     {stepComponents[progress]()}
                                 </div>
                                 <div className="col-md-5">
-                                    <Chat roomId={roomId} />
+                                    <Chat roomId={roomId} username={usernickname} onVoteStart={onVoteStart}/>
                                 </div>
                             </div>
 

@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import SocketService from "../../service/SocketService";
 
-function Chat({roomId}) {
-    roomId = 1;
-    const username = '익명1';
+function Chat({roomId, username, onVoteStart}) {
     const [chats, setChats] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const scrollRef = useRef();
@@ -12,6 +10,10 @@ function Chat({roomId}) {
 
     const onMessageCallback = (message) => {
         console.log("채팅 메시지 받았어!!!!" + message);
+        if(message.type === 'VOTE_START') {
+            onVoteStart();
+        }
+
         const res = JSON.parse(message);
         setChats(prevChats => [...prevChats, res]);
     }
@@ -39,7 +41,7 @@ function Chat({roomId}) {
     const onClickSendButton = () => {
         console.log(`전송 버튼 클릭 message=${inputMessage}`);
         if(socket.current) {
-            socket.current.sendMessage('user1', inputMessage);
+            socket.current.sendMessage(username, inputMessage);
         } else {
             alert('채팅에 연결되어있지 않습니다.');
         }
