@@ -15,6 +15,11 @@ function CandidateEditItemSet({ roomInfo, candidates, setCandidates, voteStart})
     const updateCandidateList = (type, candidate) => {
         let updatedList = [];
         if(type === 'DELETE') {
+            if(candidates.length===1){
+                window.alert('후보자는 최소 1명 이상 존재해야 합니다.');
+                return;
+            }
+
             updatedList = candidates.filter(item => item.id !== candidate.id);
         } else if(type === 'UPDATE') {
             updatedList = candidates.map(c =>

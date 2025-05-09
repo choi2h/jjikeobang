@@ -1,16 +1,11 @@
 import CandidateEditModal from "../modal/CandidateEditModal";
 
-function CandidateEditItem({index, candidate, candidateList, updateCandidateList, isSelected, selectCandidate}){
+function CandidateEditItem({index, candidate, updateCandidateList, isSelected, selectCandidate}){
     console.log(`CandidateEditItem candidate=${JSON.stringify(candidate)}`);
     const modalId = `pledgeModal-${candidate.id}`;
 
     //후보자 삭제 
     const handleDelete = (candidate)=>{
-        if(candidateList.length===1){
-            window.alert('후보자는 최소 1명 이상 존재해야 합니다.');
-            return;
-        }
-
         const confirm = window.confirm('삭제하시겠습니까?');
         if(confirm){
             updateCandidateList('DELETE', candidate)
