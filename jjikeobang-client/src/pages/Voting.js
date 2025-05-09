@@ -48,7 +48,13 @@ function Voting() {
             roomId,
             handleSocketMessage
         );
-        setProgress(2);
+        checkAdmin({roomId}).then((isAdmin) => {
+            if(isAdmin){
+                setProgress(3);
+            }else{
+                setProgress(2);
+            }
+        })
     }
 
     const onVoted = () => {
