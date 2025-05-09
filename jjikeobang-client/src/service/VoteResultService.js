@@ -1,10 +1,9 @@
 const API_URL = process.env.REACT_APP_API_URL;
 
-function getVoteResult({roomId}) {
+function getVoteResult({roomId, totalAmount}) {
     if (!roomId) {
         return Promise.reject(new Error('roomId가 전달되지 않았습니다.'));
     }
-    
     return fetch(`${API_URL}/vote/result`, {
             method: 'POST',
             headers: {
@@ -18,15 +17,20 @@ function getVoteResult({roomId}) {
             return res.json();
         })
         .then((voteResult) => {
+            const voteCount = voteResult.voteCount;
+            const candidateVoteRate = totalAmount > 0
+          ? Math.min(100, Math.max(1, Math.floor((voteCount / totalAmount) * 100))) : 0;
+            
             return {
-                signNumber : voteResult.candidateId,
+                signNumber : voteResult.signNumber,
                 name : voteResult.name,
                 description : voteResult.description,
                 promise : voteResult.promise,
                 totVoteRate : voteResult.voteRate,
                 absRate : voteResult.absVoteRate,
-                totVoteCount : voteResult.totalEntryCount,
-                candidateVoteRate : voteResult.topCandidateVoteRate,
+                totVoteCount : totalAmount,
+                candidateVoteRate : candidateVoteRate,
+                
             };
         })
         .catch((err) => {
