@@ -72,9 +72,10 @@ public class VoteResultRepositoryImpl implements VoteResultRepository {
 				commit(conn);
 				Map<String, Object> result = new HashMap<String, Object>();
 				result.put("totalEntryCount", rs.getInt(1));
-				result.put("voteRate", rs.getDouble(2));
-				result.put("absVoteRate", rs.getDouble(3));
-				result.put("topCandidateVoteRate", rs.getDouble(4));
+				result.put("totalVoteCount", rs.getInt(2));
+				result.put("voteRate", rs.getDouble(3));
+				result.put("absVoteRate", rs.getDouble(4));
+				result.put("topCandidateVoteRate", rs.getDouble(5));
 				
 				return result;
 	        }

@@ -17,21 +17,7 @@ function getVoteResult({roomId, totalAmount}) {
             return res.json();
         })
         .then((voteResult) => {
-            const voteCount = voteResult.voteCount;
-            const candidateVoteRate = totalAmount > 0
-          ? Math.min(100, Math.max(1, Math.floor((voteCount / totalAmount) * 100))) : 0;
-            
-            return {
-                signNumber : voteResult.signNumber,
-                name : voteResult.name,
-                description : voteResult.description,
-                promise : voteResult.promise,
-                totVoteRate : voteResult.voteRate,
-                absRate : voteResult.absVoteRate,
-                totVoteCount : totalAmount,
-                candidateVoteRate : candidateVoteRate,
-                
-            };
+            return voteResult;
         })
         .catch((err) => {
             console.error('에러 발생:', err);

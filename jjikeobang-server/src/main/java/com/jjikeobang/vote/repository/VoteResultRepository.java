@@ -30,7 +30,7 @@ public interface VoteResultRepository {
 			+ "FROM ( "
 			+ "		SELECT "
 			+ "			ROOM_ID, "
-			+ "			IFNULL(TOTAL_ENTRY_COUNT, 0) TOTAL_ENTRY_COUNT "
+			+ "			CASE WHEN (IFNULL(TOTAL_ENTRY_COUNT, 0) - 1) < 0 THEN 0 ELSE (IFNULL(TOTAL_ENTRY_COUNT, 0) - 1) END TOTAL_ENTRY_COUNT "
 			+ "		FROM VOTE_ROOM "
 			+ "		WHERE ROOM_ID = ? "
 			+ "	) A  "
@@ -53,11 +53,12 @@ public interface VoteResultRepository {
 			+ ") "
 			+ "SELECT "
 			+ "	TOTAL_ENTRY_COUNT, "
-			+ " TOTAL_VOTE_COUNT, "
+			+ "	TOTAL_VOTE_COUNT, "
 			+ "	ROUND((TOTAL_VOTE_COUNT / TOTAL_ENTRY_COUNT) * 100, 2) AS VOTE_RATE, "
 			+ "	ROUND((ABS_VOTE_COUNT / TOTAL_ENTRY_COUNT) * 100, 2) AS ABS_VOTE_RATE, "
 			+ "	ROUND((VOTE_COUNT / TOTAL_ENTRY_COUNT) * 100, 2) AS TOP_CANDIDATE_VOTE_RATE "
 			+ "FROM VOTE_INFO";
+			
 	
 	Candidate findTopCandidate(long roomId);
 
