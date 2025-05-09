@@ -45,7 +45,14 @@ function Chat({roomId, username, onVoteStart}) {
         } else {
             alert('채팅에 연결되어있지 않습니다.');
         }
+        setInputMessage('');
     }
+
+    const handleEnterKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            onClickSendButton();
+        }
+      };
 
     return (
         <div className="chat-wrapper">
@@ -63,7 +70,9 @@ function Chat({roomId, username, onVoteStart}) {
                     type="text" 
                     className="chat-input" 
                     placeholder="메시지를 입력하세요..."
+                    value={inputMessage}
                     onChange={e => setInputMessage(e.target.value)}
+                    onKeyDown={handleEnterKeyDown}
                  />
                 <button className="chat-send-btn" onClick={onClickSendButton}>
                     <i className="bi bi-send"></i>
