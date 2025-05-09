@@ -68,18 +68,8 @@ function VotingReady(){
                 return res.json();
             })
             .then((voteResult) => {
-                
-                setVoteResult({
-                    signNumber : voteResult.signNumber,
-                    name : voteResult.name,
-                    description : voteResult.description,
-                    promise : voteResult.promise,
-                    totVoteRate : voteResult.voteRate,
-                    absRate : voteResult.absVoteRate,
-                    totVoteCount : voteResult.totalEntryCount,
-                    candidateVoteRate : voteResult.topCandidateVoteRate,
-                });
 
+                setVoteResult(voteResult);
                 setVoteResultModalOpen(true);
             })
             .catch((err) => {
@@ -89,7 +79,7 @@ function VotingReady(){
     };
 
     return (
-        <>
+        <>  
             <div className="container-fluid main-container">
                 <div className="row justify-content-center">
                     <div className="col-lg-9">
