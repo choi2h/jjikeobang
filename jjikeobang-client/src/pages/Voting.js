@@ -98,7 +98,7 @@ function Voting() {
     
     // 투표 종료 => 결과 팝업 출력
     const handleVoteEnd = () => {
-        getVoteResult(roomId).then((result) => {
+        getVoteResult({roomId}).then((result) => {
             //투표 결과 담기
             setVoteResult(result);
 
@@ -128,6 +128,7 @@ function Voting() {
                             <VoteStatusBoard totalAmount={totalAmount} voteDuration={voteDuration} />
                         </div>
                     </div>
+                    <button class="btn btn-primary" onClick={onVoteEnd}>zxcvad</button>
                 </div>
             </div>
 
