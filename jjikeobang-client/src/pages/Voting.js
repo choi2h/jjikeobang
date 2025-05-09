@@ -26,12 +26,10 @@ function Voting() {
     const [totalAmount, setTotalAmount] = useState(0);
     const [voteDuration, setVoteDuration] = useState(roomInfo.voteDuration * 60);
 
-    console.log(`방 입장!!!! username=${usernickname} room = ${JSON.stringify(roomInfo)}, candidates=${JSON.stringify(candidates)}`)
-
     const handleSocketMessage = (rawData) => {
         const data = JSON.parse(rawData);
 
-        console.log("수신한 투표 메시지: ", data);
+        // console.log("수신한 투표 메시지: ", data);
 
         if (data.type === "vote") {
             setVoteStatus(data.candidates);
@@ -51,7 +49,13 @@ function Voting() {
             roomId,
             handleSocketMessage
         );
-        setProgress(2);
+        checkAdmin({roomId}).then((isAdmin) => {
+            if(isAdmin){
+                setProgress(3);
+            }else{
+                setProgress(2);
+            }
+        })
     }
 
     const onVoted = () => {
@@ -71,6 +75,7 @@ function Voting() {
 
 
     useEffect(() => {
+        console.log(`방 입장!!!! room = ${JSON.stringify(roomInfo)}, candidates=${JSON.stringify(candidates)}`)
         checkAdmin({roomId}).then((isAdmin) => {
             if(isAdmin){
                 setProgress(1);
