@@ -27,20 +27,23 @@ function HistoryCard({historyInfo}) {
                 </div>
             </div>
             <div class="candidates col-md-6">
+            <small style={{display: 'block', textAlign: 'right'}}>총 투표수: {historyInfo.totalEntryCount}</small>
                 {!historyInfo || historyInfo.candidateInfos.length === 0 ? 
                     '후보자 정보가 없습니다.' :
                     historyInfo.candidateInfos.map((candidate, index) => {
                         return (
                             <div class="row">
-                                <PercentageBar key={index} name={candidate.name} percentage={getVoteRate(candidate.voteCount)} />
+                                <div class="history-canidate-box">
+                                    <div class="history-name-box">
+                                        <div class="history-canidate-number">{candidate.signNumber}</div>
+                                        <div class="history-canidate-name">{candidate.name}</div>
+                                    </div>
+                                    <div class="history-canidate-name">{candidate.voteCount}표</div>
+                                </div>
                             </div>
                         );
                 })}
             </div>
-        </div>
-
-        <div class="text-end mt-3">
-            <small>총 투표수: {historyInfo.totalEntryCount}</small>
         </div>
         </div>
     );
