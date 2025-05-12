@@ -69,7 +69,7 @@
 
 | 익명 자율 채팅 및 투표하기 |
 | --- |
-| ![Image](https://github.com/user-attachments/assets/4110c5d2-b0f5-4b6d-a27b-75185039c2af) |
+| ![익명자율채팅_투표시작](https://github.com/user-attachments/assets/4158484d-fe54-4eca-9c73-08deef4c6ef0) |
 
 | 투표 결과 발표 및 기록확인 |
 | --- |
